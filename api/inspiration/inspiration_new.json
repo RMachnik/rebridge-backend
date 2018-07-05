@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "New inspiration",
+  "description": "POST: Inspiration request",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "Name of inspiration",
+      "type": "string"
+    },
+  },
+  "required": [
+    "name"
+  ]
+}

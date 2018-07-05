@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Registration",
+  "description": "POST: Registration endpoint /registration",
+  "type": "object",
+  "properties": {
+    "username": {
+      "description": "username",
+      "type": "string"
+    },
+    "password": {
+      "description": "Normal plain text password",
+      "type": "string"
+    }
+  },
+  "required": [
+    "username",
+    "password"
+  ]
+}
