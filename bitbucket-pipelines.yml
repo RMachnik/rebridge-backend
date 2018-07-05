@@ -17,5 +17,6 @@ pipelines:
           # You must commit the Gradle wrapper to your repository
           # https://docs.gradle.org/current/userguide/gradle_wrapper.html
           - bash ./gradlew build
+          - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           - docker build -t rmachnik/rebridge .
           - docker push rmachnik/rebridge:latest
