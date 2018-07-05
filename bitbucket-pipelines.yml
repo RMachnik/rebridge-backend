@@ -1,8 +1,3 @@
-# This is a sample build configuration for Java (Gradle).
-# Check our guides at https://confluence.atlassian.com/x/zd-5Mw for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
 image: openjdk:8
 
 options:
@@ -13,19 +8,24 @@ pipelines:
     - step:
         caches:
           - gradle
-        script: # Modify the commands below to build your repository.
-          # You must commit the Gradle wrapper to your repository
-          # https://docs.gradle.org/current/userguide/gradle_wrapper.html
+        script:
           - bash ./gradlew build
           - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           - docker build -t rmachnik/rebridge .
           - docker push rmachnik/rebridge:latest
 
+#    - step:
+#            name: Deploy to test
+#            deployment: test
+#            script:
+#              - ssh $USER@$HOST_NAME
+#              - docker pull rmachnik/rebridge:latest
+#              - docker stop $(docker ps -a -q  --filter ancestor=rmachnik/rebridge)
+#              - docker run -p 8080:8080 -d --rm rmachnik/rebridge
+
     - step:
-            name: Deploy to test
-            deployment: test
-            script:
-              - ssh $USER@$HOST_NAME
-              - docker pull rmachnik/rebridge
-              - docker stop $(docker ps -a -q  --filter ancestor=rmachnik/rebridge)
-              - docker run -p 8080:8080 -d --rm rmachnik/rebridge
+        name: Deploy to test
+        deployment: test
+        script:
+          - ssh $USER@$HOST_NAME
+          - ./deploy.sh &
