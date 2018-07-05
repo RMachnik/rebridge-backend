@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "New details",
-  "description": "GET: list of inspirations /inspirations}",
+  "description": "GET: list of inspirations /inspirations",
   "type": "array",
   "items": {
     "type": "object",
@@ -15,6 +15,7 @@
         "type": "string"
       },
       "rating": {
+        "description": "Rating 1-10",
         "type": "integer"
       }
     }
