@@ -5,6 +5,9 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 image: openjdk:8
 
+options:
+  docker: true
+
 pipelines:
   default:
     - step:
@@ -14,13 +17,5 @@ pipelines:
           # You must commit the Gradle wrapper to your repository
           # https://docs.gradle.org/current/userguide/gradle_wrapper.html
           - bash ./gradlew build
-    - step:
-        name: Deploy to docker registry
-        deployment: test   # set to test, staging or production
-        # trigger: manual  # uncomment to have a manual step
-        image: atlassian/pipelines-awscli
-        services:
-          - docker
-        script:
           - docker build -t rmachnik/rebridge .
           - docker push rmachnik/rebridge:latest
