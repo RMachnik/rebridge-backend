@@ -13,7 +13,7 @@
       "type": "string"
     },
     "url": {
-      "description": "Ulr to the inspiration",
+      "description": "ulr to the inspiration",
       "type": "string"
     },
     "photo": {
