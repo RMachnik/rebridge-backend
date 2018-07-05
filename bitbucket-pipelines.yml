@@ -23,7 +23,6 @@ pipelines:
 
     - step:
             name: Deploy to test
-            image: aws-cli:1.0
             deployment: test
             script:
               - ssh $USER@$HOST_NAME
