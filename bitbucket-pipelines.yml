@@ -27,5 +27,5 @@ pipelines:
             script:
               - ssh $USER@$HOST_NAME
               - docker pull rmachnik/rebridge
-              - docker ps -q --filter ancestor="rmachnik/rebridge" | xargs -r docker stop
+              - docker stop $(docker ps -a -q  --filter ancestor=rmachnik/rebridge)
               - docker run -p 8080:8080 -d --rm rmachnik/rebridge
