@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "New details",
+  "description": "GET: Inspiration details /inspirations/{inspirationId}",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "Name of inspiration",
+      "type": "string"
+    },
+    "description": {
+      "description": "Description for the inspiration",
+      "type": "string"
+    },
+    "url": {
+      "description": "Ulr to the inspiration",
+      "type": "string"
+    },
+    "photo": {
+      "type": "image/jpeg",
+      "binaryEncoding": "base64"
+    },
+    "rating": {
+      "description": "Rating 1-10 - how much I like it.",
+      "type": "integer"
+    },
+    "comment": {
+      "description": "Comment",
+      "type": "String"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

@@ -1,9 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "New details",
-  "description": "PUT: Inspiration details /inspiration/{inspirationId}",
+  "description": "PUT: Inspiration details /inspirations/{inspirationId}",
   "type": "object",
   "properties": {
+    "name": {
+      "description": "Name of inspiration",
+      "type": "string"
+    },
     "description": {
       "description": "Description for the inspiration",
       "type": "string"
