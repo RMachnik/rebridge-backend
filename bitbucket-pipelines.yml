@@ -15,8 +15,12 @@ pipelines:
           # https://docs.gradle.org/current/userguide/gradle_wrapper.html
           - bash ./gradlew build
     - step:
-        name: Deploy to test
-        deployment: test   # can be test, staging or production
-        # trigger: manual  # uncomment to make manual deployment
+        name: Deploy to docker registry
+        deployment: test   # set to test, staging or production
+        # trigger: manual  # uncomment to have a manual step
+        image: atlassian/pipelines-awscli
+        services:
+          - docker
         script:
-          - docker build -t rmachnik/rebridge . && docker push rmachnik/rebridge:latest
+          - docker build -t rmachnik/rebridge .
+          - docker push rmachnik/rebridge:latest
