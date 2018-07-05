@@ -20,3 +20,13 @@ pipelines:
           - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           - docker build -t rmachnik/rebridge .
           - docker push rmachnik/rebridge:latest
+
+    - step:
+            name: Deploy to test
+            image: aws-cli:1.0
+            deployment: test
+            script:
+              - ssh $USER@$HOST_NAME
+              - docker pull rmachnik/rebridge
+              - docker ps -q --filter ancestor="rmachnik/rebridge" | xargs -r docker stop
+              - docker run -p 8080:8080 -d --rm rmachnik/rebridge
