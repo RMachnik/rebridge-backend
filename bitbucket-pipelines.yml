@@ -9,10 +9,10 @@ pipelines:
         caches:
           - gradle
         script:
-          - bash ./gradlew build
-          - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          - docker build -t rmachnik/rebridge .
-          - docker push rmachnik/rebridge:latest
+#          - bash ./gradlew build
+#          - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#          - docker build -t rmachnik/rebridge-backend .
+#          - docker push rmachnik/rebridge-backend:latest
 
 #    - step:
 #            name: Deploy to test
@@ -23,9 +23,9 @@ pipelines:
 #              - docker stop $(docker ps -a -q  --filter ancestor=rmachnik/rebridge)
 #              - docker run -p 8080:8080 -d --rm rmachnik/rebridge
 
-    - step:
-        name: Deploy to test
-        deployment: test
-        script:
-          - ssh $USER@$HOST_NAME
-          - ./deploy.sh &
+#    - step:
+#        name: Deploy to test
+#        deployment: test
+#        script:
+#          - ssh $USER@$HOST_NAME
+#          - ./deploy.sh &
