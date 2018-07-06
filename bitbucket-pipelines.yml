@@ -9,7 +9,7 @@ pipelines:
         caches:
           - gradle
         script:
-#          - bash ./gradlew build
+          - bash ./gradlew clean
 #          - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 #          - docker build -t rmachnik/rebridge-backend .
 #          - docker push rmachnik/rebridge-backend:latest
