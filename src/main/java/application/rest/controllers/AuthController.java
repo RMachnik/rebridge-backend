@@ -1,44 +1,31 @@
 package application.rest.controllers;
 
 import application.UserAuthenticationService;
-import domain.User;
 import domain.UserRepository;
+import dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
 @RestController
-@RequestMapping("/public/users")
+@RequestMapping("/auth")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
-final class PublicUsersController {
-    @NonNull
-    UserAuthenticationService authentication;
+final class AuthController {
 
     @NonNull
-    UserRepository users;
+    UserAuthenticationService authentication;
 
     @PostMapping("/register")
     String register(
             @RequestParam("username") final String username,
             @RequestParam("password") final String password) {
-        users
-                .save(
-                        User
-                                .builder()
-                                .id(username)
-                                .username(username)
-                                .password(password)
-                                .build()
-                );
-
+        authentication.register(username, password);
         return login(username, password);
     }
 
@@ -49,6 +36,12 @@ final class PublicUsersController {
         return authentication
                 .login(username, password)
                 .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
+    }
+
+    @GetMapping("/logout")
+    boolean logout(@AuthenticationPrincipal final UserDto user) {
+        authentication.logout(user);
+        return true;
     }
 }
 

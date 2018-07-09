@@ -1,6 +1,7 @@
 package application;
 
 import domain.User;
+import dto.UserDto;
 
 import java.util.Optional;
 
@@ -16,11 +17,15 @@ public interface UserAuthenticationService {
     Optional<String> login(String username, String password);
 
     /**
-     * Finds a user by its dao-key.
+     * Registers with the given {@code username} and {@code password}.
      *
-     * @param token user dao key
-     * @return
+     * @param username
+     * @param password
+     * @return an {@link Optional} id of user
      */
+    Optional<String> register(String username, String password);
+
+
     Optional<User> findByToken(String token);
 
     /**
@@ -28,5 +33,5 @@ public interface UserAuthenticationService {
      *
      * @param user the user to logout
      */
-    void logout(User user);
+    void logout(UserDto user);
 }

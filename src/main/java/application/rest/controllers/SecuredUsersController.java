@@ -1,7 +1,6 @@
 package application.rest.controllers;
 
 import application.UserAuthenticationService;
-import domain.User;
 import dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -19,6 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class SecuredUsersController {
+
     @NonNull
     UserAuthenticationService authentication;
 
@@ -27,13 +27,4 @@ final class SecuredUsersController {
         return user;
     }
 
-    @GetMapping("/logout")
-    boolean logout(@AuthenticationPrincipal final UserDto user) {
-        authentication.logout(User.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .build());
-        return true;
-    }
 }

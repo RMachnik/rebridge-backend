@@ -40,7 +40,9 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.apache.commons:commons-lang3:3.7")
+    compile("com.fasterxml.jackson.module:jackson-module-jsonSchema:2.9.6")
 
     compileOnly("org.projectlombok:lombok:1.18.0")
 

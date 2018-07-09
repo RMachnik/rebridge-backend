@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("application.rest.controllers")
 public class ApplicationConfig {
 
-
     @Bean
     UserRepository userRepository() {
         return new InMemoryUserRepository();
@@ -18,6 +17,6 @@ public class ApplicationConfig {
 
     @Bean
     UserAuthenticationService userAuthenticationService(UserRepository userRepository) {
-        return new UUIDAuthenticationService(userRepository);
+        return new InMemoryAuthenticationService(userRepository);
     }
 }
