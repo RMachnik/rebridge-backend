@@ -14,16 +14,16 @@ import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users/")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
-final class SecuredUsersController {
+final class UserController {
 
     @NonNull
     UserAuthenticationService authentication;
 
-    @GetMapping("/current")
-    UserDto getCurrent(@AuthenticationPrincipal final UserDto user) {
+    @GetMapping()
+    UserDto current(@AuthenticationPrincipal final UserDto user) {
         return user;
     }
 

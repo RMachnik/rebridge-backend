@@ -16,7 +16,10 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.util.matcher.*;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -32,9 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/auth/**")
     );
     private static final RequestMatcher SCHEMA = new OrRequestMatcher(
-            new AntPathRequestMatcher("/schema/**")
+            new AntPathRequestMatcher("/schemas/**")
     );
-    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new AndRequestMatcher(AUTH_URLS, SCHEMA));
+    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new OrRequestMatcher(AUTH_URLS, SCHEMA));
 
     private final AuthenticationProvider provider;
 

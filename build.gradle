@@ -10,17 +10,17 @@ buildscript {
         classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE')
     }
 }
+plugins {
+    id 'net.ltgt.apt' version '0.8'
+    id 'java'
+    id 'idea'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
 
 repositories {
     mavenCentral()
 }
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'java'
-apply plugin: 'idea'
 
 bootJar {
     baseName = 'rebridge'
@@ -41,6 +41,12 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-hateoas")
+
+
+
+    compile("org.mapstruct:mapstruct-jdk8:1.2.0.Final")
+    apt("org.mapstruct:mapstruct-processor:1.2.0.Final")
     compile("org.apache.commons:commons-lang3:3.7")
     compile("com.fasterxml.jackson.module:jackson-module-jsonSchema:2.9.6")
 

@@ -20,7 +20,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 final class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    private static final String BEARER = "Bearer";
+    private static final String token = "token-";
 
     TokenAuthenticationFilter(final RequestMatcher requiresAuth) {
         super(requiresAuth);
@@ -34,7 +34,7 @@ final class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFi
                 .orElse(request.getParameter("t"));
 
         final String token = ofNullable(param)
-                .map(value -> StringUtils.removeStart(value, BEARER))
+                .map(value -> StringUtils.removeStart(value, TokenAuthenticationFilter.token))
                 .map(String::trim)
                 .orElseThrow(() -> new BadCredentialsException("Missing Authentication Token"));
 

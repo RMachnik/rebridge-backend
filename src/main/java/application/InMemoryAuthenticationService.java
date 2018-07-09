@@ -23,12 +23,12 @@ import static lombok.AccessLevel.PRIVATE;
 final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @NonNull
-    UserRepository users;
+    UserRepository userRepository;
     Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
 
     @Override
     public Optional<String> login(final String username, final String password) {
-        return users.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .filter(user -> Objects.equals(user.getPassword(), password))
                 .map((loggedUser) -> {
                     String uuid = UUID.randomUUID().toString();
@@ -47,7 +47,7 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
                 .password(password)
                 .build();
 
-        users.save(user);
+        userRepository.save(user);
         return Optional.of(uuid);
     }
 

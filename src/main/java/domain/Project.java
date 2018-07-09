@@ -3,12 +3,13 @@ package domain;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 @Builder
-public class Inspiration implements Id<String> {
-
+public class Project implements Id<String> {
     String id;
     String name;
-    InspirationDetail inspirationDetail;
 
+    List<Inspiration> inspirations;
 }
