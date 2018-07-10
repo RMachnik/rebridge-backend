@@ -18,6 +18,7 @@ import static java.util.Objects.requireNonNull;
 public class UserDto implements UserDetails {
 
     String id;
+    @JsonProperty(required = true)
     String username;
     String password;
 

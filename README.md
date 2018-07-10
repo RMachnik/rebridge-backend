@@ -22,7 +22,7 @@ Token is send back after successful login request.
 registration returns authentication token that can be used for subsequent interactions with API
 
 #####Json Schemas
-+ `/schemas/inspiration` - schema for inspiration endpoint
++ `/schemas/projects` - schema for inspiration endpoint
 
 
 

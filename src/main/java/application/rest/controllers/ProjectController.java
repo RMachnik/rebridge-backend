@@ -80,7 +80,9 @@ public class ProjectController {
     }
 
     @DeleteMapping("{projectId}")
-    ResponseEntity<String> delete(@AuthenticationPrincipal UserDto user, @PathVariable String projectId) {
+    ResponseEntity<String> delete(@PathVariable String projectId) {
+        //todo make sure that all links are deleted
+        // this action can be performed only by project owner - this needs to be figured out
         return ResponseEntity.ok(
                 projectRepository.delete(projectId)
         );
