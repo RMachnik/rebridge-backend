@@ -82,3 +82,5 @@ hs_err_pid*
 .gradle/
 build/docker/Dockerfile
 build/tmp/
+build/classes/
+build/generated/

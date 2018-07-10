@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Registration",
-  "description": "POST: Registration endpoint /registration",
+  "description": "POST: Registration endpoint /register",
   "type": "object",
   "properties": {
     "username": {
