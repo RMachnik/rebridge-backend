@@ -16,7 +16,6 @@ import static java.util.stream.Collectors.toList;
 
 public class DomainMappers {
 
-
     static ProjectDto fromProjectToDto(Project project) {
         return ProjectDto
                 .builder()

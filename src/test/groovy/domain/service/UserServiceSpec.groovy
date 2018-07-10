@@ -17,6 +17,5 @@ class UserServiceSpec extends Specification {
 
         then:
         thrown(DomainExceptions.UserRepositoryException)
-
     }
 }

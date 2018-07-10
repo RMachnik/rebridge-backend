@@ -14,5 +14,4 @@ public class InspirationDetailDto {
     byte[] picture;
     Integer rating;
     List<CommentDto> comments;
-
 }

@@ -12,6 +12,5 @@ public class User implements Id<String> {
     String id;
     String username;
     String password;
-
     List<Project> projects;
 }
