@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import static lombok.AccessLevel.PRIVATE;
 
 @RestController
-@RequestMapping("/schemas/")
+@RequestMapping(
+        path = "/schemas/",
+        produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 final class JsonSchemaController {
 
@@ -29,34 +35,25 @@ final class JsonSchemaController {
     }
 
     @GetMapping("projects")
-    String projects() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    ResponseEntity<String> projects() throws JsonProcessingException {
+        JsonSchema jsonSchema = schemaGenerator.generateSchema(ProjectDto.class);
 
-        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-        JsonSchema jsonSchema = schemaGen.generateSchema(ProjectDto.class);
-
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema);
+        return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
     }
 
     @GetMapping("projects/{projectId}/inspirations")
-    String inspirations() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    ResponseEntity<String> inspirations() throws JsonProcessingException {
+        JsonSchema jsonSchema = schemaGenerator.generateSchema(InspirationDto.class);
 
-        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-        JsonSchema jsonSchema = schemaGen.generateSchema(InspirationDto.class);
-
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema);
+        return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
     }
 
 
     @GetMapping("users")
-    String users() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    ResponseEntity<String> users() throws JsonProcessingException {
+        JsonSchema jsonSchema = schemaGenerator.generateSchema(UserDto.class);
 
-        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-        JsonSchema jsonSchema = schemaGen.generateSchema(UserDto.class);
-
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema);
+        return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
     }
 
 }

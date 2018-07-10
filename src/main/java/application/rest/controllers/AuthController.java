@@ -3,8 +3,10 @@ package application.rest.controllers;
 import application.UserAuthenticationService;
 import application.rest.controllers.dto.UserDto;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,11 @@ import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
 @RestController
-@RequestMapping("/auth/")
+@RequestMapping(
+        path = "/auth/",
+        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+        produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class AuthController {
@@ -24,18 +30,14 @@ final class AuthController {
     UserAuthenticationService authentication;
 
     @PostMapping("register")
-    ResponseEntity register(
-            @RequestParam("username") final String username,
-            @RequestParam("password") final String password) {
-        authentication.register(username, password);
-        return handleLogin(username, password);
+    ResponseEntity register(AuthDto authDto) {
+        authentication.register(authDto.getUsername(), authDto.getPassword());
+        return handleLogin(authDto.getUsername(), authDto.getPassword());
     }
 
     @PostMapping("login")
-    ResponseEntity login(
-            @RequestParam("username") final String username,
-            @RequestParam("password") final String password) {
-        return handleLogin(username, password);
+    ResponseEntity login(AuthDto authDto) {
+        return handleLogin(authDto.getUsername(), authDto.getPassword());
     }
 
     @GetMapping("logout")
@@ -49,6 +51,12 @@ final class AuthController {
                 .map(URI::create)
                 .map((uri) -> ResponseEntity.created(uri).build())
                 .orElse(ResponseEntity.badRequest().build());
+    }
+
+    @Data
+    static class AuthDto {
+        String username;
+        String password;
     }
 }
 
