@@ -1,85 +1,73 @@
 package application.rest.controllers;
 
-import application.rest.model.InspirationMapper;
-import domain.Inspiration;
-import domain.InspirationDetail;
-import domain.Project;
-import domain.ProjectRepository;
-import dto.InspirationDto;
+import application.rest.controllers.dto.InspirationDto;
+import domain.service.InspirationService;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
+import static lombok.AccessLevel.PACKAGE;
+import static lombok.AccessLevel.PRIVATE;
 
 @RestController
 @RequestMapping("/projects/{projectId}/inspirations/")
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+@AllArgsConstructor(access = PACKAGE)
 public class InspirationController {
 
-    ProjectRepository projectRepository;
+    InspirationService inspirationService;
 
     @GetMapping
     public ResponseEntity<List<InspirationDto>> inspirations(@PathVariable String projectId) {
         return ResponseEntity.ok(
-                projectRepository
-                        .findById(projectId)
-                        .map(Project::getInspirations)
-                        .map(List::stream)
-                        .map(stream ->
-                                stream.map(single ->
-                                        InspirationDto
-                                                .builder()
-                                                .name(single.getName())
-                                                .build())
-                                        .collect(toList()))
-                        .orElse(Collections.EMPTY_LIST)
+                inspirationService.findInspirations(projectId).stream()
+                        .map(DomainMappers::fromInspirationToDto)
+                        .collect(toList())
         );
     }
 
+    @GetMapping("{inspirationId}")
+    public ResponseEntity inspiration(@PathVariable String inspirationId) {
+        return inspirationService
+                .getInspirationRepository()
+                .findById(inspirationId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
+    }
+
     @PostMapping
-    ResponseEntity add(@PathVariable String projectId, String name) {
-        return projectRepository.findById(projectId)
-                .map(project -> {
-                    String uuid = UUID.randomUUID().toString();
-                    project.getInspirations().add(Inspiration
-                            .builder()
-                            .id(uuid)
-                            .name(name)
-                            .build());
-                    return uuid;
-                })
-                .map(URI::create)
-                .map(ResponseEntity::created)
-                .orElse(ResponseEntity.badRequest())
+    ResponseEntity create(@PathVariable String projectId, String name) {
+        return ResponseEntity
+                .created(
+                        URI.create(inspirationService.create(projectId, name))
+                )
                 .build();
 
     }
 
     @PutMapping("{inspirationId}")
-    ResponseEntity update(@PathVariable String projectId, @PathVariable String inspirationId, InspirationDto inspirationDto) {
-        return projectRepository.findById(projectId)
-                .map(project -> {
-                    Inspiration foundInspiration = project.getInspirations().stream()
-                            .filter(inspiration -> inspiration.getId().equals(inspirationId))
-                            .findFirst()
-                            .get();
-                    InspirationDetail inspirationDetail = InspirationMapper.INSTANCE.fromDtoToInspiration(inspirationDto.getInspirationDetail());
-                    Inspiration updatedInspiration = Inspiration.builder()
-                            .id(foundInspiration.getId())
-                            .name(foundInspiration.getName())
-                            .inspirationDetail(inspirationDetail)
-                            .build();
-                    project.getInspirations().add(updatedInspiration);
-                    return updatedInspiration;
-                })
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity
-                        .badRequest()
-                        .build());
+    ResponseEntity update(@PathVariable String inspirationId, InspirationDto inspirationDto) {
+        inspirationDto.setId(inspirationId);
+        return inspirationService
+                .getInspirationRepository()
+                .save(DomainMappers.fromDtoToInspiration(inspirationDto))
+                .mapTry(ResponseEntity::ok)
+                .getOrElseGet(
+                        ex -> ResponseEntity
+                                .badRequest()
+                                .build()
+                );
+    }
+
+    @DeleteMapping("{inspirationId}")
+    ResponseEntity delete(@PathVariable String projectId, @PathVariable String inspirationId) {
+        inspirationService.delete(projectId, inspirationId);
+        return ResponseEntity.noContent().build();
     }
 
 }

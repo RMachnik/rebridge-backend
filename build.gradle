@@ -5,8 +5,10 @@ plugins {
     id "org.springframework.boot" version "2.0.3.RELEASE"
     id "io.spring.dependency-management" version "1.0.4.RELEASE"
     id 'io.franzbecker.gradle-lombok' version '1.14'
-    id 'net.ltgt.apt' version '0.8'
+    id 'net.ltgt.apt' version '0.9'
+    id 'groovy'
 }
+ext['groovy.version'] = '2.5.0'
 
 repositories {
     mavenCentral()
@@ -43,14 +45,17 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-hateoas")
 
 
+    compile("org.codehaus.groovy:groovy-all:2.5.0")
+    testCompile("org.spockframework:spock-core:1.1-groovy-2.4")
 
-    compile("org.mapstruct:mapstruct-jdk8:1.2.0.Final")
-    apt("org.mapstruct:mapstruct-processor:1.2.0.Final")
     compile("org.apache.commons:commons-lang3:3.7")
+    compile("io.vavr:vavr:0.9.2")
     compile("com.fasterxml.jackson.module:jackson-module-jsonSchema:2.9.6")
 
     annotationProcessor("org.projectlombok:lombok:1.16.20")
     compileOnly("org.projectlombok:lombok:1.16.20")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.assertj:assertj-core:3.10.0")
+
 }

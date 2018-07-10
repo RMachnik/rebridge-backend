@@ -1,14 +1,14 @@
 package domain;
 
+import io.vavr.control.Try;
+
 import java.util.Optional;
 
 public interface ProjectRepository {
 
+    Try<Project> save(Project project);
+
     Optional<Project> findById(String projectId);
 
-    Optional<Project> add(Project build);
-
-    String delete(String projectId);
-
-    Optional<Project> update(String projectId, Project build);
+    void delete(String projectId);
 }

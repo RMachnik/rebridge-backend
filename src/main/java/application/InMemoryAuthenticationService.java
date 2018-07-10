@@ -1,8 +1,9 @@
 package application;
 
+import application.rest.controllers.dto.UserDto;
 import domain.User;
 import domain.UserRepository;
-import dto.UserDto;
+import domain.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
@@ -23,12 +24,12 @@ import static lombok.AccessLevel.PRIVATE;
 final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @NonNull
-    UserRepository userRepository;
+    UserService userService;
     Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
 
     @Override
     public Optional<String> login(final String username, final String password) {
-        return userRepository.findByUsername(username)
+        return userService.findByUsername(username)
                 .filter(user -> Objects.equals(user.getPassword(), password))
                 .map((loggedUser) -> {
                     String uuid = UUID.randomUUID().toString();
@@ -39,16 +40,8 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<String> register(String username, String password) {
-        final String uuid = UUID.randomUUID().toString();
-        final User user = User
-                .builder()
-                .id(uuid)
-                .username(username)
-                .password(password)
-                .build();
-
-        userRepository.save(user);
-        return Optional.of(uuid);
+        userService.create(username, password);
+        return login(username, password);
     }
 
     @Override

@@ -12,5 +12,4 @@ public class Inspiration implements Id<String> {
     @JsonProperty(required = true)
     String name;
     InspirationDetail inspirationDetail;
-
 }

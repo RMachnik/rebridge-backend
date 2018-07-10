@@ -20,8 +20,14 @@ Token is send back after successful login request.
 + `/auth/logout` - user logout: GET
 + `/auth/register` - user registration: POST{username,password}, 
 registration returns authentication token that can be used for subsequent interactions with API
++ `/users` - get current user
++ `/projects` - resource: GET, POST{projectName}, PUT(according to project schema), DELETE
++ `/projects/{projectId}/inspirations` - GET, POST{inspirationName}, PUT(according to inspiration schema), DELETE
++ `/projects/{projectId}/inspirations/{inspirationId}/comments`-
+ GET, POST{content}, PUT(according to inspiration schema), DELETE
 
 #####Json Schemas
++ `/schemas/users` - schema for user endpoint
 + `/schemas/projects` - schema for inspiration endpoint
 
 

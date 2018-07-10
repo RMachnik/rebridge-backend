@@ -1,4 +1,4 @@
-package dto;
+package application.rest.controllers.dto;
 
 import lombok.Builder;
 import lombok.Data;

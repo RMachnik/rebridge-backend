@@ -1,13 +1,13 @@
 package domain;
 
-import java.util.List;
+import io.vavr.control.Try;
+
 import java.util.Optional;
 
 public interface InspirationRepository {
 
-    List<Inspiration> findAll(String projectId);
+    Try<Inspiration> save(Inspiration inspiration);
 
-    Optional<String> add(String projectId, Inspiration inspiration);
+    Optional<Inspiration> findById(String inspirationId);
 
-    Optional<Inspiration> update(Inspiration inspiration);
 }

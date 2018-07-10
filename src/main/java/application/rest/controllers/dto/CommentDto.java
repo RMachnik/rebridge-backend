@@ -1,4 +1,4 @@
-package dto;
+package application.rest.controllers.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class CommentDto {
 
+    String id;
     String content;
     String author;
     String creationDate;

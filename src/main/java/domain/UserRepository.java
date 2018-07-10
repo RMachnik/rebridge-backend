@@ -1,10 +1,12 @@
 package domain;
 
+import io.vavr.control.Try;
+
 import java.util.Optional;
 
 public interface UserRepository {
 
-    User save(User user);
+    Try<User> save(User user);
 
     Optional<User> find(String id);
 

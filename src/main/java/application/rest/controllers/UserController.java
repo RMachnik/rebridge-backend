@@ -1,10 +1,9 @@
 package application.rest.controllers;
 
-import application.UserAuthenticationService;
-import dto.UserDto;
+import application.rest.controllers.dto.UserDto;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +18,9 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 final class UserController {
 
-    @NonNull
-    UserAuthenticationService authentication;
-
     @GetMapping()
-    UserDto current(@AuthenticationPrincipal final UserDto user) {
-        return user;
+    ResponseEntity current(@AuthenticationPrincipal final UserDto user) {
+        return ResponseEntity.ok(user);
     }
 
 }

@@ -1,90 +1,61 @@
 package application.rest.controllers;
 
-import domain.Project;
-import domain.ProjectRepository;
-import domain.User;
-import domain.UserRepository;
-import dto.ProjectDto;
-import dto.UserDto;
+import application.rest.controllers.dto.ProjectDto;
+import application.rest.controllers.dto.UserDto;
+import domain.service.ProjectService;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
+import static lombok.AccessLevel.PACKAGE;
+import static lombok.AccessLevel.PRIVATE;
 
 @RestController
 @RequestMapping("/projects/")
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+@AllArgsConstructor(access = PACKAGE)
 public class ProjectController {
 
-    UserRepository userRepository;
-    ProjectRepository projectRepository;
+    ProjectService projectService;
 
     @GetMapping
     ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal UserDto user) {
         return ResponseEntity.ok(
-                getBody(user)
+                projectService.getProjectsForUser(user.getId()).stream()
+                        .map(DomainMappers::fromProjectToDto)
+                        .collect(toList())
         );
     }
 
-    private List<ProjectDto> getBody(@AuthenticationPrincipal UserDto user) {
-        return userRepository.findByUsername(user.getUsername())
-                .map(User::getProjects)
-                .map(List::stream)
-                .map(
-                        stream -> stream.map(project ->
-                                ProjectDto
-                                        .builder()
-                                        .id(project.getId())
-                                        .name(project.getName())
-                                        .build())
-                                .collect(toList())
-                )
-                .orElse(Collections.EMPTY_LIST);
-    }
-
     @PostMapping
-    ResponseEntity add(@AuthenticationPrincipal UserDto user, String projectName) {
-
-        //todo extract to service
-        User existingUser = userRepository.findByUsername(user.getUsername()).get();
-
-        Optional<Project> newProject = projectRepository.add(
-                Project.builder()
-                        .name(projectName)
-                        .build());
-
-        existingUser.getProjects().add(newProject.get());
-
-        return newProject
-                .map(Project::getId)
-                .map(URI::create)
-                .map(ResponseEntity::created)
-                .orElse(ResponseEntity.badRequest())
+    ResponseEntity create(@AuthenticationPrincipal UserDto user, String projectName) {
+        return ResponseEntity.created(
+                URI.create(
+                        projectService.create(user.getId(), projectName)
+                )
+        )
                 .build();
-
     }
 
     @PutMapping("{projectId}")
     ResponseEntity update(@PathVariable String projectId, ProjectDto projectDto) {
-        return projectRepository.update(projectId,
-                Project.builder()
-                        .name(projectDto.getName())
-                        .build())
+        projectDto.setId(projectId);
+        return projectService
+                .getProjectRepository()
+                .save(DomainMappers.fromDtoToProject(projectDto))
                 .map(project -> ResponseEntity.ok(project))
-                .orElse(ResponseEntity.badRequest().build());
+                .getOrElseGet(ex -> ResponseEntity.badRequest().build());
     }
 
     @DeleteMapping("{projectId}")
-    ResponseEntity<String> delete(@PathVariable String projectId) {
-        //todo make sure that all links are deleted
-        // this action can be performed only by project owner - this needs to be figured out
-        return ResponseEntity.ok(
-                projectRepository.delete(projectId)
-        );
+    ResponseEntity delete(@AuthenticationPrincipal UserDto userDto, @PathVariable String projectId) {
+        projectService.remove(userDto.getId(), projectId);
+        return ResponseEntity.noContent().build();
     }
 }

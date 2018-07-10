@@ -3,6 +3,7 @@ package application;
 import domain.InspirationRepository;
 import domain.ProjectRepository;
 import domain.UserRepository;
+import domain.service.UserService;
 import infrastructure.InMemoryUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,17 +19,17 @@ public class ApplicationConfig {
     }
 
     @Bean
-    ProjectRepository projectRepository(){
+    ProjectRepository projectRepository() {
         return new InMemoryProjectRepository();
     }
 
     @Bean
-    InspirationRepository inspirationRepository(){
+    InspirationRepository inspirationRepository() {
         return new InMemoryInspirationRepository();
     }
 
     @Bean
     UserAuthenticationService userAuthenticationService(UserRepository userRepository) {
-        return new InMemoryAuthenticationService(userRepository);
+        return new InMemoryAuthenticationService(new UserService(userRepository));
     }
 }

@@ -14,5 +14,4 @@ public class InspirationDetail {
     byte[] picture;
     Integer rating;
     List<Comment> comments;
-
 }

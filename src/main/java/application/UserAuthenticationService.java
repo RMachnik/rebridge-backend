@@ -1,7 +1,7 @@
 package application;
 
 import domain.User;
-import dto.UserDto;
+import application.rest.controllers.dto.UserDto;
 
 import java.util.Optional;
 

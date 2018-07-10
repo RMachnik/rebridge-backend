@@ -2,28 +2,23 @@ package application;
 
 import domain.Inspiration;
 import domain.InspirationRepository;
+import io.vavr.control.Try;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryInspirationRepository implements InspirationRepository {
 
-    Map<String, List<Inspiration>> inspirations = new ConcurrentHashMap<>();
+    Map<String, Inspiration> inspirations = new ConcurrentHashMap<>();
 
     @Override
-    public List<Inspiration> findAll(String projectId) {
-        return inspirations.get(projectId);
+    public Try<Inspiration> save(Inspiration inspiration) {
+        return Try.of(() -> inspirations.put(inspiration.getId(), inspiration));
     }
 
     @Override
-    public Optional<String> add(String projectId, Inspiration inspiration) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Inspiration> update(Inspiration inspiration) {
-        return Optional.empty();
+    public Optional<Inspiration> findById(String inspirationId) {
+        return Optional.ofNullable(inspirations.get(inspirationId));
     }
 }

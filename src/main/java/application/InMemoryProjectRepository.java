@@ -2,43 +2,29 @@ package application;
 
 import domain.Project;
 import domain.ProjectRepository;
+import io.vavr.control.Try;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryProjectRepository implements ProjectRepository {
 
-    List<Project> projects = new ArrayList<>();
+    Map<String, Project> projects = new ConcurrentHashMap<>();
 
     @Override
     public Optional<Project> findById(String projectId) {
-        return projects.stream()
-                .filter(project -> project.getId().equals(projectId))
-                .findFirst();
+        return Optional.ofNullable(projects.get(projectId));
     }
 
     @Override
-    public Optional<Project> add(Project project) {
-        String uuid = UUID.randomUUID().toString();
-        Project brandNewProject = Project.builder().id(uuid).name(project.getName()).build();
-        projects.add(brandNewProject);
-        return Optional.of(brandNewProject);
+    public Try<Project> save(Project project) {
+        return Try.of(() -> projects.put(project.getId(), project));
     }
 
     @Override
-    public String delete(String projectId) {
-        projects.stream()
-                .filter(project -> project.getId().equals(projectId))
-                .findFirst()
-                .map(forRemove -> projects.remove(forRemove))
-                .orElseThrow(RuntimeException::new);
-        return projectId;
+    public void delete(String projectId) {
+        projects.remove(projectId);
     }
 
-    @Override
-    public Optional<Project> update(String projectId, Project project) {
-        return Optional.empty();
-    }
 }
