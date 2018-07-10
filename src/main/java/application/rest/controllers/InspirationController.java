@@ -2,6 +2,7 @@ package application.rest.controllers;
 
 import application.rest.controllers.dto.InspirationDto;
 import domain.service.InspirationService;
+import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +34,12 @@ public class InspirationController {
 
     @GetMapping("{inspirationId}")
     public ResponseEntity inspiration(@PathVariable String inspirationId) {
-        return inspirationService
-                .getInspirationRepository()
-                .findById(inspirationId)
+        return Try.of(
+                () -> inspirationService.getInspirationById(inspirationId)
+        )
+                .toEither()
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest().build());
+                .getOrElseGet(ex -> ResponseEntity.badRequest().build());
     }
 
     @PostMapping

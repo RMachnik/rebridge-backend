@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryProjectRepository implements ProjectRepository {
 
-    Map<String, Project> projects = new ConcurrentHashMap<>();
+    final Map<String, Project> projects = new ConcurrentHashMap<>();
 
     @Override
     public Optional<Project> findById(String projectId) {

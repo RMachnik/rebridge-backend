@@ -10,7 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryInspirationRepository implements InspirationRepository {
 
-    Map<String, Inspiration> inspirations = new ConcurrentHashMap<>();
+    final Map<String, Inspiration> inspirations = new ConcurrentHashMap<>();
+
+    @Override
+    public Optional<Inspiration> findById(String inspirationId) {
+        return Optional.ofNullable(inspirations.get(inspirationId));
+    }
 
     @Override
     public Try<Inspiration> save(Inspiration inspiration) {
@@ -18,7 +23,7 @@ public class InMemoryInspirationRepository implements InspirationRepository {
     }
 
     @Override
-    public Optional<Inspiration> findById(String inspirationId) {
-        return Optional.ofNullable(inspirations.get(inspirationId));
+    public void delete(String id) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -12,20 +12,12 @@ public class DomainExceptions {
         }
     }
 
-    public static class MissingUserException extends DomainException {
-        public MissingUserException(String message) {
+    public static class ProjectRepositoryException extends DomainException {
+        public ProjectRepositoryException(String message) {
             super(message);
         }
-    }
 
-    public static class MissingProjectException extends DomainException {
-        public MissingProjectException(String message) {
-            super(message);
-        }
-    }
-
-    public static class AddingProjectException extends DomainException {
-        public AddingProjectException(String message, Throwable cause) {
+        public ProjectRepositoryException(String message, Throwable cause) {
             super(message, cause);
         }
     }
@@ -34,10 +26,18 @@ public class DomainExceptions {
         public UserRepositoryException(String message) {
             super(message);
         }
+
+        public UserRepositoryException(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 
-    public static class AddingInspirationException extends DomainException {
-        public AddingInspirationException(String message, Throwable cause) {
+    public static class InspirationRepositoryException extends DomainException {
+        public InspirationRepositoryException(String message) {
+            super(message);
+        }
+
+        public InspirationRepositoryException(String message, Throwable cause) {
             super(message, cause);
         }
     }
@@ -48,9 +48,4 @@ public class DomainExceptions {
         }
     }
 
-    public static class UnableToCreateComment extends DomainException {
-        public UnableToCreateComment(String message, Throwable ex) {
-            super(message, ex);
-        }
-    }
 }

@@ -22,7 +22,7 @@ public class DomainMappers {
                 .builder()
                 .id(project.getId())
                 .name(project.getName())
-                .inspirations(
+                .inspirationIds(
                         project.getInspirations().stream()
                                 .map(Inspiration::getId)
                                 .collect(Collectors.toList())

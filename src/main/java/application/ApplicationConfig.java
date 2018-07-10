@@ -1,8 +1,8 @@
 package application;
 
-import domain.InspirationRepository;
-import domain.ProjectRepository;
-import domain.UserRepository;
+import domain.service.CommentService;
+import domain.service.InspirationService;
+import domain.service.ProjectService;
 import domain.service.UserService;
 import infrastructure.InMemoryUserRepository;
 import org.springframework.context.annotation.Bean;
@@ -13,23 +13,32 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("application.rest.controllers")
 public class ApplicationConfig {
 
+    final InMemoryUserRepository userRepository = new InMemoryUserRepository();
+    final InMemoryProjectRepository projectRepository = new InMemoryProjectRepository();
+    final InMemoryInspirationRepository inspirationRepository = new InMemoryInspirationRepository();
+
     @Bean
-    UserRepository userRepository() {
-        return new InMemoryUserRepository();
+    UserService userService() {
+        return new UserService(userRepository);
     }
 
     @Bean
-    ProjectRepository projectRepository() {
-        return new InMemoryProjectRepository();
+    ProjectService projectService() {
+        return new ProjectService(userRepository, projectRepository);
     }
 
     @Bean
-    InspirationRepository inspirationRepository() {
-        return new InMemoryInspirationRepository();
+    InspirationService inspirationService() {
+        return new InspirationService(projectRepository, inspirationRepository);
     }
 
     @Bean
-    UserAuthenticationService userAuthenticationService(UserRepository userRepository) {
+    CommentService commentService() {
+        return new CommentService(inspirationRepository, new InMemoryCommentRepository());
+    }
+
+    @Bean
+    UserAuthenticationService userAuthenticationService() {
         return new InMemoryAuthenticationService(new UserService(userRepository));
     }
 }

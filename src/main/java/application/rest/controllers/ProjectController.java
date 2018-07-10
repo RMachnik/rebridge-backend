@@ -27,10 +27,15 @@ public class ProjectController {
     @GetMapping
     ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal UserDto user) {
         return ResponseEntity.ok(
-                projectService.getProjectsForUser(user.getId()).stream()
+                projectService.findByUserId(user.getId()).stream()
                         .map(DomainMappers::fromProjectToDto)
                         .collect(toList())
         );
+    }
+
+    @GetMapping("{projectId}")
+    ResponseEntity project(@AuthenticationPrincipal UserDto userDto, @PathVariable String projectId) {
+        return ResponseEntity.ok(projectService.findByUserIdAndProjectId(userDto.getId(), projectId));
     }
 
     @PostMapping

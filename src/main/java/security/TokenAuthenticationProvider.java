@@ -39,7 +39,7 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
                         .username(user.getUsername())
                         .password(user.getPassword())
                         .build())
-                .orElseThrow(() -> new UsernameNotFoundException("Cannot find user with authentication token=" + token));
+                .orElseThrow(() -> new UsernameNotFoundException("Cannot findById user with authentication token=" + token));
     }
 
 }

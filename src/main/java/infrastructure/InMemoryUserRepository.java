@@ -19,7 +19,7 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> find(final String id) {
+    public Optional<User> findById(final String id) {
         return Optional.ofNullable(users.get(id));
     }
 
@@ -32,5 +32,10 @@ public class InMemoryUserRepository implements UserRepository {
                         .filter(u -> Objects.equals(username, u.getUsername()))
                         .findFirst().get()
         );
+    }
+
+    @Override
+    public void delete(String id) {
+        throw new UnsupportedOperationException();
     }
 }

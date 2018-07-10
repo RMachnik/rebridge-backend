@@ -24,18 +24,35 @@ public class CommentService {
     }
 
     public String create(String username, String inspirationId, String comment) {
-        inspirationRepository.findById(inspirationId)
-                .orElseThrow(() -> new DomainExceptions.MissingInspirationException(inspirationId));
+        Inspiration inspiration = getInspiration(inspirationId);
 
-        Comment saved = commentRepository.save(
-                Comment.builder()
-                        .id(UUID.randomUUID().toString())
-                        .author(username)
-                        .date(LocalDateTime.now().toString())
-                        .inspirationId(inspirationId)
-                        .content(comment)
-                        .build()
-        ).getOrElseThrow(ex -> new DomainExceptions.UnableToCreateComment(format("unable to create comment for %s", username), ex));
+        Comment saved = Comment.builder()
+                .id(UUID.randomUUID().toString())
+                .author(username)
+                .date(LocalDateTime.now().toString())
+                .inspirationId(inspirationId)
+                .content(comment)
+                .build();
+
+        inspiration.getInspirationDetail().getComments().add(saved);
+
+        inspirationRepository.save(inspiration)
+                .getOrElseThrow((ex) -> new DomainExceptions.InspirationRepositoryException(format("unable to update inspiration %s", inspirationId), ex));
+
         return saved.getId();
+    }
+
+    private Inspiration getInspiration(String inspirationId) {
+        return inspirationRepository.findById(inspirationId)
+                .orElseThrow(() -> new DomainExceptions.InspirationRepositoryException(format("unable to find inspiration %s", inspirationId)));
+    }
+
+    public void remove(String inspirationId, String commentId) {
+        Inspiration inspiration = getInspiration(inspirationId);
+        inspiration.getInspirationDetail().getComments()
+                .stream()
+                .filter(comment -> comment.getId().equals(commentId))
+                .findAny()
+                .orElseThrow(() -> new DomainExceptions.InspirationRepositoryException(format("missing comment with id %s in inspiration %s", commentId)));
     }
 }

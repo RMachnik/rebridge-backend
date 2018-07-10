@@ -2,7 +2,6 @@ package application;
 
 import application.rest.controllers.dto.UserDto;
 import domain.User;
-import domain.UserRepository;
 import domain.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -25,7 +24,7 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @NonNull
     UserService userService;
-    Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
+    final Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
 
     @Override
     public Optional<String> login(final String username, final String password) {

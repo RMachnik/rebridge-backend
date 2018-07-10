@@ -12,6 +12,5 @@ public class ProjectDto {
     String id;
     @JsonProperty(required = true)
     String name;
-
-    List<String> inspirations;
+    List<String> inspirationIds;
 }

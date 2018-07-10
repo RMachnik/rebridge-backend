@@ -50,4 +50,10 @@ public class CommentController {
                 .getOrElseGet((ex) -> ResponseEntity.badRequest().build());
     }
 
+    @DeleteMapping("{commentId}")
+    ResponseEntity delete(@PathVariable String inspirationId, @PathVariable String commentId) {
+        commentService.remove(inspirationId, commentId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

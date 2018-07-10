@@ -1,14 +1,8 @@
 package domain;
 
-import io.vavr.control.Try;
-
 import java.util.Optional;
 
-public interface UserRepository {
-
-    Try<User> save(User user);
-
-    Optional<User> find(String id);
+public interface UserRepository extends DomainRepository<User, String> {
 
     Optional<User> findByUsername(String username);
 }
