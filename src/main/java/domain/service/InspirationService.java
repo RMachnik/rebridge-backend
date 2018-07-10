@@ -1,6 +1,9 @@
 package domain.service;
 
-import domain.*;
+import domain.Inspiration;
+import domain.InspirationRepository;
+import domain.Project;
+import domain.ProjectRepository;
 import lombok.Value;
 
 import java.util.Collections;
@@ -15,7 +18,6 @@ public class InspirationService {
 
     ProjectRepository projectRepository;
     InspirationRepository inspirationRepository;
-    CommentRepository commentRepository;
 
     public List<Inspiration> findInspirations(String projectId) {
         return projectRepository
