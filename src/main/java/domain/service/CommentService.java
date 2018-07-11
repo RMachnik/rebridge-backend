@@ -1,57 +1,52 @@
 package domain.service;
 
-import domain.*;
+import application.rest.controllers.dto.CommentDto;
+import application.rest.controllers.dto.UserDto;
+import domain.Comment;
+import domain.Inspiration;
+import domain.Project;
 import lombok.Value;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-
-import static java.lang.String.format;
-import static java.util.Collections.EMPTY_LIST;
 
 @Value
 public class CommentService {
 
-    InspirationRepository inspirationRepository;
-    CommentRepository commentRepository;
+    ProjectService projectService;
 
-    public List<Comment> getAllByInspirationId(String inspirationId) {
-        return inspirationRepository.findById(inspirationId)
-                .map(Inspiration::getInspirationDetail)
-                .map(InspirationDetail::getComments)
-                .orElse(EMPTY_LIST);
+    public List<Comment> findAll(String userId, String projectId, String inspirationId) {
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
+        Inspiration inspiration = project.findInspiration(inspirationId);
+        return inspiration.getInspirationDetail().getComments();
     }
 
-    public Comment create(String username, String inspirationId, String comment) {
-        Inspiration inspiration = getInspiration(inspirationId);
+    public Comment create(UserDto userDto, String projectId, String inspirationId, String content) {
+        Project project = projectService.findByUserIdAndProjectId(userDto.getId(), projectId);
+        Inspiration inspiration = project.findInspiration(inspirationId);
 
-        Comment saved = Comment.builder()
-                .id(UUID.randomUUID().toString())
-                .author(username)
-                .date(LocalDateTime.now().toString())
-                .content(comment)
-                .build();
+        Comment comment = Comment.create(userDto, content);
+        inspiration.addComment(comment);
 
-        inspiration.getInspirationDetail().getComments().add(saved);
-
-        inspirationRepository.save(inspiration)
-                .getOrElseThrow((ex) -> new DomainExceptions.InspirationRepositoryException(format("unable to update inspiration %s", inspirationId), ex));
-
-        return saved;
+        projectService.save(project);
+        return comment;
     }
 
-    private Inspiration getInspiration(String inspirationId) {
-        return inspirationRepository.findById(inspirationId)
-                .orElseThrow(() -> new DomainExceptions.InspirationRepositoryException(format("unable to find inspiration %s", inspirationId)));
+    public Comment updateComment(String userId, String projectId, String inspirationId, CommentDto commentDto) {
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
+        Inspiration inspiration = project.findInspiration(inspirationId);
+
+        Comment updatedComment = inspiration.update(userId, commentDto);
+        projectService.save(project);
+        return updatedComment;
     }
 
-    public void remove(String inspirationId, String commentId) {
-        Inspiration inspiration = getInspiration(inspirationId);
-        inspiration.getInspirationDetail().getComments()
-                .stream()
-                .filter(comment -> comment.getId().equals(commentId))
-                .findAny()
-                .orElseThrow(() -> new DomainExceptions.InspirationRepositoryException(format("missing comment with id %s in inspiration %s", commentId)));
+
+    public void remove(String userId, String projectId, String inspirationId, String commentId) {
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
+        Inspiration inspiration = project.findInspiration(inspirationId);
+
+        inspiration.removeComment(userId, commentId);
+
+        projectService.save(project);
     }
 }

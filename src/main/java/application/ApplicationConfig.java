@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     final InMemoryUserRepository userRepository = new InMemoryUserRepository();
-    final InMemoryProjectRepository projectRepository = new InMemoryProjectRepository();
-    final InMemoryInspirationRepository inspirationRepository = new InMemoryInspirationRepository();
 
     @Bean
     UserService userService() {
@@ -23,22 +21,22 @@ public class ApplicationConfig {
     }
 
     @Bean
-    ProjectService projectService() {
-        return new ProjectService(userRepository, projectRepository);
-    }
-
-    @Bean
-    InspirationService inspirationService() {
-        return new InspirationService(projectRepository, inspirationRepository);
-    }
-
-    @Bean
-    CommentService commentService() {
-        return new CommentService(inspirationRepository, new InMemoryCommentRepository());
-    }
-
-    @Bean
     UserAuthenticationService userAuthenticationService() {
         return new InMemoryAuthenticationService(new UserService(userRepository));
+    }
+
+    @Bean
+    ProjectService projectService(UserService userService) {
+        return new ProjectService(userService, new InMemoryProjectRepository());
+    }
+
+    @Bean
+    InspirationService inspirationService(ProjectService projectService) {
+        return new InspirationService(projectService);
+    }
+
+    @Bean
+    CommentService commentService(ProjectService projectService) {
+        return new CommentService(projectService);
     }
 }

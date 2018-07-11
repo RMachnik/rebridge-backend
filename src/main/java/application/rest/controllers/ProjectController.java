@@ -35,7 +35,7 @@ public class ProjectController {
     @GetMapping
     ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal UserDto user) {
         return ResponseEntity.ok(
-                projectService.findByUserId(user.getId()).stream()
+                projectService.findAllByUserId(user.getId()).stream()
                         .map(DomainMappers::fromProjectToDto)
                         .collect(toList())
         );
@@ -66,12 +66,14 @@ public class ProjectController {
     }
 
     @PutMapping("{projectId}")
-    ResponseEntity update(@PathVariable String projectId, @RequestBody ProjectDto projectDto) {
-        return projectService
-                .getProjectRepository()
-                .save(DomainMappers.fromDtoToProject(projectId, projectDto))
-                .map(project -> ResponseEntity.ok(project))
-                .getOrElseGet(ex -> ResponseEntity.badRequest().build());
+    ResponseEntity update(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
+            @RequestBody ProjectDto projectDto
+    ) {
+        projectDto.setId(projectId);
+        Project updated = projectService.update(userDto.getId(), projectDto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("{projectId}")

@@ -2,12 +2,14 @@ package domain.service;
 
 import domain.User;
 import domain.UserRepository;
-import domain.service.DomainExceptions.UserRepositoryException;
+import domain.service.RepositoryExceptions.UserRepositoryException;
 import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.lang.String.format;
 
 @Value
 public class UserService {
@@ -21,7 +23,7 @@ public class UserService {
                 .id(uuid)
                 .username(username)
                 .password(password)
-                .projects(new ArrayList<>())
+                .projectIds(new ArrayList<>())
                 .build();
 
         return userRepository.save(user)
@@ -29,6 +31,17 @@ public class UserService {
                         ex -> new UserRepositoryException(String.format("problem with adding %s", username, ex))
                 );
     }
+
+    public User findById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserRepositoryException(format("user with id %s is missing", userId)));
+    }
+
+    public User update(User user) {
+        return userRepository.save(user)
+                .getOrElseThrow(() -> new UserRepositoryException(format("problem with updating user %s", user.getId())));
+    }
+
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);

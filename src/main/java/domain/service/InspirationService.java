@@ -1,79 +1,51 @@
 package domain.service;
 
-import domain.*;
+import application.rest.controllers.dto.InspirationDto;
+import domain.Inspiration;
+import domain.Project;
 import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
-
-import static domain.service.DomainExceptions.*;
-import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Value
 public class InspirationService {
 
-    public static final InspirationDetail EMPTY_INSPIRATION_DETAIL = InspirationDetail.builder()
-            .url(EMPTY)
-            .picture(new byte[]{})
-            .rating(0)
-            .description(EMPTY)
-            .comments(new ArrayList<>())
-            .build();
-    ProjectRepository projectRepository;
-    InspirationRepository inspirationRepository;
+    ProjectService projectService;
 
-    public List<Inspiration> findInspirations(String projectId) {
-        return projectRepository
-                .findById(projectId)
-                .map(Project::getInspirations)
-                .orElse(Collections.EMPTY_LIST);
+    public List<Inspiration> findAll(String userId, String projectId) {
+        return projectService
+                .findByUserIdAndProjectId(userId, projectId)
+                .getInspirations();
     }
 
-    public Inspiration getInspirationById(String inspirationId) {
-        return inspirationRepository.findById(inspirationId)
-                .orElseThrow(() -> new MissingInspirationException(format("missing inspiration %s", inspirationId)));
+    public Inspiration findById(String userId, String projectId, String inspirationId) {
+        return projectService.findByUserIdAndProjectId(userId, projectId)
+                .findInspiration(inspirationId);
 
     }
 
-    public Inspiration create(String projectId, String inspirationName) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectRepositoryException(format("can't findById project %s", projectId)));
+    public Inspiration create(String userId, String projectId, String inspirationName) {
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
 
-        Inspiration inspiration = Inspiration.builder()
-                .id(UUID.randomUUID().toString())
-                .name(inspirationName)
-                .inspirationDetail(EMPTY_INSPIRATION_DETAIL)
-                .build();
+        Inspiration inspiration = project.addInspiration(inspirationName);
+        projectService.save(project);
 
-        Inspiration saved = inspirationRepository.save(inspiration)
-                .getOrElseThrow(
-                        ex -> new InspirationRepositoryException(format("can't save inspiration %s to project %s", projectId, inspirationName), ex)
-                );
-        project.getInspirations().add(saved);
-
-        projectRepository.save(project)
-                .getOrElseThrow(
-                        ex -> new ProjectRepositoryException(format("problem with saving project %s", project), ex)
-                );
-
-        return saved;
-
+        return inspiration;
     }
 
-    public void delete(String projectId, String inspirationId) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectRepositoryException(format("missing project %s", projectId)));
+    public Inspiration update(String userId, String projectId, InspirationDto inspirationDto) {
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
 
-        Inspiration toBeRemoved = project.getInspirations()
-                .stream()
-                .filter(inspiration -> inspiration.getId().equals(inspirationId))
-                .findAny()
-                .orElseThrow(() -> new MissingInspirationException(format("missing inspiration %s", inspirationId)));
-
-        project.getInspirations().remove(toBeRemoved);
-        projectRepository.save(project);
+        Inspiration updatedInspiration = project.updateInspiration(inspirationDto);
+        projectService.save(project);
+        return updatedInspiration;
     }
+
+    public void delete(String userId, String projectId, String inspirationId) {
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
+        project.removeInspiration(inspirationId);
+
+        projectService.save(project);
+    }
+
 }

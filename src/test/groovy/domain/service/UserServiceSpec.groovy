@@ -16,6 +16,6 @@ class UserServiceSpec extends Specification {
         userService.create("zdenek", "pass")
 
         then:
-        thrown(DomainExceptions.UserRepositoryException)
+        thrown(RepositoryExceptions.UserRepositoryException)
     }
 }

@@ -29,45 +29,6 @@ public class DomainMappers {
                 .build();
     }
 
-    static Project fromDtoToProject(String projectId, ProjectDto projectDto) {
-        return Project.builder()
-                .id(projectId)
-                .name(projectDto.getName())
-                .build();
-    }
-
-    static Inspiration fromDtoToInspiration(String inspirationId, InspirationDto inspirationDto) {
-        return Inspiration.builder()
-                .id(inspirationId)
-                .name(inspirationDto.getName())
-                .inspirationDetail(fromDtoToInspirationDetail(inspirationDto.getInspirationDetail()))
-                .build();
-    }
-
-    private static InspirationDetail fromDtoToInspirationDetail(InspirationDetailDto inspirationDetailDto) {
-        return InspirationDetail.builder()
-                .description(inspirationDetailDto.getDescription())
-                .picture(inspirationDetailDto.getPicture())
-                .comments(fromDtosToComments(inspirationDetailDto.getComments()))
-                .url(inspirationDetailDto.getUrl())
-                .build();
-    }
-
-    private static List<Comment> fromDtosToComments(List<CommentDto> commentDtos) {
-        return commentDtos.stream()
-                .map(commentDto -> fromDtoToComment(commentDto.getId(), commentDto))
-                .collect(toList());
-    }
-
-    static Comment fromDtoToComment(String commentId, CommentDto commentDto) {
-        return Comment.builder()
-                .id(commentId)
-                .author(commentDto.getAuthor())
-                .content(commentDto.getContent())
-                .date(commentDto.getCreationDate())
-                .build();
-    }
-
     static InspirationDto fromInspirationToDto(Inspiration inspiration) {
         return InspirationDto.builder()
                 .id(inspiration.getId())

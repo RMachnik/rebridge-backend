@@ -33,9 +33,13 @@ public class CommentController {
     CommentService commentService;
 
     @GetMapping
-    ResponseEntity<List<CommentDto>> comments(@PathVariable String inspirationId) {
+    ResponseEntity<List<CommentDto>> comments(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
+            @PathVariable String inspirationId
+    ) {
         return ResponseEntity.ok(
-                DomainMappers.fromCommentsToDtos(commentService.getAllByInspirationId(inspirationId))
+                DomainMappers.fromCommentsToDtos(commentService.findAll(userDto.getId(), projectId, inspirationId))
         );
     }
 
@@ -43,10 +47,11 @@ public class CommentController {
     ResponseEntity create(
             UriComponentsBuilder builder,
             @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
             @PathVariable String inspirationId,
             @RequestBody CommentDto comment
     ) {
-        Comment savedComment = commentService.create(userDto.getUsername(), inspirationId, comment.getContent());
+        Comment savedComment = commentService.create(userDto, projectId, inspirationId, comment.getContent());
         UriComponents pathToComment = builder.path(COMMENTS)
                 .path("{id}")
                 .build();
@@ -57,16 +62,26 @@ public class CommentController {
     }
 
     @PutMapping("commentId")
-    ResponseEntity update(@PathVariable String commentId, @RequestBody CommentDto commentDto) {
-        return commentService.getCommentRepository()
-                .save(DomainMappers.fromDtoToComment(commentId, commentDto))
-                .map(ResponseEntity::ok)
-                .getOrElseGet((ex) -> ResponseEntity.badRequest().build());
+    ResponseEntity update(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
+            @PathVariable String inspirationId,
+            @PathVariable String commentId,
+            @RequestBody CommentDto commentDto
+    ) {
+        commentDto.setId(commentId);
+        return ResponseEntity.ok(commentService.updateComment(userDto.getId(), projectId, inspirationId, commentDto));
     }
 
     @DeleteMapping("{commentId}")
-    ResponseEntity delete(@PathVariable String inspirationId, @PathVariable String commentId) {
-        commentService.remove(inspirationId, commentId);
+    ResponseEntity delete(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
+            @PathVariable String inspirationId,
+            @PathVariable String commentId
+
+    ) {
+        commentService.remove(userDto.getId(), projectId, inspirationId, commentId);
         return ResponseEntity.noContent().build();
     }
 

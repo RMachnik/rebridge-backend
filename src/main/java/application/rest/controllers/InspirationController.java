@@ -1,13 +1,14 @@
 package application.rest.controllers;
 
 import application.rest.controllers.dto.InspirationDto;
+import application.rest.controllers.dto.UserDto;
 import domain.Inspiration;
 import domain.service.InspirationService;
-import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -32,31 +33,34 @@ public class InspirationController {
     InspirationService inspirationService;
 
     @GetMapping
-    public ResponseEntity<List<InspirationDto>> inspirations(@PathVariable String projectId) {
+    public ResponseEntity<List<InspirationDto>> inspirations(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId
+    ) {
         return ResponseEntity.ok(
-                inspirationService.findInspirations(projectId).stream()
+                inspirationService.findAll(userDto.getId(), projectId).stream()
                         .map(DomainMappers::fromInspirationToDto)
                         .collect(toList())
         );
     }
 
     @GetMapping("{inspirationId}")
-    public ResponseEntity inspiration(@PathVariable String inspirationId) {
-        return Try.of(
-                () -> inspirationService.getInspirationById(inspirationId)
-        )
-                .toEither()
-                .map(ResponseEntity::ok)
-                .getOrElseGet(ex -> ResponseEntity.badRequest().build());
+    public ResponseEntity inspiration(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
+            @PathVariable String inspirationId
+    ) {
+        return ResponseEntity.ok(inspirationService.findById(userDto.getId(), projectId, inspirationId));
     }
 
     @PostMapping
     ResponseEntity create(UriComponentsBuilder builder,
+                          @AuthenticationPrincipal UserDto userDto,
                           @PathVariable String projectId,
                           @RequestBody InspirationDto inspirationDto
     ) {
 
-        Inspiration createdInspiration = inspirationService.create(projectId, inspirationDto.getName());
+        Inspiration createdInspiration = inspirationService.create(userDto.getId(), projectId, inspirationDto.getName());
         UriComponents pathToInspiration = builder.path(INSPIRATIONS)
                 .path("{id}")
                 .build();
@@ -67,21 +71,24 @@ public class InspirationController {
     }
 
     @PutMapping("{inspirationId}")
-    ResponseEntity update(@PathVariable String inspirationId, @RequestBody InspirationDto inspirationDto) {
-        return inspirationService
-                .getInspirationRepository()
-                .save(DomainMappers.fromDtoToInspiration(inspirationId, inspirationDto))
-                .mapTry(ResponseEntity::ok)
-                .getOrElseGet(
-                        ex -> ResponseEntity
-                                .badRequest()
-                                .build()
-                );
+    ResponseEntity update(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
+            @PathVariable String inspirationId,
+            @RequestBody InspirationDto inspirationDto
+    ) {
+        inspirationDto.setId(inspirationId);
+        return ResponseEntity.ok(inspirationService
+                .update(userDto.getId(), projectId, inspirationDto));
     }
 
     @DeleteMapping("{inspirationId}")
-    ResponseEntity delete(@PathVariable String projectId, @PathVariable String inspirationId) {
-        inspirationService.delete(projectId, inspirationId);
+    ResponseEntity delete(
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String projectId,
+            @PathVariable String inspirationId
+    ) {
+        inspirationService.delete(userDto.getId(), projectId, inspirationId);
         return ResponseEntity.noContent().build();
     }
 
