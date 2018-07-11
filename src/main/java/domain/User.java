@@ -27,8 +27,8 @@ public class User implements Id<String> {
     }
 
     public User checkUser(String projectId) {
-        if (canUpdate(projectId)) {
-            throw new DomainExceptions.UserActionNotAllowed(format("user %s is not allowed to update this project %s", id, projectId));
+        if (!canUpdate(projectId)) {
+            throw new DomainExceptions.UserActionNotAllowed(format("user %s is not allowed see this project %s", id, projectId));
         }
         return this;
     }
@@ -36,6 +36,7 @@ public class User implements Id<String> {
     private boolean canUpdate(String projectId) {
         return projectIds.stream()
                 .filter(project -> project.equals(projectId))
-                .count() > 0;
+                .findAny()
+                .isPresent();
     }
 }

@@ -2,7 +2,7 @@ package domain;
 
 import application.rest.controllers.dto.InspirationDto;
 import application.rest.controllers.dto.ProjectDto;
-import domain.service.DomainExceptions;
+import domain.service.DomainExceptions.MissingInspirationException;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -65,7 +65,7 @@ public class Project implements Id<String> {
 
     public Inspiration findInspiration(String inspirationId) {
         return findInspirationById(inspirationId)
-                .orElseThrow(() -> new DomainExceptions.MissingInspirationException(format("missing inspiration %s in project %s", inspirationId, id)));
+                .orElseThrow(() -> new MissingInspirationException(format("missing inspiration %s in project %s", inspirationId, id)));
     }
 
     private Optional<Inspiration> findInspirationById(String inspirationId) {

@@ -13,14 +13,15 @@ public class InspirationService {
     ProjectService projectService;
 
     public List<Inspiration> findAll(String userId, String projectId) {
-        return projectService
-                .findByUserIdAndProjectId(userId, projectId)
-                .getInspirations();
+        Project project = projectService
+                .findByUserIdAndProjectId(userId, projectId);
+
+        return project.getInspirations();
     }
 
     public Inspiration findById(String userId, String projectId, String inspirationId) {
-        return projectService.findByUserIdAndProjectId(userId, projectId)
-                .findInspiration(inspirationId);
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
+        return project.findInspiration(inspirationId);
 
     }
 

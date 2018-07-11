@@ -32,11 +32,10 @@ public class ProjectService {
     }
 
     public Project findByUserIdAndProjectId(String userId, String projectId) {
-        return findAllByUserId(userId)
-                .stream()
-                .filter(project -> project.getId().equals(projectId))
-                .findFirst()
-                .orElseThrow(() -> new DomainExceptions.UserActionNotAllowed(format("unable to load project %id", projectId)));
+        User user = userService.findById(userId);
+        user.checkUser(projectId);
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new RepositoryExceptions.ProjectRepositoryException(format("unable to load project %s", projectId)));
     }
 
     public Project create(String userId, String projectName) {
