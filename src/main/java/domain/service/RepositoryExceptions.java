@@ -2,7 +2,7 @@ package domain.service;
 
 public class RepositoryExceptions {
 
-    static class RepositoryException extends RuntimeException {
+    public static class RepositoryException extends RuntimeException {
         public RepositoryException(String message) {
             super(message);
         }
@@ -27,19 +27,6 @@ public class RepositoryExceptions {
             super(message);
         }
 
-        public UserRepositoryException(String message, Throwable cause) {
-            super(message, cause);
-        }
-    }
-
-    public static class InspirationRepositoryException extends RepositoryException {
-        public InspirationRepositoryException(String message) {
-            super(message);
-        }
-
-        public InspirationRepositoryException(String message, Throwable cause) {
-            super(message, cause);
-        }
     }
 
 }

@@ -2,7 +2,7 @@ package domain.service;
 
 public class DomainExceptions {
 
-    static class DomainException extends RuntimeException {
+    public static class DomainException extends RuntimeException {
         public DomainException(String message) {
             super(message);
         }
