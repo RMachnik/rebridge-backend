@@ -4,18 +4,20 @@ import domain.User;
 import domain.UserRepository;
 import io.vavr.control.Try;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryUserRepository implements UserRepository {
 
-    private final Map<String, User> users = new HashMap<>();
+    private final Map<String, User> users = new ConcurrentHashMap<>();
 
     @Override
     public Try<User> save(final User user) {
-        return Try.of(() -> users.put(user.getId(), user));
+        return Try.of(() -> {
+            users.put(user.getId(), user);
+            return user;
+        });
     }
 
     @Override
@@ -25,13 +27,11 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(final String username) {
-        return Optional.ofNullable(
-                users
-                        .values()
-                        .stream()
-                        .filter(u -> Objects.equals(username, u.getUsername()))
-                        .findFirst().get()
-        );
+        return users
+                .values()
+                .stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst();
     }
 
     @Override

@@ -8,6 +8,7 @@ import domain.service.DomainExceptions.ProjectRepositoryException;
 import domain.service.DomainExceptions.UserRepositoryException;
 import lombok.Value;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,23 +35,24 @@ public class ProjectService {
                 .orElseThrow(() -> new ProjectRepositoryException(format("unable to load project %id", projectId)));
     }
 
-    public String create(String userId, String projectName) {
+    public Project create(String userId, String projectName) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserRepositoryException(format("user with id %s is missing", userId)));
 
         Project project = Project.builder()
-                .name(projectName)
                 .id(UUID.randomUUID().toString())
+                .name(projectName)
+                .inspirations(new ArrayList<>())
                 .build();
 
         Project addedProject = projectRepository.save(project)
                 .getOrElseThrow(ex -> new ProjectRepositoryException(format("problem with creating project %s", projectName), ex));
 
         user.getProjects().add(addedProject);
-        return userRepository.save(user)
-                .mapTry(User::getId)
+        userRepository.save(user)
                 .getOrElseThrow(ex ->
                         new ProjectRepositoryException(format("problem with adding project %s to %s", project.getName(), userId), ex));
+        return addedProject;
 
     }
 

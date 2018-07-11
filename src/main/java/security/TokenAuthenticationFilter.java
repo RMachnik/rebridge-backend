@@ -20,7 +20,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 final class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    private static final String token = "token-";
+    private static final String token = "Bearer";
 
     TokenAuthenticationFilter(final RequestMatcher requiresAuth) {
         super(requiresAuth);

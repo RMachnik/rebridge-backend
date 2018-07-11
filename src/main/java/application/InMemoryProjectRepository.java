@@ -19,7 +19,10 @@ public class InMemoryProjectRepository implements ProjectRepository {
 
     @Override
     public Try<Project> save(Project project) {
-        return Try.of(() -> projects.put(project.getId(), project));
+        return Try.of(() -> {
+            projects.put(project.getId(), project);
+            return project;
+        });
     }
 
     @Override

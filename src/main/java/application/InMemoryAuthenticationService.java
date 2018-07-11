@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,13 +27,12 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<String> login(final String username, final String password) {
-        return userService.findByUsername(username)
-                .filter(user -> Objects.equals(user.getPassword(), password))
-                .map((loggedUser) -> {
-                    String uuid = UUID.randomUUID().toString();
-                    loggedInUsers.put(uuid, loggedUser);
-                    return uuid;
-                });
+        User foundUser = userService.findByUsername(username)
+                .filter(user -> user.getPassword().equals(password))
+                .orElseThrow(() -> new RuntimeException(String.format("user not found %s", username)));
+        String uuid = UUID.randomUUID().toString();
+        loggedInUsers.put(uuid, foundUser);
+        return Optional.of(uuid);
     }
 
     @Override

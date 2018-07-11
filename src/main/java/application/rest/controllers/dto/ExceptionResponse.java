@@ -1,4 +1,4 @@
-package application.rest.model;
+package application.rest.controllers.dto;
 
 import lombok.Builder;
 import lombok.Value;

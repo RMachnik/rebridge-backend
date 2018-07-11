@@ -5,6 +5,7 @@ import domain.UserRepository;
 import domain.service.DomainExceptions.UserRepositoryException;
 import lombok.Value;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ public class UserService {
                 .id(uuid)
                 .username(username)
                 .password(password)
+                .projects(new ArrayList<>())
                 .build();
 
         return userRepository.save(user)

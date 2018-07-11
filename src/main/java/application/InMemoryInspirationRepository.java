@@ -19,7 +19,10 @@ public class InMemoryInspirationRepository implements InspirationRepository {
 
     @Override
     public Try<Inspiration> save(Inspiration inspiration) {
-        return Try.of(() -> inspirations.put(inspiration.getId(), inspiration));
+        return Try.of(() -> {
+            inspirations.put(inspiration.getId(), inspiration);
+            return inspiration;
+        });
     }
 
     @Override

@@ -1,21 +1,27 @@
 package domain.service;
 
-import domain.Inspiration;
-import domain.InspirationRepository;
-import domain.Project;
-import domain.ProjectRepository;
+import domain.*;
 import lombok.Value;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static domain.service.DomainExceptions.*;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Value
 public class InspirationService {
 
+    public static final InspirationDetail EMPTY_INSPIRATION_DETAIL = InspirationDetail.builder()
+            .url(EMPTY)
+            .picture(new byte[]{})
+            .rating(0)
+            .description(EMPTY)
+            .comments(new ArrayList<>())
+            .build();
     ProjectRepository projectRepository;
     InspirationRepository inspirationRepository;
 
@@ -32,13 +38,14 @@ public class InspirationService {
 
     }
 
-    public String create(String projectId, String inspirationName) {
+    public Inspiration create(String projectId, String inspirationName) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectRepositoryException(format("can't findById project %s", projectId)));
 
         Inspiration inspiration = Inspiration.builder()
                 .id(UUID.randomUUID().toString())
                 .name(inspirationName)
+                .inspirationDetail(EMPTY_INSPIRATION_DETAIL)
                 .build();
 
         Inspiration saved = inspirationRepository.save(inspiration)
@@ -52,7 +59,7 @@ public class InspirationService {
                         ex -> new ProjectRepositoryException(format("problem with saving project %s", project), ex)
                 );
 
-        return saved.getId();
+        return saved;
 
     }
 

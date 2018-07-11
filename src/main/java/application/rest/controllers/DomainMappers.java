@@ -29,16 +29,16 @@ public class DomainMappers {
                 .build();
     }
 
-    static Project fromDtoToProject(ProjectDto projectDto) {
+    static Project fromDtoToProject(String projectId, ProjectDto projectDto) {
         return Project.builder()
-                .id(projectDto.getId())
+                .id(projectId)
                 .name(projectDto.getName())
                 .build();
     }
 
-    static Inspiration fromDtoToInspiration(InspirationDto inspirationDto) {
+    static Inspiration fromDtoToInspiration(String inspirationId, InspirationDto inspirationDto) {
         return Inspiration.builder()
-                .id(inspirationDto.getId())
+                .id(inspirationId)
                 .name(inspirationDto.getName())
                 .inspirationDetail(fromDtoToInspirationDetail(inspirationDto.getInspirationDetail()))
                 .build();
@@ -55,12 +55,13 @@ public class DomainMappers {
 
     private static List<Comment> fromDtosToComments(List<CommentDto> commentDtos) {
         return commentDtos.stream()
-                .map(DomainMappers::fromDtoToComment)
+                .map(commentDto -> fromDtoToComment(commentDto.getId(), commentDto))
                 .collect(toList());
     }
 
-    static Comment fromDtoToComment(CommentDto commentDto) {
+    static Comment fromDtoToComment(String commentId, CommentDto commentDto) {
         return Comment.builder()
+                .id(commentId)
                 .author(commentDto.getAuthor())
                 .content(commentDto.getContent())
                 .date(commentDto.getCreationDate())
@@ -87,12 +88,16 @@ public class DomainMappers {
 
     static List<CommentDto> fromCommentsToDtos(List<Comment> comments) {
         return comments.stream()
-                .map(comment -> CommentDto.builder()
-                        .id(comment.getId())
-                        .author(comment.getAuthor())
-                        .content(comment.getContent())
-                        .creationDate(comment.getDate())
-                        .build())
+                .map(comment -> fromCommentToDto(comment))
                 .collect(toList());
+    }
+
+    static CommentDto fromCommentToDto(Comment comment) {
+        return CommentDto.builder()
+                .id(comment.getId())
+                .author(comment.getAuthor())
+                .content(comment.getContent())
+                .creationDate(comment.getDate())
+                .build();
     }
 }

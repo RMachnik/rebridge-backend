@@ -1,6 +1,7 @@
 package domain;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 import java.util.List;
@@ -9,8 +10,12 @@ import java.util.List;
 @Builder
 public class User implements Id<String> {
 
+    @NonNull
     String id;
+    @NonNull
     String username;
+    @NonNull
     String password;
+    @NonNull
     List<Project> projects;
 }

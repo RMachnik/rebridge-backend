@@ -19,7 +19,10 @@ public class InMemoryCommentRepository implements CommentRepository {
 
     @Override
     public Try<Comment> save(Comment entity) {
-        return Try.of(() -> comments.put(entity.getId(), entity));
+        return Try.of(() -> {
+            comments.put(entity.getId(), entity);
+            return entity;
+        });
     }
 
     @Override

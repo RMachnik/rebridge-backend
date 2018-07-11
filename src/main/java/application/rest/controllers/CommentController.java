@@ -3,6 +3,7 @@ package application.rest.controllers;
 
 import application.rest.controllers.dto.CommentDto;
 import application.rest.controllers.dto.UserDto;
+import domain.Comment;
 import domain.service.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,8 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 import static lombok.AccessLevel.PACKAGE;
@@ -19,14 +21,15 @@ import static lombok.AccessLevel.PRIVATE;
 
 @RestController
 @RequestMapping(
-        path = "/projects/{projectId}/inspirations/{inspirationId}/comments/",
-        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-        produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+        path = CommentController.COMMENTS,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
 )
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 public class CommentController {
 
+    public static final String COMMENTS = "/projects/{projectId}/inspirations/{inspirationId}/comments/";
     CommentService commentService;
 
     @GetMapping
@@ -37,20 +40,26 @@ public class CommentController {
     }
 
     @PostMapping
-    ResponseEntity create(@AuthenticationPrincipal UserDto userDto, @PathVariable String inspirationId, String comment) {
-        return ResponseEntity.created(
-                URI
-                        .create(
-                                commentService.create(userDto.getUsername(), inspirationId, comment)
-                        )
-        ).build();
+    ResponseEntity create(
+            UriComponentsBuilder builder,
+            @AuthenticationPrincipal UserDto userDto,
+            @PathVariable String inspirationId,
+            @RequestBody CommentDto comment
+    ) {
+        Comment savedComment = commentService.create(userDto.getUsername(), inspirationId, comment.getContent());
+        UriComponents pathToComment = builder.path(COMMENTS)
+                .path("{id}")
+                .build();
+
+        return ResponseEntity
+                .created(pathToComment.toUri())
+                .body(DomainMappers.fromCommentToDto(savedComment));
     }
 
     @PutMapping("commentId")
-    ResponseEntity update(@PathVariable String commentId, CommentDto commentDto) {
-        commentDto.setId(commentId);
+    ResponseEntity update(@PathVariable String commentId, @RequestBody CommentDto commentDto) {
         return commentService.getCommentRepository()
-                .save(DomainMappers.fromDtoToComment(commentDto))
+                .save(DomainMappers.fromDtoToComment(commentId, commentDto))
                 .map(ResponseEntity::ok)
                 .getOrElseGet((ex) -> ResponseEntity.badRequest().build());
     }

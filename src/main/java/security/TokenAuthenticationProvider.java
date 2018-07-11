@@ -35,11 +35,11 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
                 .map(String::valueOf)
                 .flatMap(auth::findByToken)
                 .map(user -> UserDto.builder()
-                        .id(token)
+                        .id(user.getId())
                         .username(user.getUsername())
                         .password(user.getPassword())
                         .build())
-                .orElseThrow(() -> new UsernameNotFoundException("Cannot findById user with authentication token=" + token));
+                .orElseThrow(() -> new UsernameNotFoundException("Cannot findById user with authentication" + token));
     }
 
 }

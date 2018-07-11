@@ -1,6 +1,7 @@
 package domain;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 import java.util.List;
@@ -9,9 +10,14 @@ import java.util.List;
 @Builder
 public class InspirationDetail {
 
+    @NonNull
     String description;
+    @NonNull
     String url;
+    @NonNull
     byte[] picture;
+    @NonNull
     Integer rating;
+    @NonNull
     List<Comment> comments;
 }

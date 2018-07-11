@@ -23,14 +23,13 @@ public class CommentService {
                 .orElse(EMPTY_LIST);
     }
 
-    public String create(String username, String inspirationId, String comment) {
+    public Comment create(String username, String inspirationId, String comment) {
         Inspiration inspiration = getInspiration(inspirationId);
 
         Comment saved = Comment.builder()
                 .id(UUID.randomUUID().toString())
                 .author(username)
                 .date(LocalDateTime.now().toString())
-                .inspirationId(inspirationId)
                 .content(comment)
                 .build();
 
@@ -39,7 +38,7 @@ public class CommentService {
         inspirationRepository.save(inspiration)
                 .getOrElseThrow((ex) -> new DomainExceptions.InspirationRepositoryException(format("unable to update inspiration %s", inspirationId), ex));
 
-        return saved.getId();
+        return saved;
     }
 
     private Inspiration getInspiration(String inspirationId) {

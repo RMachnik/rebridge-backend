@@ -16,14 +16,14 @@ import static lombok.AccessLevel.PRIVATE;
 @RestController
 @RequestMapping(
         path = "/users/",
-        produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE
 )
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class UserController {
 
-    @GetMapping()
+    @GetMapping("current")
     ResponseEntity current(@AuthenticationPrincipal final UserDto user) {
         return ResponseEntity.ok(user);
     }
