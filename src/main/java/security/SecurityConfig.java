@@ -93,9 +93,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return successHandler;
     }
 
-    /**
-     * Disable Spring boot automatic filter registration.
-     */
     @Bean
     FilterRegistrationBean disableAutoRegistration(final TokenAuthenticationFilter filter) {
         final FilterRegistrationBean registration = new FilterRegistrationBean(filter);

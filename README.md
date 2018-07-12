@@ -13,7 +13,7 @@ Commands to run and  build
 4. `http://localhost:8080/schemas/users`
 
 ### API
-Content type: `application/json`
+Content type: `application/json;charset=UTF-8`
 #####Authentication
 Based on Bearer token `Authentication: Bearer fb4c2d3a-3f62-44dd-a25f-2fbc73820649`.
 Token is send back after successful login request.

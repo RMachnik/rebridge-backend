@@ -1,0 +1,8 @@
+version: '3'
+services:
+  rebridge-backend:
+    build: .
+    ports:
+     - "8080:8080"
+  cassandra:
+    image: "cassandra:latest"

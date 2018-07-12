@@ -19,8 +19,8 @@ import static lombok.AccessLevel.PRIVATE;
 @RestController
 @RequestMapping(
         path = "/schemas/",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE
+        produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
 )
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 final class JsonSchemaController {
