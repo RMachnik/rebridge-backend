@@ -22,9 +22,9 @@ Token is send back after successful login request.
 + `/auth/register` - user registration: POST{"username":"name","password":"pass"}, 
 registration returns authentication token that can be used for subsequent interactions with API
 + `/users/current` - GET current user
-+ `/projects` - resource: GET, POST{"name","projectName"}, PUT(according to project schema), DELETE
-+ `/projects/{projectId}/inspirations` - GET, POST{"name":"insName"}, PUT(according to inspiration schema), DELETE
-+ `/projects/{projectId}/inspirations/{inspirationId}/comments`-
++ `/projects/` - resource: GET, POST{"name","projectName"}, PUT(according to project schema), DELETE
++ `/projects/{projectId}/inspirations/` - GET, POST{"name":"insName"}, PUT(according to inspiration schema), DELETE
++ `/projects/{projectId}/inspirations/{inspirationId}/comments/`-
  GET, POST{content}, PUT(according to inspiration schema), DELETE
 
 #####Json Schemas

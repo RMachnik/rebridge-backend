@@ -30,7 +30,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 public class ProjectController {
 
-    public static final String PROJECTS = "/projects/";
+    public static final String PROJECTS = "/projects";
     ProjectService projectService;
 
     @GetMapping
@@ -60,12 +60,12 @@ public class ProjectController {
                 .body(DtoAssemblers.fromProjectToDto(createdProject));
     }
 
-    @GetMapping("{projectId}")
+    @GetMapping("/{projectId}")
     ResponseEntity project(@AuthenticationPrincipal UserDto userDto, @PathVariable String projectId) {
         return ResponseEntity.ok(projectService.findByUserIdAndProjectId(userDto.getId(), projectId));
     }
 
-    @PutMapping("{projectId}")
+    @PutMapping("/{projectId}")
     ResponseEntity update(
             @AuthenticationPrincipal UserDto userDto,
             @PathVariable String projectId,
@@ -75,7 +75,7 @@ public class ProjectController {
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("{projectId}")
+    @DeleteMapping("/{projectId}")
     ResponseEntity delete(@AuthenticationPrincipal UserDto userDto, @PathVariable String projectId) {
         projectService.remove(userDto.getId(), projectId);
         return ResponseEntity.noContent().build();

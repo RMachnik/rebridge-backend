@@ -26,6 +26,10 @@ public class UserService {
                 .projectIds(new ArrayList<>())
                 .build();
 
+        if (findByUsername(username).isPresent()) {
+            throw new UserRepositoryException(format("username %s already exists, try different name", user));
+        }
+
         return userRepository.save(user)
                 .getOrElseThrow(
                         ex -> new UserRepositoryException(format("problem with adding %s", username, ex))

@@ -30,7 +30,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 public class CommentController {
 
-    public static final String COMMENTS = "/projects/{projectId}/inspirations/{inspirationId}/comments/";
+    public static final String COMMENTS = "/projects/{projectId}/inspirations/{inspirationId}/comments";
     CommentService commentService;
 
     @GetMapping
@@ -60,7 +60,7 @@ public class CommentController {
                 .body(DtoAssemblers.fromCommentToDto(savedComment));
     }
 
-    @PutMapping("commentId")
+    @PutMapping("/{commentId}")
     ResponseEntity update(
             @AuthenticationPrincipal UserDto userDto,
             @PathVariable String projectId,
@@ -71,7 +71,7 @@ public class CommentController {
         return ResponseEntity.ok(commentService.updateComment(userDto.getId(), projectId, inspirationId, commentDto));
     }
 
-    @DeleteMapping("{commentId}")
+    @DeleteMapping("/{commentId}")
     ResponseEntity delete(
             @AuthenticationPrincipal UserDto userDto,
             @PathVariable String projectId,

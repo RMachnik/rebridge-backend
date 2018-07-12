@@ -30,7 +30,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 public class InspirationController {
 
-    public static final String INSPIRATIONS = "/projects/{projectId}/inspirations/";
+    public static final String INSPIRATIONS = "/projects/{projectId}/inspirations";
     InspirationService inspirationService;
 
     @GetMapping
@@ -45,7 +45,7 @@ public class InspirationController {
         );
     }
 
-    @GetMapping("{inspirationId}")
+    @GetMapping("/{inspirationId}")
     public ResponseEntity inspiration(
             @AuthenticationPrincipal UserDto userDto,
             @PathVariable String projectId,
@@ -71,7 +71,7 @@ public class InspirationController {
                 .body(DtoAssemblers.fromInspirationToDto(createdInspiration));
     }
 
-    @PutMapping("{inspirationId}")
+    @PutMapping("/{inspirationId}")
     ResponseEntity update(
             @AuthenticationPrincipal UserDto userDto,
             @PathVariable String projectId,
@@ -83,7 +83,7 @@ public class InspirationController {
                 .update(userDto.getId(), projectId, inspirationDto));
     }
 
-    @DeleteMapping("{inspirationId}")
+    @DeleteMapping("/{inspirationId}")
     ResponseEntity delete(
             @AuthenticationPrincipal UserDto userDto,
             @PathVariable String projectId,
