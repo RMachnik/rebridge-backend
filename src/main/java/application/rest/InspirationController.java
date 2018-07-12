@@ -1,6 +1,6 @@
 package application.rest;
 
-import application.dto.DomainMappers;
+import application.dto.DtoAssemblers;
 import application.dto.InspirationDto;
 import application.dto.UserDto;
 import application.service.InspirationService;
@@ -40,7 +40,7 @@ public class InspirationController {
     ) {
         return ResponseEntity.ok(
                 inspirationService.findAll(userDto.getId(), projectId).stream()
-                        .map(DomainMappers::fromInspirationToDto)
+                        .map(DtoAssemblers::fromInspirationToDto)
                         .collect(toList())
         );
     }
@@ -68,7 +68,7 @@ public class InspirationController {
 
         return ResponseEntity
                 .created(pathToInspiration.toUri())
-                .body(DomainMappers.fromInspirationToDto(createdInspiration));
+                .body(DtoAssemblers.fromInspirationToDto(createdInspiration));
     }
 
     @PutMapping("{inspirationId}")

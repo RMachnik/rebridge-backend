@@ -1,6 +1,6 @@
 package application.rest;
 
-import application.dto.DomainMappers;
+import application.dto.DtoAssemblers;
 import application.dto.ProjectDto;
 import application.dto.UserDto;
 import application.service.ProjectService;
@@ -37,7 +37,7 @@ public class ProjectController {
     ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal UserDto user) {
         return ResponseEntity.ok(
                 projectService.findAllByUserId(user.getId()).stream()
-                        .map(DomainMappers::fromProjectToDto)
+                        .map(DtoAssemblers::fromProjectToDto)
                         .collect(toList())
         );
     }
@@ -57,7 +57,7 @@ public class ProjectController {
 
         return ResponseEntity
                 .created(uriComponents.toUri())
-                .body(DomainMappers.fromProjectToDto(createdProject));
+                .body(DtoAssemblers.fromProjectToDto(createdProject));
     }
 
     @GetMapping("{projectId}")

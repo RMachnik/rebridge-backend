@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-public class DomainMappers {
+public class DtoAssemblers {
 
     public static ProjectDto fromProjectToDto(Project project) {
         return ProjectDto

@@ -2,7 +2,7 @@ package application.rest;
 
 
 import application.dto.CommentDto;
-import application.dto.DomainMappers;
+import application.dto.DtoAssemblers;
 import application.dto.UserDto;
 import application.service.CommentService;
 import domain.Comment;
@@ -39,7 +39,7 @@ public class CommentController {
             @PathVariable String projectId,
             @PathVariable String inspirationId) {
         return ResponseEntity.ok(
-                DomainMappers.fromCommentsToDtos(commentService.findAll(userDto.getId(), projectId, inspirationId))
+                DtoAssemblers.fromCommentsToDtos(commentService.findAll(userDto.getId(), projectId, inspirationId))
         );
     }
 
@@ -57,7 +57,7 @@ public class CommentController {
 
         return ResponseEntity
                 .created(pathToComment.toUri())
-                .body(DomainMappers.fromCommentToDto(savedComment));
+                .body(DtoAssemblers.fromCommentToDto(savedComment));
     }
 
     @PutMapping("commentId")
