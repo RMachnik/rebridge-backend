@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("application.rest.controllers")
+@ComponentScan("application.rest")
 public class ApplicationConfig {
 
     final InMemoryUserRepository userRepository = new InMemoryUserRepository();
