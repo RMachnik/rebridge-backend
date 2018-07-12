@@ -1,9 +1,8 @@
 package domain;
 
-import application.rest.controllers.dto.CommentDto;
-import application.rest.controllers.dto.InspirationDto;
+import application.dto.CommentDto;
+import application.dto.InspirationDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import domain.service.DomainExceptions;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;

@@ -1,8 +1,8 @@
-package application.rest.controllers;
+package application.rest;
 
+import application.service.RepositoryExceptions.RepositoryException;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import domain.service.DomainExceptions.DomainException;
-import domain.service.RepositoryExceptions.RepositoryException;
+import domain.DomainExceptions.DomainException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

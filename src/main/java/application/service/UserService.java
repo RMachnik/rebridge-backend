@@ -1,8 +1,8 @@
-package domain.service;
+package application.service;
 
+import application.service.RepositoryExceptions.UserRepositoryException;
 import domain.User;
 import domain.UserRepository;
-import domain.service.RepositoryExceptions.UserRepositoryException;
 import lombok.Value;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class UserService {
 
         return userRepository.save(user)
                 .getOrElseThrow(
-                        ex -> new UserRepositoryException(String.format("problem with adding %s", username, ex))
+                        ex -> new UserRepositoryException(format("problem with adding %s", username, ex))
                 );
     }
 

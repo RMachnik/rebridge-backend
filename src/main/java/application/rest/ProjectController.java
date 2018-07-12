@@ -1,9 +1,10 @@
-package application.rest.controllers;
+package application.rest;
 
-import application.rest.controllers.dto.ProjectDto;
-import application.rest.controllers.dto.UserDto;
+import application.dto.DomainMappers;
+import application.dto.ProjectDto;
+import application.dto.UserDto;
+import application.service.ProjectService;
 import domain.Project;
-import domain.service.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
@@ -45,8 +46,7 @@ public class ProjectController {
     ResponseEntity create(
             UriComponentsBuilder builder,
             @AuthenticationPrincipal UserDto user,
-            @RequestBody ProjectDto projectDto
-    ) {
+            @RequestBody ProjectDto projectDto) {
         Project createdProject = projectService.create(user.getId(), projectDto.getName());
 
         UriComponents uriComponents =
@@ -69,8 +69,7 @@ public class ProjectController {
     ResponseEntity update(
             @AuthenticationPrincipal UserDto userDto,
             @PathVariable String projectId,
-            @RequestBody ProjectDto projectDto
-    ) {
+            @RequestBody ProjectDto projectDto) {
         projectDto.setId(projectId);
         Project updated = projectService.update(userDto.getId(), projectDto);
         return ResponseEntity.ok(updated);

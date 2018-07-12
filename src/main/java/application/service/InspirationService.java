@@ -1,6 +1,6 @@
-package domain.service;
+package application.service;
 
-import application.rest.controllers.dto.InspirationDto;
+import application.dto.InspirationDto;
 import domain.Inspiration;
 import domain.Project;
 import lombok.Value;

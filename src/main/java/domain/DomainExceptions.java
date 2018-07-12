@@ -1,4 +1,4 @@
-package domain.service;
+package domain;
 
 public class DomainExceptions {
 
@@ -7,9 +7,6 @@ public class DomainExceptions {
             super(message);
         }
 
-        public DomainException(String message, Throwable cause) {
-            super(message, cause);
-        }
     }
 
     public static class UserActionNotAllowed extends DomainException {

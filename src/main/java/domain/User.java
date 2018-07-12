@@ -1,6 +1,5 @@
 package domain;
 
-import domain.service.DomainExceptions;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;

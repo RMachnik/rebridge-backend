@@ -1,4 +1,4 @@
-package domain.service
+package application.service
 
 import domain.UserRepository
 import io.vavr.control.Try

@@ -1,6 +1,6 @@
-package application.rest.controllers;
+package application.rest;
 
-import application.rest.controllers.dto.UserDto;
+import application.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;

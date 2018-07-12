@@ -1,8 +1,8 @@
 package domain;
 
-import application.rest.controllers.dto.InspirationDto;
-import application.rest.controllers.dto.ProjectDto;
-import domain.service.DomainExceptions.MissingInspirationException;
+import application.dto.InspirationDto;
+import application.dto.ProjectDto;
+import domain.DomainExceptions.MissingInspirationException;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;

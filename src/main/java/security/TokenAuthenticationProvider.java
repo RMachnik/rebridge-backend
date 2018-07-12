@@ -1,7 +1,7 @@
 package security;
 
 import application.UserAuthenticationService;
-import application.rest.controllers.dto.UserDto;
+import application.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;

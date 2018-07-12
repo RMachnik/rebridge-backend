@@ -1,10 +1,10 @@
-package domain.service;
+package application.service;
 
-import application.rest.controllers.dto.ProjectDto;
+import application.dto.ProjectDto;
+import application.service.RepositoryExceptions.ProjectRepositoryException;
 import domain.Project;
 import domain.ProjectRepository;
 import domain.User;
-import domain.service.RepositoryExceptions.ProjectRepositoryException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Value;
@@ -35,7 +35,7 @@ public class ProjectService {
         User user = userService.findById(userId);
         user.checkUser(projectId);
         return projectRepository.findById(projectId)
-                .orElseThrow(() -> new RepositoryExceptions.ProjectRepositoryException(format("unable to load project %s", projectId)));
+                .orElseThrow(() -> new ProjectRepositoryException(format("unable to load project %s", projectId)));
     }
 
     public Project create(String userId, String projectName) {

@@ -1,7 +1,7 @@
-package domain.service;
+package application.service;
 
-import application.rest.controllers.dto.CommentDto;
-import application.rest.controllers.dto.UserDto;
+import application.dto.CommentDto;
+import application.dto.UserDto;
 import domain.Comment;
 import domain.Inspiration;
 import domain.Project;

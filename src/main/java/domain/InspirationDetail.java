@@ -1,6 +1,6 @@
 package domain;
 
-import application.rest.controllers.dto.InspirationDetailDto;
+import application.dto.InspirationDetailDto;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -17,7 +17,6 @@ public class InspirationDetail {
 
     @NonNull
     String description;
-
     @NonNull
     String url;
     @NonNull

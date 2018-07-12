@@ -1,8 +1,8 @@
 package application;
 
-import application.rest.controllers.dto.UserDto;
+import application.dto.UserDto;
+import application.service.UserService;
 import domain.User;
-import domain.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;

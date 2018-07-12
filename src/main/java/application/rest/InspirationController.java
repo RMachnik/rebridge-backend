@@ -1,9 +1,10 @@
-package application.rest.controllers;
+package application.rest;
 
-import application.rest.controllers.dto.InspirationDto;
-import application.rest.controllers.dto.UserDto;
+import application.dto.DomainMappers;
+import application.dto.InspirationDto;
+import application.dto.UserDto;
+import application.service.InspirationService;
 import domain.Inspiration;
-import domain.service.InspirationService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;

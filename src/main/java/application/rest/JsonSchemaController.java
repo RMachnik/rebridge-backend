@@ -1,8 +1,8 @@
-package application.rest.controllers;
+package application.rest;
 
-import application.rest.controllers.dto.InspirationDto;
-import application.rest.controllers.dto.ProjectDto;
-import application.rest.controllers.dto.UserDto;
+import application.dto.InspirationDto;
+import application.dto.ProjectDto;
+import application.dto.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;

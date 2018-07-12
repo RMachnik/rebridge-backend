@@ -1,6 +1,7 @@
-package application.rest.controllers
+package application.rest
 
-import application.rest.controllers.dto.ProjectDto
+import application.dto.DomainMappers
+import application.dto.ProjectDto
 import domain.Project
 import spock.lang.Specification
 

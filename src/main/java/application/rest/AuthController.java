@@ -1,9 +1,9 @@
-package application.rest.controllers;
+package application.rest;
 
 import application.UserAuthenticationService;
-import application.rest.controllers.dto.AuthDto;
-import application.rest.controllers.dto.Token;
-import application.rest.controllers.dto.UserDto;
+import application.dto.AuthDto;
+import application.dto.Token;
+import application.dto.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;

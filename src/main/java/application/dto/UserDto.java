@@ -1,4 +1,4 @@
-package application.rest.controllers.dto;
+package application.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
