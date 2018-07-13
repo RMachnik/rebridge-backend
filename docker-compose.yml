@@ -1,8 +1,12 @@
-version: '3'
+version: '2'
 services:
   rebridge-backend:
-    build: .
+    depends_on:
+    - "cassandra"
+    image: "rmachnik/rebridge-backend:latest"
     ports:
      - "8080:8080"
   cassandra:
     image: "cassandra:latest"
+    ports:
+    - "9042:9042"

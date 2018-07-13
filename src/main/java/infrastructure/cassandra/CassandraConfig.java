@@ -3,6 +3,7 @@ package infrastructure.cassandra;
 import domain.PictureRepository;
 import domain.ProjectRepository;
 import domain.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
@@ -19,6 +20,13 @@ import java.util.List;
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     public static final String KEYSPACE = "rebridge";
+    @Value("${spring.data.cassandra.contact-points}")
+    String contactPoint;
+
+    @Override
+    protected String getContactPoints() {
+        return contactPoint;
+    }
 
     @Override
     public SchemaAction getSchemaAction() {
