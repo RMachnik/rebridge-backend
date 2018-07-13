@@ -1,9 +1,7 @@
 package application;
 
-import application.service.CommentService;
-import application.service.InspirationService;
-import application.service.ProjectService;
-import application.service.UserService;
+import application.service.*;
+import infrastructure.InMemoryProjectRepository;
 import infrastructure.InMemoryUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

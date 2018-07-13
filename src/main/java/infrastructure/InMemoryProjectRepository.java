@@ -1,4 +1,4 @@
-package application;
+package infrastructure;
 
 import domain.Project;
 import domain.ProjectRepository;
