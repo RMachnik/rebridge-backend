@@ -1,6 +1,6 @@
 package application.rest;
 
-import application.dto.UserDto;
+import application.dto.CurrentUser;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
@@ -24,7 +24,7 @@ import static lombok.AccessLevel.PRIVATE;
 final class UserController {
 
     @GetMapping("current")
-    ResponseEntity current(@AuthenticationPrincipal final UserDto user) {
+    ResponseEntity current(@AuthenticationPrincipal final CurrentUser user) {
         return ResponseEntity.ok(user);
     }
 

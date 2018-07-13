@@ -26,4 +26,10 @@ public class DomainExceptions {
             super(message);
         }
     }
+
+    public static class InvalidPassword extends DomainException {
+        public InvalidPassword(String message) {
+            super(message);
+        }
+    }
 }

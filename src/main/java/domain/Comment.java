@@ -1,24 +1,27 @@
 package domain;
 
 import application.dto.CommentDto;
-import application.dto.UserDto;
+import application.dto.CurrentUser;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.Value;
+import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-@Value
+@UserDefinedType
+@Data
 @Builder
-public class Comment implements Id<String> {
+public class Comment implements Id<UUID>, Serializable {
 
     @NotNull
-    String id;
+    UUID id;
     @NonNull
     String userId;
     @NonNull
@@ -28,11 +31,11 @@ public class Comment implements Id<String> {
     @NonNull
     String date;
 
-    public static Comment create(UserDto userDto, String content) {
+    public static Comment create(CurrentUser currentUser, String content) {
         return Comment.builder()
-                .id(UUID.randomUUID().toString())
-                .userId(userDto.getId())
-                .author(userDto.getUsername())
+                .id(UUID.randomUUID())
+                .userId(currentUser.getId())
+                .author(currentUser.getUsername())
                 .date(LocalDateTime.now().toString())
                 .content(content)
                 .build();
@@ -46,7 +49,7 @@ public class Comment implements Id<String> {
 
     Comment update(CommentDto commentDto) {
         return domain.Comment.builder()
-                .id(commentDto.getId())
+                .id(id)
                 .userId(userId)
                 .author(author)
                 .content(isNotBlank(commentDto.getContent()) ? commentDto.getContent() : content)

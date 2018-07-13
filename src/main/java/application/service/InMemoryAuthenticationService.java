@@ -1,25 +1,22 @@
-package application;
+package application.service;
 
-import application.dto.UserDto;
-import application.service.UserService;
+import application.UserAuthenticationService;
+import application.dto.CurrentUser;
 import domain.User;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
-@Service
-@AllArgsConstructor(access = PACKAGE)
+@AllArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-final class InMemoryAuthenticationService implements UserAuthenticationService {
+public final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @NonNull
     UserService userService;
@@ -27,9 +24,9 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<String> login(final String username, final String password) {
-        User foundUser = userService.findByUsername(username)
-                .filter(user -> user.getPassword().equals(password))
-                .orElseThrow(() -> new RuntimeException(String.format("user not found %s", username)));
+        User foundUser = userService.findByUsername(username);
+        foundUser.checkPassword(password);
+
         String uuid = UUID.randomUUID().toString();
         loggedInUsers.put(uuid, foundUser);
         return Optional.of(uuid);
@@ -47,7 +44,7 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
     }
 
     @Override
-    public void logout(UserDto user) {
+    public void logout(CurrentUser user) {
         loggedInUsers.remove(user.getId());
     }
 }

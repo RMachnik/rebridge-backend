@@ -1,7 +1,7 @@
 package security;
 
 import application.UserAuthenticationService;
-import application.dto.UserDto;
+import application.dto.CurrentUser;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
@@ -34,8 +34,8 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
                 .ofNullable(token)
                 .map(String::valueOf)
                 .flatMap(auth::findByToken)
-                .map(user -> UserDto.builder()
-                        .id(user.getId())
+                .map(user -> CurrentUser.builder()
+                        .id(user.getId().toString())
                         .username(user.getUsername())
                         .password(user.getPassword())
                         .build())

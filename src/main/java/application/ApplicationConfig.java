@@ -1,19 +1,22 @@
 package application;
 
-import application.service.CommentService;
-import application.service.InspirationService;
-import application.service.ProjectService;
-import application.service.UserService;
-import infrastructure.InMemoryUserRepository;
+import application.rest.RestConfig;
+import application.service.*;
+import domain.ProjectRepository;
+import domain.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
-@ComponentScan("application.rest")
+@Import(RestConfig.class)
 public class ApplicationConfig {
 
-    final InMemoryUserRepository userRepository = new InMemoryUserRepository();
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ProjectRepository projectRepository;
 
     @Bean
     UserService userService() {
@@ -26,8 +29,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    ProjectService projectService(UserService userService) {
-        return new ProjectService(userService, new InMemoryProjectRepository());
+    ProjectService projectService(UserService userService, ProjectRepository projectRepository) {
+        return new ProjectService(userService, projectRepository);
     }
 
     @Bean

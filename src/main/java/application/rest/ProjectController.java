@@ -1,8 +1,8 @@
 package application.rest;
 
+import application.dto.CurrentUser;
 import application.dto.DtoAssemblers;
 import application.dto.ProjectDto;
-import application.dto.UserDto;
 import application.service.ProjectService;
 import domain.Project;
 import lombok.AllArgsConstructor;
@@ -34,7 +34,7 @@ public class ProjectController {
     ProjectService projectService;
 
     @GetMapping
-    ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal UserDto user) {
+    ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal CurrentUser user) {
         return ResponseEntity.ok(
                 projectService.findAllByUserId(user.getId()).stream()
                         .map(DtoAssemblers::fromProjectToDto)
@@ -45,7 +45,7 @@ public class ProjectController {
     @PostMapping
     ResponseEntity create(
             UriComponentsBuilder builder,
-            @AuthenticationPrincipal UserDto user,
+            @AuthenticationPrincipal CurrentUser user,
             @RequestBody ProjectDto projectDto) {
         Project createdProject = projectService.create(user.getId(), projectDto.getName());
 
@@ -61,23 +61,23 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    ResponseEntity project(@AuthenticationPrincipal UserDto userDto, @PathVariable String projectId) {
-        return ResponseEntity.ok(projectService.findByUserIdAndProjectId(userDto.getId(), projectId));
+    ResponseEntity project(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
+        return ResponseEntity.ok(projectService.findByUserIdAndProjectId(currentUser.getId(), projectId));
     }
 
     @PutMapping("/{projectId}")
     ResponseEntity update(
-            @AuthenticationPrincipal UserDto userDto,
+            @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @RequestBody ProjectDto projectDto) {
         projectDto.setId(projectId);
-        Project updated = projectService.update(userDto.getId(), projectDto);
+        Project updated = projectService.update(currentUser.getId(), projectDto);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{projectId}")
-    ResponseEntity delete(@AuthenticationPrincipal UserDto userDto, @PathVariable String projectId) {
-        projectService.remove(userDto.getId(), projectId);
+    ResponseEntity delete(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
+        projectService.remove(currentUser.getId(), projectId);
         return ResponseEntity.noContent().build();
     }
 }

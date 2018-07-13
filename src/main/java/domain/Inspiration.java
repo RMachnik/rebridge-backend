@@ -4,21 +4,24 @@ import application.dto.CommentDto;
 import application.dto.InspirationDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.Value;
+import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-@Value
+@UserDefinedType
+@Data
 @Builder
-public class Inspiration implements Id<String> {
+public class Inspiration implements Id<UUID>, Serializable {
 
     @NonNull
-    String id;
+    UUID id;
     @JsonProperty(required = true)
     String name;
     @NotNull
@@ -26,7 +29,7 @@ public class Inspiration implements Id<String> {
 
     public static Inspiration create(String name) {
         return Inspiration.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .name(name)
                 .inspirationDetail(InspirationDetail.createDefault())
                 .build();

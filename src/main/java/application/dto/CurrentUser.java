@@ -15,7 +15,7 @@ import static java.util.Objects.requireNonNull;
 
 @Value
 @Builder
-public class UserDto implements UserDetails {
+public class CurrentUser implements UserDetails {
 
     String id;
     @JsonProperty(required = true)
@@ -23,9 +23,9 @@ public class UserDto implements UserDetails {
     String password;
 
     @JsonCreator
-    UserDto(@JsonProperty("id") final String id,
-            @JsonProperty("username") final String username,
-            @JsonProperty("password") final String password) {
+    CurrentUser(@JsonProperty("id") final String id,
+                @JsonProperty("username") final String username,
+                @JsonProperty("password") final String password) {
         super();
         this.id = requireNonNull(id);
         this.username = requireNonNull(username);

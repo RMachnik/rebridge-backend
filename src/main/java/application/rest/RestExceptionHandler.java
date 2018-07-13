@@ -3,6 +3,7 @@ package application.rest;
 import application.service.RepositoryExceptions.RepositoryException;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import domain.DomainExceptions.DomainException;
+import groovy.util.ResourceException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -43,7 +44,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({RepositoryException.class})
-    protected ResponseEntity<Object> notFoundResource(DomainException ex, WebRequest request) {
+    protected ResponseEntity<Object> notFoundResource(ResourceException ex, WebRequest request) {
         log.error(request.getContextPath(), ex);
         ApiError apiError = new ApiError(NOT_FOUND, ex.getMessage());
         return buildResponseEntity(apiError);

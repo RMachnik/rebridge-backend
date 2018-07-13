@@ -11,6 +11,7 @@ import lombok.Value;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -25,7 +26,7 @@ public class ProjectService {
     public List<Project> findAllByUserId(String userId) {
         return userService.findById(userId).getProjectIds()
                 .stream()
-                .map(id -> projectRepository.findById(id))
+                .map(projectRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
@@ -33,8 +34,8 @@ public class ProjectService {
 
     public Project findByUserIdAndProjectId(String userId, String projectId) {
         User user = userService.findById(userId);
-        user.checkUser(projectId);
-        return projectRepository.findById(projectId)
+        user.canUpdateProject(UUID.fromString(projectId));
+        return projectRepository.findById(UUID.fromString(projectId))
                 .orElseThrow(() -> new ProjectRepositoryException(format("unable to load project %s", projectId)));
     }
 
@@ -54,7 +55,7 @@ public class ProjectService {
 
     public Project update(String userId, ProjectDto projectDto) {
         User user = userService.findById(userId);
-        user.checkUser(projectDto.getId());
+        user.canUpdateProject(UUID.fromString(projectDto.getId()));
 
         Project existingProject = retrieveProjectById(projectDto.getId());
         Project updatedProject = existingProject.update(projectDto);
@@ -65,7 +66,7 @@ public class ProjectService {
 
     public void remove(String userId, String projectId) {
         User user = userService.findById(userId);
-        user.checkUser(projectId);
+        user.canUpdateProject(UUID.fromString(projectId));
 
         user.removeProject(projectId);
         userService.update(user);
@@ -73,7 +74,7 @@ public class ProjectService {
     }
 
     public Project retrieveProjectById(String projectId) {
-        return projectRepository.findById(projectId)
+        return projectRepository.findById(UUID.fromString(projectId))
                 .orElseThrow(() -> new ProjectRepositoryException(format("there is no such project %s", projectId)));
     }
 
