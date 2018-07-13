@@ -35,4 +35,3 @@ registration returns authentication token that can be used for subsequent intera
 + `/schemas/projects` - schema for inspiration endpoint
 
 
-
