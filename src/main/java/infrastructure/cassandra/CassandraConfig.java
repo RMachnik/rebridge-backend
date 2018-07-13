@@ -30,12 +30,14 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 
     @Override
     public SchemaAction getSchemaAction() {
-        return SchemaAction.RECREATE_DROP_UNUSED;
+        return SchemaAction.RECREATE;
     }
 
     @Override
     protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
-        CreateKeyspaceSpecification specification = CreateKeyspaceSpecification.createKeyspace(KEYSPACE);
+        CreateKeyspaceSpecification specification = CreateKeyspaceSpecification
+                .createKeyspace(KEYSPACE)
+                .ifNotExists();
 
         return Arrays.asList(specification);
     }
