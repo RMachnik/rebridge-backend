@@ -3,19 +3,22 @@ package domain;
 import application.dto.CommentDto;
 import application.dto.CurrentUser;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.Value;
+import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-@Value
+@UserDefinedType
+@Data
 @Builder
-public class Comment implements Id {
+public class Comment implements Id<UUID>, Serializable {
 
     @NotNull
     UUID id;

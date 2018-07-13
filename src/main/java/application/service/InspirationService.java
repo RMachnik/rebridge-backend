@@ -6,6 +6,7 @@ import domain.Project;
 import lombok.Value;
 
 import java.util.List;
+import java.util.UUID;
 
 @Value
 public class InspirationService {
@@ -21,7 +22,7 @@ public class InspirationService {
 
     public Inspiration findById(String userId, String projectId, String inspirationId) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-        return project.findInspiration(inspirationId);
+        return project.findInspiration(UUID.fromString(inspirationId));
 
     }
 
@@ -44,7 +45,7 @@ public class InspirationService {
 
     public void delete(String userId, String projectId, String inspirationId) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-        project.removeInspiration(inspirationId);
+        project.removeInspiration(UUID.fromString(inspirationId));
 
         projectService.save(project);
     }

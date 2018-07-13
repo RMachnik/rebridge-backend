@@ -15,11 +15,11 @@ public class DtoAssemblers {
     public static ProjectDto fromProjectToDto(Project project) {
         return ProjectDto
                 .builder()
-                .id(project.getId())
+                .id(project.getId().toString())
                 .name(project.getName())
                 .inspirationIds(
                         project.getInspirations().stream()
-                                .map(Inspiration::getId)
+                                .map((inspiration) -> inspiration.getId().toString())
                                 .collect(Collectors.toList())
                 )
                 .build();
@@ -27,7 +27,7 @@ public class DtoAssemblers {
 
     public static InspirationDto fromInspirationToDto(Inspiration inspiration) {
         return InspirationDto.builder()
-                .id(inspiration.getId())
+                .id(inspiration.getId().toString())
                 .name(inspiration.getName())
                 .inspirationDetail(fromInspirationDetailToDto(inspiration.getInspirationDetail()))
                 .build();
@@ -36,7 +36,7 @@ public class DtoAssemblers {
     private static InspirationDetailDto fromInspirationDetailToDto(InspirationDetail inspirationDetail) {
         return InspirationDetailDto.builder()
                 .description(inspirationDetail.getDescription())
-                .picture(inspirationDetail.getPicture())
+                .picture(inspirationDetail.getPicture().array())
                 .rating(inspirationDetail.getRating())
                 .url(inspirationDetail.getUrl())
                 .comments(fromCommentsToDtos(inspirationDetail.getComments()))
@@ -51,7 +51,7 @@ public class DtoAssemblers {
 
     public static CommentDto fromCommentToDto(Comment comment) {
         return CommentDto.builder()
-                .id(comment.getId())
+                .id(comment.getId().toString())
                 .author(comment.getAuthor())
                 .content(comment.getContent())
                 .creationDate(comment.getDate())

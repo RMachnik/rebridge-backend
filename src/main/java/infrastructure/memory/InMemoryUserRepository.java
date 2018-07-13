@@ -1,4 +1,4 @@
-package infrastructure;
+package infrastructure.memory;
 
 import domain.User;
 import domain.UserRepository;
@@ -36,7 +36,7 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void deleteById(UUID id) {
         throw new UnsupportedOperationException();
     }
 }

@@ -1,4 +1,4 @@
-package infrastructure;
+package infrastructure.memory;
 
 import domain.Project;
 import domain.ProjectRepository;
@@ -27,7 +27,7 @@ public class InMemoryProjectRepository implements ProjectRepository {
     }
 
     @Override
-    public void delete(UUID projectId) {
+    public void deleteById(UUID projectId) {
         projects.remove(projectId);
     }
 

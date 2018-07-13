@@ -6,6 +6,8 @@ import domain.User;
 import domain.UserRepository;
 import lombok.Value;
 
+import java.util.UUID;
+
 import static java.lang.String.format;
 
 @Value
@@ -14,7 +16,7 @@ public class UserService {
     UserRepository userRepository;
 
     public User create(String username, String password) {
-        if (findByUsername(username) != null) {
+        if (userRepository.findByUsername(username).isPresent()) {
             throw new ServiceException(format("username %s already exists, try different name", username));
         }
 
@@ -26,7 +28,7 @@ public class UserService {
     }
 
     public User findById(String userId) {
-        return userRepository.findById(userId)
+        return userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new UserRepositoryException(format("user with id %s is missing", userId)));
     }
 

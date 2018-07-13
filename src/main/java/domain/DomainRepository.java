@@ -11,5 +11,5 @@ public interface DomainRepository<T> {
 
     Try<T> save(T entity);
 
-    void delete(UUID id);
+    void deleteById(UUID id);
 }

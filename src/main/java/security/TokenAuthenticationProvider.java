@@ -35,7 +35,7 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
                 .map(String::valueOf)
                 .flatMap(auth::findByToken)
                 .map(user -> CurrentUser.builder()
-                        .id(user.getId())
+                        .id(user.getId().toString())
                         .username(user.getUsername())
                         .password(user.getPassword())
                         .build())
