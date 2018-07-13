@@ -1,11 +1,14 @@
-version: '2'
+version: '3'
 services:
   rebridge-backend:
-    depends_on:
-    - "cassandra"
-    image: "rmachnik/rebridge-backend:latest"
+    build:
+      context: .
     ports:
-     - "8080:8080"
+      - "8080:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=local"
+    depends_on:
+      - "cassandra"
   cassandra:
     image: "cassandra:latest"
     ports:

@@ -1,9 +1,9 @@
 package application.rest;
 
 import application.service.RepositoryExceptions.RepositoryException;
+import application.service.ServiceExceptions.ServiceException;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import domain.DomainExceptions.DomainException;
-import groovy.util.ResourceException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
@@ -39,14 +40,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({DomainException.class})
     protected ResponseEntity<Object> domainException(DomainException ex, WebRequest request) {
         log.error(request.getContextPath(), ex);
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
+        ApiError apiError = new ApiError(BAD_REQUEST, ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
     @ExceptionHandler({RepositoryException.class})
-    protected ResponseEntity<Object> notFoundResource(ResourceException ex, WebRequest request) {
+    protected ResponseEntity<Object> notFoundResource(RepositoryException ex, WebRequest request) {
         log.error(request.getContextPath(), ex);
         ApiError apiError = new ApiError(NOT_FOUND, ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler({ServiceException.class})
+    protected ResponseEntity<Object> serviceException(ServiceException ex, WebRequest request) {
+        log.error(request.getContextPath(), ex);
+        ApiError apiError = new ApiError(BAD_REQUEST, ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
