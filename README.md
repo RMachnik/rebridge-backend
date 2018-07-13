@@ -26,10 +26,12 @@ registration returns authentication token that can be used for subsequent intera
 + `/projects/{projectId}/inspirations/` - GET, POST{"name":"insName"}, PUT(according to inspiration schema), DELETE
 + `/projects/{projectId}/inspirations/{inspirationId}/comments/`-
  GET, POST{content}, PUT(according to inspiration schema), DELETE
+ + `/projects/{projectId}/inspirations/{inspirationId}/pictures/`- ONLY JEPG
+  GET `contentType:image/jpeg`, POST requestParam: uploadedFile - with binary data of picture(JPEG only max 25mb), 
+  PUT(according to inspiration schema), DELETE
 
 #####Json Schemas
 + `/schemas/users` - schema for user endpoint
 + `/schemas/projects` - schema for inspiration endpoint
-
 
 

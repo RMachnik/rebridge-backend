@@ -11,7 +11,7 @@ public class InspirationDetailDto {
 
     String description;
     String url;
-    byte[] picture;
+    String pictureId;
     Integer rating;
     List<CommentDto> comments;
 }

@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface UserCrudRepository extends CrudRepository<User, UUID> {
 
-    @Query("Select * from user where username=?0")
+    @Query("Select * from users where username=?0")
     User findByUsername(String username);
 }

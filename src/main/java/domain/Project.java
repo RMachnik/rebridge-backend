@@ -21,7 +21,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
-@Table("project")
+@Table("projects")
 @Data
 @Builder
 public class Project implements Serializable {

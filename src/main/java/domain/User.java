@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static java.lang.String.format;
 
-@Table("user")
+@Table("users")
 @Data
 @Builder
 public class User implements Id<UUID>, Serializable {

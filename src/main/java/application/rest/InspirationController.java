@@ -64,7 +64,7 @@ public class InspirationController {
         Inspiration createdInspiration = inspirationService.create(currentUser.getId(), projectId, inspirationDto.getName());
         UriComponents pathToInspiration = builder.path(INSPIRATIONS)
                 .path("{id}")
-                .build();
+                .buildAndExpand(projectId, createdInspiration.getId());
 
         return ResponseEntity
                 .created(pathToInspiration.toUri())

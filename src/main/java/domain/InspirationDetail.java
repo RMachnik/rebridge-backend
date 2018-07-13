@@ -7,9 +7,9 @@ import lombok.NonNull;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -23,18 +23,17 @@ public class InspirationDetail implements Serializable {
     String description;
     @NonNull
     String url;
-    @NonNull
-    ByteBuffer picture;
+    UUID pictureId;
     @NonNull
     Integer rating;
     @NonNull
     List<Comment> comments;
 
 
-    public InspirationDetail(String description, String url, ByteBuffer picture, Integer rating, List<Comment> comments) {
+    public InspirationDetail(String description, String url, UUID pictureId, Integer rating, List<Comment> comments) {
         this.description = description;
         this.url = url;
-        this.picture = picture;
+        this.pictureId = pictureId;
         this.rating = rating;
         this.comments = comments != null ? comments : new ArrayList<>();
     }
@@ -42,7 +41,7 @@ public class InspirationDetail implements Serializable {
     static InspirationDetail createDefault() {
         return InspirationDetail.builder()
                 .url(EMPTY)
-                .picture(ByteBuffer.wrap(new byte[0]))
+                .pictureId(null)
                 .rating(0)
                 .description(EMPTY)
                 .comments(new ArrayList<>())
@@ -52,11 +51,16 @@ public class InspirationDetail implements Serializable {
     public InspirationDetail update(InspirationDetailDto inspirationDetailDto) {
         return InspirationDetail.builder()
                 .description(isNotBlank(inspirationDetailDto.getDescription()) ? inspirationDetailDto.getDescription() : description)
-                .picture(inspirationDetailDto.getPicture().length > 0 ? ByteBuffer.wrap(inspirationDetailDto.getPicture()) : picture)
+                .pictureId(pictureId)
                 .rating(inspirationDetailDto.getRating() != null ? inspirationDetailDto.getRating() : rating)
                 .url(isNotBlank(inspirationDetailDto.getUrl()) ? inspirationDetailDto.getUrl() : url)
                 .comments(comments)
                 .build();
+    }
+
+    public InspirationDetail updatePictureId(UUID pictureId) {
+        this.pictureId = pictureId;
+        return this;
     }
 
     public void add(Comment comment) {
