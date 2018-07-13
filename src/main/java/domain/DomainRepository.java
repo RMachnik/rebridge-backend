@@ -3,12 +3,13 @@ package domain;
 import io.vavr.control.Try;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface DomainRepository<T extends Id<E>, E> {
+public interface DomainRepository<T> {
 
-    Optional<T> findById(E id);
+    Optional<T> findById(UUID id);
 
     Try<T> save(T entity);
 
-    void delete(E id);
+    void delete(UUID id);
 }

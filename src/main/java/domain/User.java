@@ -12,22 +12,21 @@ import static java.lang.String.format;
 
 @Value
 @Builder
-public class User implements Id<String> {
+public class User implements Id<UUID> {
 
     @NonNull
-    String id;
+    UUID id;
     @NonNull
     String username;
     @NonNull
     String password;
     @NonNull
-    List<String> projectIds;
+    List<UUID> projectIds;
 
     public static User createUser(String username, String password) {
-        final String uuid = UUID.randomUUID().toString();
         return User
                 .builder()
-                .id(uuid)
+                .id(UUID.randomUUID())
                 .username(username)
                 .password(password)
                 .projectIds(new ArrayList<>())

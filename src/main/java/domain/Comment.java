@@ -15,10 +15,10 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Value
 @Builder
-public class Comment implements Id<String> {
+public class Comment implements Id {
 
     @NotNull
-    String id;
+    UUID id;
     @NonNull
     String userId;
     @NonNull
@@ -30,7 +30,7 @@ public class Comment implements Id<String> {
 
     public static Comment create(CurrentUser currentUser, String content) {
         return Comment.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .userId(currentUser.getId())
                 .author(currentUser.getUsername())
                 .date(LocalDateTime.now().toString())
@@ -46,7 +46,7 @@ public class Comment implements Id<String> {
 
     Comment update(CommentDto commentDto) {
         return domain.Comment.builder()
-                .id(commentDto.getId())
+                .id(id)
                 .userId(userId)
                 .author(author)
                 .content(isNotBlank(commentDto.getContent()) ? commentDto.getContent() : content)

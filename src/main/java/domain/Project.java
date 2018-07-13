@@ -3,6 +3,7 @@ package domain;
 import application.dto.InspirationDto;
 import application.dto.ProjectDto;
 import domain.DomainExceptions.MissingInspirationException;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -15,12 +16,14 @@ import java.util.UUID;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+
 @Value
 @Builder
-public class Project implements Id<String> {
+@AllArgsConstructor
+public class Project {
 
     @NonNull
-    String id;
+    UUID id;
     @NonNull
     String name;
     @NonNull
@@ -28,7 +31,7 @@ public class Project implements Id<String> {
 
     public static Project create(String name) {
         return Project.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .name(name)
                 .inspirations(new ArrayList<>())
                 .build();

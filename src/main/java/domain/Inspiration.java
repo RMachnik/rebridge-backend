@@ -15,10 +15,10 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Value
 @Builder
-public class Inspiration implements Id<String> {
+public class Inspiration implements Id<UUID> {
 
     @NonNull
-    String id;
+    UUID id;
     @JsonProperty(required = true)
     String name;
     @NotNull
@@ -26,7 +26,7 @@ public class Inspiration implements Id<String> {
 
     public static Inspiration create(String name) {
         return Inspiration.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UUID.randomUUID())
                 .name(name)
                 .inspirationDetail(InspirationDetail.createDefault())
                 .build();

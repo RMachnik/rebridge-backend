@@ -6,14 +6,15 @@ import io.vavr.control.Try;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryProjectRepository implements ProjectRepository {
 
-    final Map<String, Project> projects = new ConcurrentHashMap<>();
+    final Map<UUID, Project> projects = new ConcurrentHashMap<>();
 
     @Override
-    public Optional<Project> findById(String projectId) {
+    public Optional<Project> findById(UUID projectId) {
         return Optional.ofNullable(projects.get(projectId));
     }
 
@@ -26,7 +27,7 @@ public class InMemoryProjectRepository implements ProjectRepository {
     }
 
     @Override
-    public void delete(String projectId) {
+    public void delete(UUID projectId) {
         projects.remove(projectId);
     }
 
