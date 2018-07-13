@@ -44,7 +44,6 @@ public class Inspiration implements Id<UUID>, Serializable {
                 .build();
     }
 
-
     public void removeComment(String userId, String commentId) {
         Comment comment = findComment(commentId);
         comment.checkUser(userId);

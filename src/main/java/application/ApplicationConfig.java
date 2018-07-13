@@ -2,9 +2,9 @@ package application;
 
 import application.rest.RestConfig;
 import application.service.*;
+import domain.PictureRepository;
 import domain.ProjectRepository;
 import domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -13,18 +13,14 @@ import org.springframework.context.annotation.Import;
 @Import(RestConfig.class)
 public class ApplicationConfig {
 
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    ProjectRepository projectRepository;
 
     @Bean
-    UserService userService() {
+    UserService userService(UserRepository userRepository) {
         return new UserService(userRepository);
     }
 
     @Bean
-    UserAuthenticationService userAuthenticationService() {
+    UserAuthenticationService userAuthenticationService(UserRepository userRepository) {
         return new InMemoryAuthenticationService(new UserService(userRepository));
     }
 
@@ -41,5 +37,10 @@ public class ApplicationConfig {
     @Bean
     CommentService commentService(ProjectService projectService) {
         return new CommentService(projectService);
+    }
+
+    @Bean
+    PictureService pictureService(ProjectService projectService, PictureRepository pictureRepository) {
+        return new PictureService(projectService, pictureRepository);
     }
 }

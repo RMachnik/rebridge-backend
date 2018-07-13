@@ -53,7 +53,7 @@ public class CommentController {
         Comment savedComment = commentService.create(currentUser, projectId, inspirationId, comment.getContent());
         UriComponents pathToComment = builder.path(COMMENTS)
                 .path("{id}")
-                .build();
+                .buildAndExpand(projectId, inspirationId, savedComment.getId());
 
         return ResponseEntity
                 .created(pathToComment.toUri())

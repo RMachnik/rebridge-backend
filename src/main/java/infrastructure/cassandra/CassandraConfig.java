@@ -1,5 +1,6 @@
 package infrastructure.cassandra;
 
+import domain.PictureRepository;
 import domain.ProjectRepository;
 import domain.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -54,5 +55,10 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Bean
     ProjectRepository cassandraProjectRepository(ProjectCrudRepository projectCrudRepository) {
         return new CassandraProjectRepository(projectCrudRepository);
+    }
+
+    @Bean
+    PictureRepository cassandraPictureRepository(PictureCrudRepository pictureCrudRepository) {
+        return new CassandraPictureRepository(pictureCrudRepository);
     }
 }
