@@ -1,8 +1,8 @@
 package application.rest;
 
+import application.dto.CurrentUser;
 import application.dto.InspirationDto;
 import application.dto.ProjectDto;
-import application.dto.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
@@ -51,7 +51,7 @@ final class JsonSchemaController {
 
     @GetMapping("users")
     ResponseEntity<String> users() throws JsonProcessingException {
-        JsonSchema jsonSchema = schemaGenerator.generateSchema(UserDto.class);
+        JsonSchema jsonSchema = schemaGenerator.generateSchema(CurrentUser.class);
 
         return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
     }

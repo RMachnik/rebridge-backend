@@ -2,8 +2,8 @@ package application.rest;
 
 import application.UserAuthenticationService;
 import application.dto.AuthDto;
+import application.dto.CurrentUser;
 import application.dto.Token;
-import application.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
@@ -42,7 +42,7 @@ final class AuthController {
     }
 
     @GetMapping("logout")
-    boolean logout(@AuthenticationPrincipal final UserDto user) {
+    boolean logout(@AuthenticationPrincipal final CurrentUser user) {
         authentication.logout(user);
         return true;
     }

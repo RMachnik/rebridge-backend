@@ -1,7 +1,7 @@
 package domain;
 
 import application.dto.CommentDto;
-import application.dto.UserDto;
+import application.dto.CurrentUser;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -28,11 +28,11 @@ public class Comment implements Id<String> {
     @NonNull
     String date;
 
-    public static Comment create(UserDto userDto, String content) {
+    public static Comment create(CurrentUser currentUser, String content) {
         return Comment.builder()
                 .id(UUID.randomUUID().toString())
-                .userId(userDto.getId())
-                .author(userDto.getUsername())
+                .userId(currentUser.getId())
+                .author(currentUser.getUsername())
                 .date(LocalDateTime.now().toString())
                 .content(content)
                 .build();

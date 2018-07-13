@@ -1,7 +1,7 @@
 package application.service;
 
 import application.dto.CommentDto;
-import application.dto.UserDto;
+import application.dto.CurrentUser;
 import domain.Comment;
 import domain.Inspiration;
 import domain.Project;
@@ -20,11 +20,11 @@ public class CommentService {
         return inspiration.getInspirationDetail().getComments();
     }
 
-    public Comment create(UserDto userDto, String projectId, String inspirationId, String content) {
-        Project project = projectService.findByUserIdAndProjectId(userDto.getId(), projectId);
+    public Comment create(CurrentUser currentUser, String projectId, String inspirationId, String content) {
+        Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
         Inspiration inspiration = project.findInspiration(inspirationId);
 
-        Comment comment = Comment.create(userDto, content);
+        Comment comment = Comment.create(currentUser, content);
         inspiration.addComment(comment);
 
         projectService.save(project);

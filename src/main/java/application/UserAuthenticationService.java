@@ -1,6 +1,6 @@
 package application;
 
-import application.dto.UserDto;
+import application.dto.CurrentUser;
 import domain.User;
 
 import java.util.Optional;
@@ -33,5 +33,5 @@ public interface UserAuthenticationService {
      *
      * @param user the user to logout
      */
-    void logout(UserDto user);
+    void logout(CurrentUser user);
 }

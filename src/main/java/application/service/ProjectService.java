@@ -33,7 +33,7 @@ public class ProjectService {
 
     public Project findByUserIdAndProjectId(String userId, String projectId) {
         User user = userService.findById(userId);
-        user.checkUser(projectId);
+        user.canUpdateProject(projectId);
         return projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectRepositoryException(format("unable to load project %s", projectId)));
     }
@@ -54,7 +54,7 @@ public class ProjectService {
 
     public Project update(String userId, ProjectDto projectDto) {
         User user = userService.findById(userId);
-        user.checkUser(projectDto.getId());
+        user.canUpdateProject(projectDto.getId());
 
         Project existingProject = retrieveProjectById(projectDto.getId());
         Project updatedProject = existingProject.update(projectDto);
@@ -65,7 +65,7 @@ public class ProjectService {
 
     public void remove(String userId, String projectId) {
         User user = userService.findById(userId);
-        user.checkUser(projectId);
+        user.canUpdateProject(projectId);
 
         user.removeProject(projectId);
         userService.update(user);

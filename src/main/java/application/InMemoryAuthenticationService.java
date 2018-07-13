@@ -1,6 +1,6 @@
 package application;
 
-import application.dto.UserDto;
+import application.dto.CurrentUser;
 import application.service.UserService;
 import domain.User;
 import lombok.AllArgsConstructor;
@@ -27,9 +27,9 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<String> login(final String username, final String password) {
-        User foundUser = userService.findByUsername(username)
-                .filter(user -> user.getPassword().equals(password))
-                .orElseThrow(() -> new RuntimeException(String.format("user not found %s", username)));
+        User foundUser = userService.findByUsername(username);
+        foundUser.checkPassword(password);
+
         String uuid = UUID.randomUUID().toString();
         loggedInUsers.put(uuid, foundUser);
         return Optional.of(uuid);
@@ -47,7 +47,7 @@ final class InMemoryAuthenticationService implements UserAuthenticationService {
     }
 
     @Override
-    public void logout(UserDto user) {
+    public void logout(CurrentUser user) {
         loggedInUsers.remove(user.getId());
     }
 }
