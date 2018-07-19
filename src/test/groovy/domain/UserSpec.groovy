@@ -4,7 +4,6 @@ import domain.project.DomainExceptions
 import domain.project.Project
 import domain.project.ProjectRepository
 import domain.user.ContactDetails
-import domain.user.Email
 import domain.user.Roles
 import domain.user.User
 import spock.lang.Shared
@@ -19,10 +18,10 @@ class UserSpec extends Specification {
         UUID projectId = UUID.randomUUID()
         UUID userId = UUID.randomUUID()
         when:
-        User user = new User(userId, new Email("mail@mailinator.com"), "password", new ContactDetails(), [projectId], [Roles.ARCHITECT].toSet())
+        User user = new User(userId, "mail@mailinator.com", "password", new ContactDetails(), [projectId], [Roles.ARCHITECT].toSet())
         then:
         user.id == userId
-        user.email.value == "mail@mailinator.com"
+        user.email == "mail@mailinator.com"
         user.password == "password"
     }
 
@@ -31,7 +30,7 @@ class UserSpec extends Specification {
         User user = User.createUser("email@email.com", "password")
         then:
         user.id != null
-        user.email.value == "email@email.com"
+        user.email == "email@email.com"
         user.password == "password"
         user.projectIds.empty
         !user.roles.empty
