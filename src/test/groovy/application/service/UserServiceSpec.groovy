@@ -10,7 +10,7 @@ class UserServiceSpec extends Specification {
         given:
         UserRepository mockedRepo = Mock(UserRepository)
         mockedRepo.findByEmail(_) >> { Optional.of(User.createUser("zdenek@mail.com", "pass")) }
-        UserService userService = new UserService(mockedRepo)
+        UserService userService = new UserService(mockedRepo, Mock(MailService))
 
         when:
         userService.create("zdenek@mail.com", "pass")

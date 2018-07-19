@@ -1,11 +1,11 @@
 package application.service;
 
 import domain.user.Email;
-import lombok.Value;
+import lombok.AllArgsConstructor;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.Mailer;
 
-@Value
+@AllArgsConstructor
 public class MailService {
 
     Mailer mailer;
