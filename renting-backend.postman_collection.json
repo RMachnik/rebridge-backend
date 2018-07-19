@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "projects schema",
+      "name": "auth",
       "request": {
         "auth": {
           "type": "noauth"
@@ -34,7 +34,7 @@
       "response": []
     },
     {
-      "name": "comments schema",
+      "name": "projects",
       "request": {
         "auth": {
           "type": "noauth"
@@ -48,7 +48,35 @@
         ],
         "body": {},
         "url": {
-          "raw": "{{HOST}}:8080/schemas/projects/id/inspirations",
+          "raw": "{{PROD}}:8080/schemas/projects",
+          "host": [
+            "{{PROD}}"
+          ],
+          "port": "8080",
+          "path": [
+            "schemas",
+            "projects"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createProject",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/schemas/projects/create",
           "host": [
             "{{HOST}}"
           ],
@@ -56,15 +84,103 @@
           "path": [
             "schemas",
             "projects",
-            "id",
-            "inspirations"
+            "create"
           ]
         }
       },
       "response": []
     },
     {
-      "name": "inspirations schema",
+      "name": "projectDetails",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/schemas/projects/details",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "schemas",
+            "projects",
+            "details"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createProjectDetails",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/schemas/projects/details/updateOrCreateDetails",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "schemas",
+            "projects",
+            "details",
+            "updateOrCreateDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "projectSurvey",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/schemas/projects/details/updateOrCreateDetails",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "schemas",
+            "projects",
+            "details",
+            "updateOrCreateDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "inspirations",
       "request": {
         "auth": {
           "type": "noauth"
@@ -88,6 +204,96 @@
             "projects",
             "id",
             "inspirations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createOrUpdateInspiration",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/schemas/projects/details/updateOrCreateDetails",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "schemas",
+            "projects",
+            "details",
+            "updateOrCreateDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "comments",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/schemas/projects/inspirations/comments",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "schemas",
+            "projects",
+            "inspirations",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createOrUpdateComment",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/schemas/projects/inspirations/comments",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "schemas",
+            "projects",
+            "inspirations",
+            "comments"
           ]
         }
       },
@@ -121,7 +327,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"email\":\"zdenek1\", \"password\":\"pass\"}"
+          "raw": "{\"username\":\"zdenek1\", \"password\":\"pass\"}"
         },
         "url": {
           "raw": "{{PROD}}:8080/auth/register",
@@ -286,7 +492,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"projectName\"}"
+          "raw": "{\"name\":\"cudowny project Ewelinki\"}"
         },
         "url": {
           "raw": "{{HOST}}:8080/projects/",
@@ -297,6 +503,57 @@
           "path": [
             "projects",
             ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createProjectDetails",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "07d00646-ed87-43f5-afd1-3835abda1e75",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"budget\": 10000,\n\t\"surface\": 100,\n\t\"location\": { \"number\":\"1\",\"streetName\":\"Lipinskiego\",\"postalCode\":\"39-310\",\"city\":\"new york\"},\n\t\"surveyTemplateId\": \"1\",\n\t\"investorEmails\": [\"zdenek@mail.com\"]\n\t\n}"
+        },
+        "url": {
+          "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}/details",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "projects",
+            "{{PROJECT_ID}}",
+            "details"
           ]
         }
       },
@@ -372,7 +629,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"inspiration\"}"
+          "raw": "{\n\t\"name\":\"Inspiracja buzkola hihi\",\n\t\"description\": \"moja piekna inspiracja jak sram\",\n\t\"url\": \"http://kupa.pl\",\n\t\"rating\": \"10\",\n\t\n}"
         },
         "url": {
           "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}/inspirations/",
@@ -385,6 +642,59 @@
             "{{PROJECT_ID}}",
             "inspirations",
             ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createInspiration Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "aac81359-98d8-43b5-be4f-a339d1f6bc86",
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.globals.set(\"INSPIRATION_ID\",jsonData.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\":\"Inspiracja buzkola hihi\",\n\t\"description\": \"moja piekna inspiracja jak sram\",\n\t\"url\": \"http://kupa1.pl\",\n\t\"rating\": \"10\"\n}"
+        },
+        "url": {
+          "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}/inspirations/{{INSPIRATION_ID}}",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "projects",
+            "{{PROJECT_ID}}",
+            "inspirations",
+            "{{INSPIRATION_ID}}"
           ]
         }
       },
@@ -620,6 +930,82 @@
       "response": []
     },
     {
+      "name": "createSurveyTemplate",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"questions\":[\"firstquestion\",\"second\"]}"
+        },
+        "url": {
+          "raw": "{{HOST}}:8080/survey/templates",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "survey",
+            "templates"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getSurveyTemplates",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"questions\":[\"firstquestion\",\"second\"]}"
+        },
+        "url": {
+          "raw": "{{HOST}}:8080/survey/templates",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "survey",
+            "templates"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "getComments",
       "request": {
         "auth": {
@@ -653,6 +1039,41 @@
             "{{INSPIRATION_ID}}",
             "comments",
             ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "surveyTemplates",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/survey/templates",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "survey",
+            "templates"
           ]
         }
       },
