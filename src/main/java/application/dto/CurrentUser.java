@@ -21,19 +21,19 @@ public class CurrentUser implements UserDetails {
     String id;
     @JsonProperty(required = true)
     String email;
-    String password;
+    String token;
     Set<String> roles;
 
     @JsonCreator
     CurrentUser(@JsonProperty("id") final String id,
                 @JsonProperty("email") final String email,
-                @JsonProperty("password") final String password,
+                String token,
                 Set<String> roles) {
         super();
         this.id = requireNonNull(id);
         this.email = requireNonNull(email);
-        this.password = requireNonNull(password);
         this.roles = roles;
+        this.token = token;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class CurrentUser implements UserDetails {
     @JsonIgnore
     @Override
     public String getPassword() {
-        return password;
+        return "";
     }
 
     @JsonIgnore

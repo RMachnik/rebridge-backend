@@ -39,7 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final RequestMatcher SCHEMA = new AndRequestMatcher(
             new AntPathRequestMatcher("/schemas/**")
     );
-    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new AndRequestMatcher(AUTH_URLS, SCHEMA));
+    private static final RequestMatcher LOGOUT = new AndRequestMatcher(
+            new AntPathRequestMatcher("/auth/logout")
+    );
+    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new AndRequestMatcher(AUTH_URLS, SCHEMA, LOGOUT));
 
     private final AuthenticationProvider provider;
 

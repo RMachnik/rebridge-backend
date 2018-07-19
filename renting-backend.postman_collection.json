@@ -20,14 +20,14 @@
         ],
         "body": {},
         "url": {
-          "raw": "{{PROD}}:8080/schemas/projects",
+          "raw": "{{HOST}}:8080/schemas/auth",
           "host": [
-            "{{PROD}}"
+            "{{HOST}}"
           ],
           "port": "8080",
           "path": [
             "schemas",
-            "projects"
+            "auth"
           ]
         }
       },
@@ -48,9 +48,9 @@
         ],
         "body": {},
         "url": {
-          "raw": "{{PROD}}:8080/schemas/projects",
+          "raw": "{{HOST}}:8080/schemas/projects",
           "host": [
-            "{{PROD}}"
+            "{{HOST}}"
           ],
           "port": "8080",
           "path": [
@@ -164,7 +164,7 @@
         ],
         "body": {},
         "url": {
-          "raw": "{{HOST}}:8080/schemas/projects/details/updateOrCreateDetails",
+          "raw": "{{HOST}}:8080/schemas/projects/details/survey",
           "host": [
             "{{HOST}}"
           ],
@@ -173,7 +173,7 @@
             "schemas",
             "projects",
             "details",
-            "updateOrCreateDetails"
+            "survey"
           ]
         }
       },
@@ -194,9 +194,9 @@
         ],
         "body": {},
         "url": {
-          "raw": "{{PROD}}:8080/schemas/projects/id/inspirations",
+          "raw": "{{HOST}}:8080/schemas/projects/id/inspirations",
           "host": [
-            "{{PROD}}"
+            "{{HOST}}"
           ],
           "port": "8080",
           "path": [
@@ -224,7 +224,7 @@
         ],
         "body": {},
         "url": {
-          "raw": "{{HOST}}:8080/schemas/projects/details/updateOrCreateDetails",
+          "raw": "{{HOST}}:8080/schemas/projects//inspirations/createOrUpdate",
           "host": [
             "{{HOST}}"
           ],
@@ -232,8 +232,9 @@
           "path": [
             "schemas",
             "projects",
-            "details",
-            "updateOrCreateDetails"
+            "",
+            "inspirations",
+            "createOrUpdate"
           ]
         }
       },
@@ -284,7 +285,7 @@
         ],
         "body": {},
         "url": {
-          "raw": "{{HOST}}:8080/schemas/projects/inspirations/comments",
+          "raw": "{{HOST}}:8080/schemas/projects/inspirations/comments/createOrUpdate",
           "host": [
             "{{HOST}}"
           ],
@@ -293,7 +294,8 @@
             "schemas",
             "projects",
             "inspirations",
-            "comments"
+            "comments",
+            "createOrUpdate"
           ]
         }
       },
@@ -322,17 +324,17 @@
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json"
+            "value": "application/json;charset=UTF-8"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"username\":\"zdenek1\", \"password\":\"pass\"}"
+          "raw": "{\"email\":\"ewelina.salagaj@gmail.com\", \"password\":\"pass\"}"
         },
         "url": {
-          "raw": "{{PROD}}:8080/auth/register",
+          "raw": "{{HOST}}:8080/auth/register",
           "host": [
-            "{{PROD}}"
+            "{{HOST}}"
           ],
           "port": "8080",
           "path": [
@@ -382,6 +384,41 @@
           "path": [
             "auth",
             "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "logout",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/users/logout",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "logout"
           ]
         }
       },
@@ -509,6 +546,92 @@
       "response": []
     },
     {
+      "name": "getCreatedProject",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {},
+        "url": {
+          "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "projects",
+            "{{PROJECT_ID}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create project Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "dc1a952d-c2f1-446e-8cbb-7928932fa6a7",
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.globals.set(\"PROJECT_ID\",jsonData.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"cudowny project Ewelinki1\"}"
+        },
+        "url": {
+          "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "8080",
+          "path": [
+            "projects",
+            "{{PROJECT_ID}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "createProjectDetails",
       "event": [
         {
@@ -560,7 +683,19 @@
       "response": []
     },
     {
-      "name": "getCreatedProject",
+      "name": "updateProjectDetails",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "07d00646-ed87-43f5-afd1-3835abda1e75",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ],
       "request": {
         "auth": {
           "type": "bearer",
@@ -572,23 +707,27 @@
             }
           ]
         },
-        "method": "GET",
+        "method": "PUT",
         "header": [
           {
             "key": "Content-Type",
             "value": "application/json;charset=UTF-8"
           }
         ],
-        "body": {},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"budget\": 10000,\n\t\"surface\": 100,\n\t\"location\": { \"number\":\"1\",\"streetName\":\"Lipinskiego1\",\"postalCode\":\"39-310\",\"city\":\"new york\"},\n\t\"surveyTemplateId\": \"1\",\n\t\"investorEmails\": [\"zdenek@mail.com\"]\n\t\n}"
+        },
         "url": {
-          "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}",
+          "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}/details",
           "host": [
             "{{HOST}}"
           ],
           "port": "8080",
           "path": [
             "projects",
-            "{{PROJECT_ID}}"
+            "{{PROJECT_ID}}",
+            "details"
           ]
         }
       },
@@ -629,7 +768,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"name\":\"Inspiracja buzkola hihi\",\n\t\"description\": \"moja piekna inspiracja jak sram\",\n\t\"url\": \"http://kupa.pl\",\n\t\"rating\": \"10\",\n\t\n}"
+          "raw": "{\n\t\"name\":\"Inspiracja buzkola hihi\",\n\t\"description\": \"moja piekna inspiracja jak sram\",\n\t\"url\": \"http://kupa.pl\",\n\t\"rating\": \"10\"\n}"
         },
         "url": {
           "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}/inspirations/",
@@ -648,7 +787,7 @@
       "response": []
     },
     {
-      "name": "createInspiration Copy",
+      "name": "updateInspiration",
       "event": [
         {
           "listen": "test",
@@ -682,7 +821,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"name\":\"Inspiracja buzkola hihi\",\n\t\"description\": \"moja piekna inspiracja jak sram\",\n\t\"url\": \"http://kupa1.pl\",\n\t\"rating\": \"10\"\n}"
+          "raw": "{\n\t\"name\":\"Inspiracja buzkola hihi\",\n\t\"description\": \"moja piekna inspiracja jak sram1\",\n\t\"url\": \"http://kupa1.pl\",\n\t\"rating\": \"10\"\n}"
         },
         "url": {
           "raw": "{{HOST}}:8080/projects/{{PROJECT_ID}}/inspirations/{{INSPIRATION_ID}}",
@@ -865,7 +1004,7 @@
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json;charset=UTF-8"
+            "value": "image/jpeg"
           }
         ],
         "body": {},
@@ -951,7 +1090,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"questions\":[\"firstquestion\",\"second\"]}"
+          "raw": "{\"questions\":[\"firstquestion\",\"second\",\"jak masz na imie?\",\"czy jestes kotem?\"]}"
         },
         "url": {
           "raw": "{{HOST}}:8080/survey/templates",
@@ -980,7 +1119,7 @@
             }
           ]
         },
-        "method": "POST",
+        "method": "GET",
         "header": [
           {
             "key": "Content-Type",

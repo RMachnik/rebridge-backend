@@ -39,7 +39,7 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
                 .map(user -> CurrentUser.builder()
                         .id(user.getId().toString())
                         .email(user.getEmail())
-                        .password(user.getPassword())
+                        .token(token)
                         .roles(user.getRoles().stream().map(Roles::toString).collect(Collectors.toSet()))
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("Cannot findById user with authentication" + token));

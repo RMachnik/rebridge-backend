@@ -2,14 +2,12 @@ package application.rest;
 
 import application.UserAuthenticationService;
 import application.dto.AuthDto;
-import application.dto.CurrentUser;
 import application.dto.TokenDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -39,12 +37,6 @@ final class AuthController {
     @PostMapping("login")
     ResponseEntity login(@RequestBody AuthDto authDto) {
         return handleLogin(authDto.getEmail(), authDto.getPassword());
-    }
-
-    @GetMapping("logout")
-    boolean logout(@AuthenticationPrincipal final CurrentUser user) {
-        authenticationService.logout(user);
-        return true;
     }
 
     private ResponseEntity handleLogin(@RequestParam("email") String email, @RequestParam("password") String password) {

@@ -20,6 +20,7 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
 
     @NonNull
     UserService userService;
+
     final Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
 
     @Override
@@ -44,7 +45,7 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
 
     @Override
     public void logout(CurrentUser user) {
-        loggedInUsers.remove(user.getId());
+        loggedInUsers.remove(user.getToken());
     }
 }
 

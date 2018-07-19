@@ -1,5 +1,6 @@
 package application.rest;
 
+import application.UserAuthenticationService;
 import application.dto.CurrentUser;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,9 +24,17 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 final class UserController {
 
+    UserAuthenticationService authenticationService;
+
     @GetMapping("current")
     ResponseEntity current(@AuthenticationPrincipal final CurrentUser user) {
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("logout")
+    boolean logout(@AuthenticationPrincipal final CurrentUser user) {
+        authenticationService.logout(user);
+        return true;
     }
 
 }
