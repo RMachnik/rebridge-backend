@@ -2,10 +2,11 @@ package application.rest;
 
 
 import application.dto.CommentDto;
+import application.dto.CreateOrUpdateDto;
 import application.dto.CurrentUser;
 import application.dto.DtoAssemblers;
 import application.service.CommentService;
-import domain.Comment;
+import domain.project.Comment;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static application.dto.DtoAssemblers.fromCommentToDto;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -49,7 +51,7 @@ public class CommentController {
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @PathVariable String inspirationId,
-            @RequestBody CommentDto comment) {
+            @RequestBody CreateOrUpdateDto comment) {
         Comment savedComment = commentService.create(currentUser, projectId, inspirationId, comment.getContent());
         UriComponents pathToComment = builder.path(COMMENTS)
                 .path("{id}")
@@ -57,7 +59,7 @@ public class CommentController {
 
         return ResponseEntity
                 .created(pathToComment.toUri())
-                .body(DtoAssemblers.fromCommentToDto(savedComment));
+                .body(fromCommentToDto(savedComment));
     }
 
     @PutMapping("/{commentId}")
@@ -66,9 +68,15 @@ public class CommentController {
             @PathVariable String projectId,
             @PathVariable String inspirationId,
             @PathVariable String commentId,
-            @RequestBody CommentDto commentDto) {
-        commentDto.setId(commentId);
-        return ResponseEntity.ok(commentService.updateComment(currentUser.getId(), projectId, inspirationId, commentDto));
+            @RequestBody CreateOrUpdateDto createOrUpdateDto) {
+
+        CommentDto commentDto = CommentDto
+                .builder()
+                .id(commentId)
+                .content(createOrUpdateDto.getContent())
+                .build();
+
+        return ResponseEntity.ok(fromCommentToDto(commentService.updateComment(currentUser.getId(), projectId, inspirationId, commentDto)));
     }
 
     @DeleteMapping("/{commentId}")

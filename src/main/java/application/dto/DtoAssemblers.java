@@ -1,12 +1,11 @@
 package application.dto;
 
-import domain.Comment;
-import domain.Inspiration;
-import domain.InspirationDetail;
-import domain.Project;
+import domain.common.Address;
+import domain.project.*;
+import domain.user.User;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.stream.Collectors.toList;
 
@@ -20,7 +19,7 @@ public class DtoAssemblers {
                 .inspirationIds(
                         project.getInspirations().stream()
                                 .map((inspiration) -> inspiration.getId().toString())
-                                .collect(Collectors.toList())
+                                .collect(toList())
                 )
                 .build();
     }
@@ -56,5 +55,39 @@ public class DtoAssemblers {
                 .content(comment.getContent())
                 .creationDate(comment.getDate())
                 .build();
+    }
+
+    public static AddressDto fromAddressToDto(Address address) {
+        return AddressDto.builder()
+                .city(address.getCity())
+                .number(address.getNumber())
+                .postalCode(address.getPostalCode())
+                .streetName(address.getStreetName())
+                .build();
+    }
+
+    public static InvestorDto fromUserToInvestor(User user) {
+        return InvestorDto
+                .builder()
+                .email(user.getEmail())
+                .phone(user.getContactDetails().getPhone())
+                .build();
+    }
+
+    public static ProjectDetailsDto fromInformationToDto(Details details, List<InvestorDto> investors) {
+        return ProjectDetailsDto.builder()
+                .budget(details.getBudget())
+                .surface(details.getSurface().getValue().doubleValue())
+                .location(DtoAssemblers.fromAddressToDto(details.getLocation()))
+                .investors(investors)
+                .build();
+    }
+
+    public static SurveyDto fromSurveyToDto(Survey survey) {
+        AtomicInteger index = new AtomicInteger(0);
+        List<SurveyDto.QuestionDto> questionDtos = survey.getQuestions().stream()
+                .map(question -> new SurveyDto.QuestionDto(index.incrementAndGet(), question.getQuestion(), question.getAnswer()))
+                .collect(toList());
+        return new SurveyDto(questionDtos);
     }
 }

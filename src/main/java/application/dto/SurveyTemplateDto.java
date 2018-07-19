@@ -3,8 +3,11 @@ package application.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
-public class Token {
-    String token;
+public class SurveyTemplateDto {
+    String id;
+    List<String> questions;
 }

@@ -1,4 +1,4 @@
-package domain;
+package domain.project;
 
 import application.dto.CommentDto;
 import application.dto.CurrentUser;
@@ -35,7 +35,7 @@ public class Comment implements Id<UUID>, Serializable {
         return Comment.builder()
                 .id(UUID.randomUUID())
                 .userId(currentUser.getId())
-                .author(currentUser.getUsername())
+                .author(currentUser.getEmail())
                 .date(LocalDateTime.now().toString())
                 .content(content)
                 .build();
@@ -48,7 +48,7 @@ public class Comment implements Id<UUID>, Serializable {
     }
 
     Comment update(CommentDto commentDto) {
-        return domain.Comment.builder()
+        return Comment.builder()
                 .id(id)
                 .userId(userId)
                 .author(author)

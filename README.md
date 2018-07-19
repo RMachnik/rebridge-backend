@@ -17,9 +17,9 @@ Content type: `application/json;charset=UTF-8`
 #####Authentication
 Based on Bearer token `Authentication: Bearer fb4c2d3a-3f62-44dd-a25f-2fbc73820649`.
 Token is send back after successful login request.
-+ `/auth/login` - user login: POST{"username":"name","password":"pass"}
++ `/auth/login` - user login: POST{"email":"name","password":"pass"}
 + `/auth/logout` - user logout: GET
-+ `/auth/register` - user registration: POST{"username":"name","password":"pass"}, 
++ `/auth/register` - user registration: POST{"email":"name","password":"pass"}, 
 registration returns authentication token that can be used for subsequent interactions with API
 + `/users/current` - GET current user
 + `/projects/` - resource: GET, POST{"name","projectName"}, PUT(according to project schema), DELETE

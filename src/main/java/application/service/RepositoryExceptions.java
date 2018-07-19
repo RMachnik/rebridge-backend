@@ -29,4 +29,9 @@ public class RepositoryExceptions {
 
     }
 
+    public static class SurveyTemplateRepositoryException extends RepositoryException {
+        public SurveyTemplateRepositoryException(String message) {
+            super(message);
+        }
+    }
 }

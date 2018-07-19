@@ -1,10 +1,11 @@
 package application.rest;
 
+import application.dto.CreateProjectDto;
 import application.dto.CurrentUser;
 import application.dto.DtoAssemblers;
 import application.dto.ProjectDto;
 import application.service.ProjectService;
-import domain.Project;
+import domain.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static application.dto.DtoAssemblers.fromProjectToDto;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -46,8 +48,9 @@ public class ProjectController {
     ResponseEntity create(
             UriComponentsBuilder builder,
             @AuthenticationPrincipal CurrentUser user,
-            @RequestBody ProjectDto projectDto) {
-        Project createdProject = projectService.create(user.getId(), projectDto.getName());
+            @RequestBody CreateProjectDto dto) {
+
+        Project createdProject = projectService.create(user.getId(), dto.getName());
 
         UriComponents uriComponents =
                 builder.
@@ -57,22 +60,25 @@ public class ProjectController {
 
         return ResponseEntity
                 .created(uriComponents.toUri())
-                .body(DtoAssemblers.fromProjectToDto(createdProject));
+                .body(fromProjectToDto(createdProject));
     }
 
     @GetMapping("/{projectId}")
     ResponseEntity project(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
-        return ResponseEntity.ok(projectService.findByUserIdAndProjectId(currentUser.getId(), projectId));
+        return ResponseEntity.ok(fromProjectToDto(projectService.findByUserIdAndProjectId(currentUser.getId(), projectId)));
     }
 
     @PutMapping("/{projectId}")
     ResponseEntity update(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
-            @RequestBody ProjectDto projectDto) {
-        projectDto.setId(projectId);
+            @RequestBody CreateProjectDto createProjectDto) {
+        ProjectDto projectDto = ProjectDto.builder()
+                .id(projectId)
+                .name(createProjectDto.getName())
+                .build();
         Project updated = projectService.update(currentUser.getId(), projectDto);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(fromProjectToDto(updated));
     }
 
     @DeleteMapping("/{projectId}")

@@ -1,6 +1,6 @@
-package domain;
+package domain.project;
 
-import application.dto.InspirationDetailDto;
+import application.dto.CreateOrUpdateInspirationDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
@@ -38,17 +37,17 @@ public class InspirationDetail implements Serializable {
         this.comments = comments != null ? comments : new ArrayList<>();
     }
 
-    static InspirationDetail createDefault() {
+    static InspirationDetail create(CreateOrUpdateInspirationDto createOrUpdateInspirationDto) {
         return InspirationDetail.builder()
-                .url(EMPTY)
+                .url(createOrUpdateInspirationDto.getUrl())
                 .pictureId(null)
-                .rating(0)
-                .description(EMPTY)
+                .rating(createOrUpdateInspirationDto.getRating())
+                .description(createOrUpdateInspirationDto.getDescription())
                 .comments(new ArrayList<>())
                 .build();
     }
 
-    public InspirationDetail update(InspirationDetailDto inspirationDetailDto) {
+    public InspirationDetail update(CreateOrUpdateInspirationDto inspirationDetailDto) {
         return InspirationDetail.builder()
                 .description(isNotBlank(inspirationDetailDto.getDescription()) ? inspirationDetailDto.getDescription() : description)
                 .pictureId(pictureId)

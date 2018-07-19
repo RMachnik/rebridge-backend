@@ -1,4 +1,4 @@
-package domain;
+package domain.project;
 
 import io.vavr.control.Try;
 

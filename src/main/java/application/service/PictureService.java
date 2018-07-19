@@ -1,10 +1,10 @@
 package application.service;
 
 import application.service.ServiceExceptions.ServiceException;
-import domain.Inspiration;
-import domain.Picture;
-import domain.PictureRepository;
-import domain.Project;
+import domain.project.Inspiration;
+import domain.project.Picture;
+import domain.project.PictureRepository;
+import domain.project.Project;
 import lombok.AllArgsConstructor;
 
 import java.nio.ByteBuffer;

@@ -3,7 +3,7 @@ package application.rest;
 import application.UserAuthenticationService;
 import application.dto.AuthDto;
 import application.dto.CurrentUser;
-import application.dto.Token;
+import application.dto.TokenDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
@@ -28,29 +28,29 @@ import static lombok.AccessLevel.PRIVATE;
 final class AuthController {
 
     @NonNull
-    UserAuthenticationService authentication;
+    UserAuthenticationService authenticationService;
 
     @PostMapping("register")
     ResponseEntity register(@RequestBody AuthDto authDto) {
-        authentication.register(authDto.getUsername(), authDto.getPassword());
-        return handleLogin(authDto.getUsername(), authDto.getPassword());
+        authenticationService.register(authDto.getEmail(), authDto.getPassword());
+        return handleLogin(authDto.getEmail(), authDto.getPassword());
     }
 
     @PostMapping("login")
     ResponseEntity login(@RequestBody AuthDto authDto) {
-        return handleLogin(authDto.getUsername(), authDto.getPassword());
+        return handleLogin(authDto.getEmail(), authDto.getPassword());
     }
 
     @GetMapping("logout")
     boolean logout(@AuthenticationPrincipal final CurrentUser user) {
-        authentication.logout(user);
+        authenticationService.logout(user);
         return true;
     }
 
-    private ResponseEntity handleLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
-        return authentication.login(username, password)
+    private ResponseEntity handleLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
+        return authenticationService.login(email, password)
                 .map(URI::create)
-                .map((uri) -> ResponseEntity.created(uri).body(new Token(uri.toString())))
+                .map((uri) -> ResponseEntity.created(uri).body(new TokenDto(uri.toString())))
                 .orElse(ResponseEntity.badRequest().build());
     }
 

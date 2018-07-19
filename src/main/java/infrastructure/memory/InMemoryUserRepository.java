@@ -1,7 +1,7 @@
 package infrastructure.memory;
 
-import domain.User;
-import domain.UserRepository;
+import domain.user.User;
+import domain.user.UserRepository;
 import io.vavr.control.Try;
 
 import java.util.Map;
@@ -27,11 +27,11 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
+    public Optional<User> findByEmail(String email) {
         return users
                 .values()
                 .stream()
-                .filter(u -> u.getUsername().equals(username))
+                .filter(u -> u.getEmail().equals(email))
                 .findFirst();
     }
 

@@ -1,4 +1,4 @@
-package domain;
+package domain.project;
 
 public class DomainExceptions {
 
@@ -29,6 +29,12 @@ public class DomainExceptions {
 
     public static class InvalidPassword extends DomainException {
         public InvalidPassword(String message) {
+            super(message);
+        }
+    }
+
+    public static class EmailValidation extends DomainException {
+        public EmailValidation(String message) {
             super(message);
         }
     }

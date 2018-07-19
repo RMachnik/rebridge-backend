@@ -1,7 +1,7 @@
 package infrastructure.cassandra;
 
-import domain.User;
-import domain.UserRepository;
+import domain.user.User;
+import domain.user.UserRepository;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
@@ -14,8 +14,8 @@ public class CassandraUserRepository implements UserRepository {
     UserCrudRepository userCrudRepository;
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return Optional.ofNullable(userCrudRepository.findByUsername(username));
+    public Optional<User> findByEmail(String email) {
+        return Optional.ofNullable(userCrudRepository.findByEmail(email));
     }
 
     @Override

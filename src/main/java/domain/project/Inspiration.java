@@ -1,7 +1,7 @@
-package domain;
+package domain.project;
 
 import application.dto.CommentDto;
-import application.dto.InspirationDto;
+import application.dto.CreateOrUpdateInspirationDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -27,20 +27,20 @@ public class Inspiration implements Id<UUID>, Serializable {
     @NotNull
     InspirationDetail inspirationDetail;
 
-    public static Inspiration create(String name) {
+    public static Inspiration create(CreateOrUpdateInspirationDto dto) {
         return Inspiration.builder()
                 .id(UUID.randomUUID())
-                .name(name)
-                .inspirationDetail(InspirationDetail.createDefault())
+                .name(dto.getName())
+                .inspirationDetail(InspirationDetail.create(dto))
                 .build();
     }
 
-    public Inspiration update(InspirationDto inspirationDto) {
+    public Inspiration update(CreateOrUpdateInspirationDto inspirationDto) {
         return Inspiration
                 .builder()
                 .id(id)
                 .name(isNotBlank(inspirationDto.getName()) ? inspirationDto.getName() : name)
-                .inspirationDetail(inspirationDetail.update(inspirationDto.getInspirationDetail()))
+                .inspirationDetail(inspirationDetail.update(inspirationDto))
                 .build();
     }
 

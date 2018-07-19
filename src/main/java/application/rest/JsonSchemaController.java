@@ -1,8 +1,6 @@
 package application.rest;
 
-import application.dto.CurrentUser;
-import application.dto.InspirationDto;
-import application.dto.ProjectDto;
+import application.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 
 @RestController
@@ -34,26 +33,69 @@ final class JsonSchemaController {
         schemaGenerator = new JsonSchemaGenerator(objectMapper);
     }
 
+    @GetMapping("auth")
+    ResponseEntity<String> auth() {
+        return generateSchema(AuthDto.class);
+    }
+
+    @GetMapping("users/current")
+    ResponseEntity<String> users() {
+        return generateSchema(CurrentUser.class);
+    }
+
     @GetMapping("projects")
-    ResponseEntity<String> projects() throws JsonProcessingException {
-        JsonSchema jsonSchema = schemaGenerator.generateSchema(ProjectDto.class);
-
-        return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
+    ResponseEntity<String> projects() {
+        return generateSchema(ProjectDto.class);
     }
 
-    @GetMapping("projects/{projectId}/inspirations")
-    ResponseEntity<String> inspirations() throws JsonProcessingException {
-        JsonSchema jsonSchema = schemaGenerator.generateSchema(InspirationDto.class);
-
-        return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
+    @GetMapping("projects/create")
+    ResponseEntity<String> createProject() {
+        return generateSchema(CreateProjectDto.class);
     }
 
-
-    @GetMapping("users")
-    ResponseEntity<String> users() throws JsonProcessingException {
-        JsonSchema jsonSchema = schemaGenerator.generateSchema(CurrentUser.class);
-
-        return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
+    @GetMapping("projects/details")
+    ResponseEntity<String> projectDetails() {
+        return generateSchema(ProjectDetailsDto.class);
     }
 
+    @GetMapping("projects/details/updateOrCreateDetails")
+    ResponseEntity<String> createOrUpdateProjectDetails() {
+        return generateSchema(CreateUpdateProjectDetailsDto.class);
+    }
+
+    @GetMapping("projects/details/survey")
+    ResponseEntity<String> survey() {
+        return generateSchema(SurveyDto.class);
+    }
+
+    @GetMapping("projects/inspirations")
+    ResponseEntity<String> inspirations() {
+        return generateSchema(InspirationDto.class);
+    }
+
+    @GetMapping("projects/inspirations/createOrUpdate")
+    ResponseEntity<String> createOrUpdateInspirations() {
+        return generateSchema(CreateOrUpdateInspirationDto.class);
+    }
+
+    @GetMapping("projects/inspirations/comments")
+    ResponseEntity<String> comments() {
+        return generateSchema(CommentDto.class);
+    }
+
+    @GetMapping("projects/inspirations/comments/createOrUpdate")
+    ResponseEntity<String> createOrUpdateComment() {
+        return generateSchema(CreateOrUpdateDto.class);
+    }
+
+    private ResponseEntity generateSchema(Class clazz) {
+        JsonSchema jsonSchema = null;
+        try {
+            jsonSchema = schemaGenerator.generateSchema(clazz);
+            return ResponseEntity.ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(format("Unable to generate schema %s", clazz.getName()));
+        }
+    }
 }

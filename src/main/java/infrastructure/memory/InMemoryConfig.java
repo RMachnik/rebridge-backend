@@ -1,7 +1,7 @@
 package infrastructure.memory;
 
-import domain.ProjectRepository;
-import domain.UserRepository;
+import domain.project.ProjectRepository;
+import domain.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

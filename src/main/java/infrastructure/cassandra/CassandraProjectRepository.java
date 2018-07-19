@@ -1,7 +1,7 @@
 package infrastructure.cassandra;
 
-import domain.Project;
-import domain.ProjectRepository;
+import domain.project.Project;
+import domain.project.ProjectRepository;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 

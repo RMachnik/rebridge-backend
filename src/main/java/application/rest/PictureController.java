@@ -2,7 +2,7 @@ package application.rest;
 
 import application.dto.CurrentUser;
 import application.service.PictureService;
-import domain.Picture;
+import domain.project.Picture;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;

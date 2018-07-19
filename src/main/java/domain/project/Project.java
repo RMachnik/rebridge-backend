@@ -1,9 +1,10 @@
-package domain;
+package domain.project;
 
-import application.dto.InspirationDto;
+import application.dto.CreateOrUpdateInspirationDto;
+import application.dto.CreateUpdateProjectDetailsDto;
 import application.dto.ProjectDto;
 import com.datastax.driver.core.DataType;
-import domain.DomainExceptions.MissingInspirationException;
+import domain.project.DomainExceptions.MissingInspirationException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -35,11 +36,15 @@ public class Project implements Serializable {
     String name;
 
     @NonNull
+    Details details;
+
+    @NonNull
     List<Inspiration> inspirations;
 
-    public Project(UUID id, String name, List<Inspiration> inspirations) {
+    public Project(UUID id, String name, Details details, List<Inspiration> inspirations) {
         this.id = id;
         this.name = name;
+        this.details = details;
         this.inspirations = inspirations != null ? inspirations : new ArrayList<>();
     }
 
@@ -59,15 +64,15 @@ public class Project implements Serializable {
                 .build();
     }
 
-    public Inspiration addInspiration(String inspirationName) {
+    public Inspiration addInspiration(CreateOrUpdateInspirationDto inspirationName) {
         Inspiration inspiration = Inspiration.create(inspirationName);
 
         inspirations.add(inspiration);
         return inspiration;
     }
 
-    public Inspiration updateInspiration(InspirationDto inspirationDto) {
-        Inspiration existingInspiration = findInspiration(UUID.fromString(inspirationDto.getId()));
+    public Inspiration updateInspiration(String inspirationId, CreateOrUpdateInspirationDto inspirationDto) {
+        Inspiration existingInspiration = findInspiration(UUID.fromString(inspirationId));
         Inspiration updatedInspiration = existingInspiration.update(inspirationDto);
 
         inspirations.remove(existingInspiration);
@@ -90,5 +95,9 @@ public class Project implements Serializable {
         return inspirations.stream()
                 .filter(inspiration -> inspiration.getId().equals(inspirationId))
                 .findAny();
+    }
+
+    public void createDetails(CreateUpdateProjectDetailsDto projectDetailsDto) {
+        details = Details.create(projectDetailsDto);
     }
 }

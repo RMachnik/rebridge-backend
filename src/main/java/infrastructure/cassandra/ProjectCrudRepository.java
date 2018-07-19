@@ -1,6 +1,6 @@
 package infrastructure.cassandra;
 
-import domain.Project;
+import domain.project.Project;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

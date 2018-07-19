@@ -2,7 +2,7 @@ package application.rest
 
 import application.dto.DtoAssemblers
 import application.dto.ProjectDto
-import domain.Project
+import domain.project.Project
 import spock.lang.Specification
 
 class DtoAssemblersSpec extends Specification {

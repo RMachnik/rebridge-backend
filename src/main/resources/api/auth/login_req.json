@@ -4,8 +4,8 @@
   "description": "POST: Login request /login",
   "type": "object",
   "properties": {
-    "username": {
-      "description": "username",
+    "email": {
+      "description": "email",
       "type": "string"
     },
     "password": {
@@ -14,7 +14,7 @@
     }
   },
   "required": [
-    "username",
+    "email",
     "password"
   ]
 }

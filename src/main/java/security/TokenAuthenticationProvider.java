@@ -2,6 +2,7 @@ package security;
 
 import application.UserAuthenticationService;
 import application.dto.CurrentUser;
+import domain.user.Roles;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -28,7 +30,7 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
     }
 
     @Override
-    protected UserDetails retrieveUser(final String username, final UsernamePasswordAuthenticationToken authentication) {
+    protected UserDetails retrieveUser(final String email, final UsernamePasswordAuthenticationToken authentication) {
         final String token = (String) authentication.getCredentials();
         return Optional
                 .ofNullable(token)
@@ -36,8 +38,9 @@ final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticatio
                 .flatMap(auth::findByToken)
                 .map(user -> CurrentUser.builder()
                         .id(user.getId().toString())
-                        .username(user.getUsername())
+                        .email(user.getEmail())
                         .password(user.getPassword())
+                        .roles(user.getRoles().stream().map(Roles::toString).collect(Collectors.toSet()))
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("Cannot findById user with authentication" + token));
     }

@@ -1,10 +1,11 @@
 package application.rest;
 
+import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.CurrentUser;
 import application.dto.DtoAssemblers;
 import application.dto.InspirationDto;
 import application.service.InspirationService;
-import domain.Inspiration;
+import domain.project.Inspiration;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static application.dto.DtoAssemblers.fromInspirationToDto;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -45,30 +47,30 @@ public class InspirationController {
         );
     }
 
-    @GetMapping("/{inspirationId}")
-    public ResponseEntity inspiration(
-            @AuthenticationPrincipal CurrentUser currentUser,
-            @PathVariable String projectId,
-            @PathVariable String inspirationId
-    ) {
-        return ResponseEntity.ok(inspirationService.findById(currentUser.getId(), projectId, inspirationId));
-    }
-
     @PostMapping
     ResponseEntity create(UriComponentsBuilder builder,
                           @AuthenticationPrincipal CurrentUser currentUser,
                           @PathVariable String projectId,
-                          @RequestBody InspirationDto inspirationDto
+                          @RequestBody CreateOrUpdateInspirationDto inspirationDto
     ) {
 
-        Inspiration createdInspiration = inspirationService.create(currentUser.getId(), projectId, inspirationDto.getName());
+        Inspiration createdInspiration = inspirationService.create(currentUser.getId(), projectId, inspirationDto);
         UriComponents pathToInspiration = builder.path(INSPIRATIONS)
                 .path("{id}")
                 .buildAndExpand(projectId, createdInspiration.getId());
 
         return ResponseEntity
                 .created(pathToInspiration.toUri())
-                .body(DtoAssemblers.fromInspirationToDto(createdInspiration));
+                .body(fromInspirationToDto(createdInspiration));
+    }
+
+    @GetMapping("/{inspirationId}")
+    public ResponseEntity inspiration(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @PathVariable String inspirationId
+    ) {
+        return ResponseEntity.ok(fromInspirationToDto(inspirationService.findById(currentUser.getId(), projectId, inspirationId)));
     }
 
     @PutMapping("/{inspirationId}")
@@ -76,11 +78,11 @@ public class InspirationController {
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @PathVariable String inspirationId,
-            @RequestBody InspirationDto inspirationDto
+            @RequestBody CreateOrUpdateInspirationDto inspirationDto
     ) {
-        inspirationDto.setId(inspirationId);
-        return ResponseEntity.ok(inspirationService
-                .update(currentUser.getId(), projectId, inspirationDto));
+        return ResponseEntity.ok(
+                fromInspirationToDto(inspirationService
+                        .update(currentUser.getId(), projectId, inspirationId, inspirationDto)));
     }
 
     @DeleteMapping("/{inspirationId}")

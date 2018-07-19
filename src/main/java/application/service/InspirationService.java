@@ -1,8 +1,8 @@
 package application.service;
 
-import application.dto.InspirationDto;
-import domain.Inspiration;
-import domain.Project;
+import application.dto.CreateOrUpdateInspirationDto;
+import domain.project.Inspiration;
+import domain.project.Project;
 import lombok.Value;
 
 import java.util.List;
@@ -26,19 +26,19 @@ public class InspirationService {
 
     }
 
-    public Inspiration create(String userId, String projectId, String inspirationName) {
+    public Inspiration create(String userId, String projectId, CreateOrUpdateInspirationDto inspirationDto) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
 
-        Inspiration inspiration = project.addInspiration(inspirationName);
+        Inspiration inspiration = project.addInspiration(inspirationDto);
         projectService.save(project);
 
         return inspiration;
     }
 
-    public Inspiration update(String userId, String projectId, InspirationDto inspirationDto) {
+    public Inspiration update(String userId, String projectId, String inspirationId, CreateOrUpdateInspirationDto inspirationDto) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
 
-        Inspiration updatedInspiration = project.updateInspiration(inspirationDto);
+        Inspiration updatedInspiration = project.updateInspiration(inspirationId, inspirationDto);
         projectService.save(project);
         return updatedInspiration;
     }

@@ -2,7 +2,7 @@ package application.service;
 
 import application.UserAuthenticationService;
 import application.dto.CurrentUser;
-import domain.User;
+import domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
@@ -23,9 +23,8 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
     final Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
 
     @Override
-    public Optional<String> login(final String username, final String password) {
-        User foundUser = userService.findByUsername(username);
-        foundUser.checkPassword(password);
+    public Optional<String> login(final String email, final String password) {
+        User foundUser = userService.login(email, password);
 
         String uuid = UUID.randomUUID().toString();
         loggedInUsers.put(uuid, foundUser);
@@ -33,9 +32,9 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
     }
 
     @Override
-    public Optional<String> register(String username, String password) {
-        userService.create(username, password);
-        return login(username, password);
+    public Optional<String> register(String email, String password) {
+        userService.create(email, password);
+        return login(email, password);
     }
 
     @Override

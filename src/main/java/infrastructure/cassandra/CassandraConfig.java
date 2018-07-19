@@ -1,11 +1,8 @@
 package infrastructure.cassandra;
 
-import domain.PictureRepository;
-import domain.ProjectRepository;
-import domain.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
@@ -16,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@Import(CassandraRepositoriesConfig.class)
 @EnableCassandraRepositories(basePackages = "infrastructure.cassandra")
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
@@ -55,20 +53,5 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Override
     public String[] getEntityBasePackages() {
         return new String[]{"domain"};
-    }
-
-    @Bean
-    UserRepository cassandraUserRepository(UserCrudRepository userCrudRepository) {
-        return new CassandraUserRepository(userCrudRepository);
-    }
-
-    @Bean
-    ProjectRepository cassandraProjectRepository(ProjectCrudRepository projectCrudRepository) {
-        return new CassandraProjectRepository(projectCrudRepository);
-    }
-
-    @Bean
-    PictureRepository cassandraPictureRepository(PictureCrudRepository pictureCrudRepository) {
-        return new CassandraPictureRepository(pictureCrudRepository);
     }
 }

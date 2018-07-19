@@ -9,7 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,22 +20,30 @@ public class CurrentUser implements UserDetails {
 
     String id;
     @JsonProperty(required = true)
-    String username;
+    String email;
     String password;
+    Set<String> roles;
 
     @JsonCreator
     CurrentUser(@JsonProperty("id") final String id,
-                @JsonProperty("username") final String username,
-                @JsonProperty("password") final String password) {
+                @JsonProperty("email") final String email,
+                @JsonProperty("password") final String password,
+                Set<String> roles) {
         super();
         this.id = requireNonNull(id);
-        this.username = requireNonNull(username);
+        this.email = requireNonNull(email);
         this.password = requireNonNull(password);
+        this.roles = roles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return roles.stream().map(Authority::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @JsonIgnore
@@ -64,5 +73,15 @@ public class CurrentUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Value
+    static class Authority implements GrantedAuthority {
+        String authority;
+
+        @Override
+        public String getAuthority() {
+            return authority;
+        }
     }
 }

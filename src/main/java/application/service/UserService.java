@@ -2,28 +2,30 @@ package application.service;
 
 import application.service.RepositoryExceptions.UserRepositoryException;
 import application.service.ServiceExceptions.ServiceException;
-import domain.User;
-import domain.UserRepository;
-import lombok.Value;
+import domain.project.DomainExceptions;
+import domain.user.User;
+import domain.user.UserRepository;
+import lombok.AllArgsConstructor;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.lang.String.format;
 
-@Value
+@AllArgsConstructor
 public class UserService {
 
     UserRepository userRepository;
 
-    public User create(String username, String password) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new ServiceException(format("username %s already exists, try different name", username));
+    public User create(String email, String password) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new ServiceException(format("email %s already exists, try different name", email));
         }
 
-        User user = User.createUser(username, password);
+        User user = User.createUser(email, password);
         return userRepository.save(user)
                 .getOrElseThrow(
-                        ex -> new UserRepositoryException(format("problem with adding %s", username, ex))
+                        ex -> new UserRepositoryException(format("problem with adding %s", email, ex))
                 );
     }
 
@@ -37,9 +39,20 @@ public class UserService {
                 .getOrElseThrow(() -> new UserRepositoryException(format("problem with updating user %s", user.getId())));
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserRepositoryException(format("user %s not found", email)));
+    }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserRepositoryException(format("user %s not found", username)));
+    public Optional<User> tryFindUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public User login(String email, String password) {
+        User user = findByEmail(email);
+        if (!user.isPasswordValid(password)) {
+            throw new DomainExceptions.InvalidPassword(String.format("password doesn't match %s", email));
+        }
+        return user;
     }
 }

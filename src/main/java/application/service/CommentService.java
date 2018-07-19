@@ -2,9 +2,9 @@ package application.service;
 
 import application.dto.CommentDto;
 import application.dto.CurrentUser;
-import domain.Comment;
-import domain.Inspiration;
-import domain.Project;
+import domain.project.Comment;
+import domain.project.Inspiration;
+import domain.project.Project;
 import lombok.Value;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package domain;
+package domain.project;
 
 import com.datastax.driver.core.DataType;
 import lombok.Data;

@@ -2,9 +2,10 @@ package application.service;
 
 import application.dto.ProjectDto;
 import application.service.RepositoryExceptions.ProjectRepositoryException;
-import domain.Project;
-import domain.ProjectRepository;
-import domain.User;
+import domain.project.DomainExceptions;
+import domain.project.Project;
+import domain.project.ProjectRepository;
+import domain.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Value;
@@ -34,28 +35,29 @@ public class ProjectService {
 
     public Project findByUserIdAndProjectId(String userId, String projectId) {
         User user = userService.findById(userId);
-        user.canUpdateProject(UUID.fromString(projectId));
+        canUpdateProject(user, projectId);
         return projectRepository.findById(UUID.fromString(projectId))
                 .orElseThrow(() -> new ProjectRepositoryException(format("unable to load project %s", projectId)));
     }
 
+    private void canUpdateProject(User user, String projectId) {
+        if (!user.canUpdateProject(UUID.fromString(projectId))) {
+            new DomainExceptions.UserActionNotAllowed(format("user %s is not allowed see this project %s", user.getId(), projectId));
+        }
+    }
+
     public Project create(String userId, String projectName) {
         User user = userService.findById(userId);
-
-        Project project = Project.create(projectName);
-
-        Project addedProject = save(project);
-
-        user.getProjectIds().add(addedProject.getId());
+        Project project = user.createProject(projectName, projectRepository);
         userService.update(user);
-        return addedProject;
+        return project;
 
     }
 
 
     public Project update(String userId, ProjectDto projectDto) {
         User user = userService.findById(userId);
-        user.canUpdateProject(UUID.fromString(projectDto.getId()));
+        canUpdateProject(user, projectDto.getId());
 
         Project existingProject = retrieveProjectById(projectDto.getId());
         Project updatedProject = existingProject.update(projectDto);
@@ -66,9 +68,9 @@ public class ProjectService {
 
     public void remove(String userId, String projectId) {
         User user = userService.findById(userId);
-        user.canUpdateProject(UUID.fromString(projectId));
+        canUpdateProject(user, projectId);
 
-        user.removeProject(projectId);
+        user.removeProject(UUID.fromString(projectId));
         userService.update(user);
         //todo remove project if there are no users participating in this project
     }

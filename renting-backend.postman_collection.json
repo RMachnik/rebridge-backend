@@ -121,7 +121,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"username\":\"zdenek1\", \"password\":\"pass\"}"
+          "raw": "{\"email\":\"zdenek1\", \"password\":\"pass\"}"
         },
         "url": {
           "raw": "{{PROD}}:8080/auth/register",
@@ -165,7 +165,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"username\":\"zdenek1\", \"password\":\"pass\"}"
+          "raw": "{\"email\":\"zdenek1\", \"password\":\"pass\"}"
         },
         "url": {
           "raw": "{{HOST}}:8080/auth/login",

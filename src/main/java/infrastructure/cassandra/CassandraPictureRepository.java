@@ -1,7 +1,7 @@
 package infrastructure.cassandra;
 
-import domain.Picture;
-import domain.PictureRepository;
+import domain.project.Picture;
+import domain.project.PictureRepository;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
