@@ -2,7 +2,7 @@ package domain.user;
 
 import com.datastax.driver.core.DataType;
 import com.google.common.collect.Sets;
-import domain.project.DomainExceptions;
+import domain.project.DomainExceptions.UserActionNotAllowed;
 import domain.project.Id;
 import domain.project.Project;
 import domain.project.ProjectRepository;
@@ -15,8 +15,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,7 +42,7 @@ public class User implements Id<UUID>, Serializable {
     ContactDetails contactDetails;
 
     @NonNull
-    List<UUID> projectIds;
+    Set<UUID> projectIds;
 
     @NonNull
     Set<Roles> roles;
@@ -52,13 +51,13 @@ public class User implements Id<UUID>, Serializable {
                 String email,
                 String password,
                 ContactDetails contactDetails,
-                List<UUID> projectIds,
+                Set<UUID> projectIds,
                 Set<Roles> roles) {
         this.id = id;
         this.email = Email.isValid(email);
         this.password = password;
         this.contactDetails = contactDetails;
-        this.projectIds = projectIds != null ? projectIds : new ArrayList<>();
+        this.projectIds = projectIds != null ? new HashSet<>(projectIds) : new HashSet<>();
         this.roles = roles != null ? roles : Sets.newHashSet();
     }
 
@@ -68,7 +67,7 @@ public class User implements Id<UUID>, Serializable {
                 .id(UUID.randomUUID())
                 .email(Email.isValid(email))
                 .password(password)
-                .projectIds(new ArrayList<>())
+                .projectIds(new HashSet<>())
                 .roles(Sets.newHashSet(ARCHITECT))
                 .build();
     }
@@ -84,12 +83,13 @@ public class User implements Id<UUID>, Serializable {
     public boolean canUpdateProject(UUID projectId) {
         return projectIds.stream()
                 .filter(project -> project.equals(projectId))
-                .count() > 0;
+                .findAny()
+                .isPresent();
     }
 
     public Project createProject(String projectName, ProjectRepository projectRepository) {
         if (!isArchitect()) {
-            throw new DomainExceptions.UserActionNotAllowed(format("Only Architects can create projects! %s is not an architect!", email));
+            throw new UserActionNotAllowed(format("Only Architects can create projects! %s is not an architect!", email));
         }
         Project project = Project.create(projectName);
         projectRepository.save(project);

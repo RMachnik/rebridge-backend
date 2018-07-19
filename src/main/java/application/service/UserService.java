@@ -2,7 +2,8 @@ package application.service;
 
 import application.service.RepositoryExceptions.UserRepositoryException;
 import application.service.ServiceExceptions.ServiceException;
-import domain.project.DomainExceptions;
+import domain.project.DomainExceptions.InvalidPassword;
+import domain.user.Email;
 import domain.user.User;
 import domain.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import static java.lang.String.format;
 public class UserService {
 
     UserRepository userRepository;
+    MailService mailService;
 
     public User create(String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) {
@@ -23,10 +25,13 @@ public class UserService {
         }
 
         User user = User.createUser(email, password);
-        return userRepository.save(user)
+        User createdUser = userRepository.save(user)
                 .getOrElseThrow(
                         ex -> new UserRepositoryException(format("problem with adding %s", email, ex))
                 );
+
+        mailService.sendWelcomeEmail(new Email(user.getEmail()));
+        return createdUser;
     }
 
     public User findById(String userId) {
@@ -51,7 +56,7 @@ public class UserService {
     public User login(String email, String password) {
         User user = findByEmail(email);
         if (!user.isPasswordValid(password)) {
-            throw new DomainExceptions.InvalidPassword(String.format("password doesn't match %s", email));
+            throw new InvalidPassword(String.format("password doesn't match %s", email));
         }
         return user;
     }

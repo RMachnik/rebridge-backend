@@ -10,6 +10,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 class UserSpec extends Specification {
+
     @Shared
     def existingProjectId = UUID.randomUUID()
 
@@ -18,7 +19,7 @@ class UserSpec extends Specification {
         UUID projectId = UUID.randomUUID()
         UUID userId = UUID.randomUUID()
         when:
-        User user = new User(userId, "mail@mailinator.com", "password", new ContactDetails(), [projectId], [Roles.ARCHITECT].toSet())
+        User user = new User(userId, "mail@mailinator.com", "password", new ContactDetails(), [projectId].toSet(), [Roles.ARCHITECT].toSet())
         then:
         user.id == userId
         user.email == "mail@mailinator.com"

@@ -11,18 +11,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(RestConfig.class)
+@Import({RestConfig.class, MailConfig.class})
 public class ApplicationConfig {
 
 
     @Bean
-    UserService userService(UserRepository userRepository) {
-        return new UserService(userRepository);
+    UserService userService(UserRepository userRepository, MailService mailService) {
+        return new UserService(userRepository, mailService);
     }
 
     @Bean
-    UserAuthenticationService userAuthenticationService(UserRepository userRepository) {
-        return new InMemoryAuthenticationService(new UserService(userRepository));
+    UserAuthenticationService userAuthenticationService(UserService userService) {
+        return new InMemoryAuthenticationService(userService);
     }
 
     @Bean
