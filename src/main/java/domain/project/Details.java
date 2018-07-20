@@ -4,7 +4,7 @@ package domain.project;
 import application.dto.AddressDto;
 import application.dto.CreateUpdateProjectDetailsDto;
 import domain.common.Address;
-import domain.user.Email;
+import domain.user.EmailAddress;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
@@ -23,13 +23,13 @@ public class Details implements Serializable {
     Double budget;
     Surface surface;
     Address location;
-    List<Email> investorEmails;
+    List<EmailAddress> investorEmailAddresses;
     Survey survey;
 
     public static Details create(CreateUpdateProjectDetailsDto projectDetailsDto) {
         AddressDto location = projectDetailsDto.getLocation();
         return Details.builder()
-                .investorEmails(projectDetailsDto.getInvestorEmails().stream().map(Email::new).collect(toList()))
+                .investorEmails(projectDetailsDto.getInvestorEmails().stream().map(EmailAddress::new).collect(toList()))
                 .budget(projectDetailsDto.getBudget())
                 .location(new Address(location.getNumber(), location.getStreetName(), location.getPostalCode(), location.getCity()))
                 .surface(new Surface(BigDecimal.valueOf(projectDetailsDto.getSurface())))
@@ -42,7 +42,7 @@ public class Details implements Serializable {
                 .budget(updateProjectDetailsDto.getBudget() != null ? updateProjectDetailsDto.getBudget() : budget)
                 .location(addressDto != null ? new Address(addressDto.getNumber(), addressDto.getStreetName(), addressDto.getPostalCode(), addressDto.getCity()) : location)
                 .surface(updateProjectDetailsDto.getSurface() != null ? new Surface(BigDecimal.valueOf(updateProjectDetailsDto.getSurface())) : surface)
-                .investorEmails(updateProjectDetailsDto.getInvestorEmails().stream().map(Email::new).collect(toList()))
+                .investorEmails(updateProjectDetailsDto.getInvestorEmails().stream().map(EmailAddress::new).collect(toList()))
                 .build();
     }
 }

@@ -54,7 +54,7 @@ public class User implements Id<UUID>, Serializable {
                 Set<UUID> projectIds,
                 Set<Roles> roles) {
         this.id = id;
-        this.email = Email.isValid(email);
+        this.email = EmailAddress.isValid(email);
         this.password = password;
         this.contactDetails = contactDetails;
         this.projectIds = projectIds != null ? new HashSet<>(projectIds) : new HashSet<>();
@@ -65,7 +65,7 @@ public class User implements Id<UUID>, Serializable {
         return User
                 .builder()
                 .id(UUID.randomUUID())
-                .email(Email.isValid(email))
+                .email(EmailAddress.isValid(email))
                 .password(password)
                 .projectIds(new HashSet<>())
                 .roles(Sets.newHashSet(ARCHITECT))

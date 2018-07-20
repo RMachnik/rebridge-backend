@@ -1,6 +1,6 @@
 package application.service;
 
-import domain.user.Email;
+import domain.user.EmailAddress;
 import lombok.AllArgsConstructor;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.Mailer;
@@ -10,11 +10,11 @@ public class MailService {
 
     Mailer mailer;
 
-    public void sendWelcomeEmail(Email receipient) {
+    public void sendWelcomeEmail(EmailAddress receipient) {
         mailer.sendMail(welcomeEmail(receipient), true);
     }
 
-    private org.simplejavamail.email.Email welcomeEmail(Email receipient) {
+    private org.simplejavamail.email.Email welcomeEmail(EmailAddress receipient) {
         return EmailBuilder
                 .startingBlank()
                 .from("Rebridge", "doNotReply@mail.com")

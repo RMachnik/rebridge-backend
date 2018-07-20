@@ -10,11 +10,11 @@ import static java.lang.String.format;
 
 @UserDefinedType
 @Value
-public class Email {
+public class EmailAddress {
 
     String value;
 
-    public Email(String value) {
+    public EmailAddress(String value) {
         this.value = isValid(value);
     }
 

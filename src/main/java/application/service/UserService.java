@@ -3,7 +3,7 @@ package application.service;
 import application.service.RepositoryExceptions.UserRepositoryException;
 import application.service.ServiceExceptions.ServiceException;
 import domain.project.DomainExceptions.InvalidPassword;
-import domain.user.Email;
+import domain.user.EmailAddress;
 import domain.user.User;
 import domain.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class UserService {
                         ex -> new UserRepositoryException(format("problem with adding %s", email, ex))
                 );
 
-        mailService.sendWelcomeEmail(new Email(user.getEmail()));
+        mailService.sendWelcomeEmail(new EmailAddress(user.getEmail()));
         return createdUser;
     }
 

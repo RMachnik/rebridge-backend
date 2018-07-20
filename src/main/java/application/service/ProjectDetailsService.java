@@ -6,7 +6,7 @@ import application.dto.InvestorDto;
 import application.dto.ProjectDetailsDto;
 import domain.project.Details;
 import domain.project.Project;
-import domain.user.Email;
+import domain.user.EmailAddress;
 import domain.user.User;
 import lombok.Value;
 
@@ -28,9 +28,9 @@ public class ProjectDetailsService {
         Details details = project.getDetails();
 
         List<InvestorDto> investors =
-                details.getInvestorEmails()
+                details.getInvestorEmailAddresses()
                         .stream()
-                        .map(Email::getValue)
+                        .map(EmailAddress::getValue)
                         .map(mapInvestorOrEmail())
                         .collect(toList());
 
