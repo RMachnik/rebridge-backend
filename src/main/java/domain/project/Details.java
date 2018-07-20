@@ -29,7 +29,7 @@ public class Details implements Serializable {
     public static Details create(CreateUpdateProjectDetailsDto projectDetailsDto) {
         AddressDto location = projectDetailsDto.getLocation();
         return Details.builder()
-                .investorEmails(projectDetailsDto.getInvestorEmails().stream().map(EmailAddress::new).collect(toList()))
+                .investorEmailAddresses(projectDetailsDto.getInvestorEmails().stream().map(EmailAddress::new).collect(toList()))
                 .budget(projectDetailsDto.getBudget())
                 .location(new Address(location.getNumber(), location.getStreetName(), location.getPostalCode(), location.getCity()))
                 .surface(new Surface(BigDecimal.valueOf(projectDetailsDto.getSurface())))
@@ -42,7 +42,7 @@ public class Details implements Serializable {
                 .budget(updateProjectDetailsDto.getBudget() != null ? updateProjectDetailsDto.getBudget() : budget)
                 .location(addressDto != null ? new Address(addressDto.getNumber(), addressDto.getStreetName(), addressDto.getPostalCode(), addressDto.getCity()) : location)
                 .surface(updateProjectDetailsDto.getSurface() != null ? new Surface(BigDecimal.valueOf(updateProjectDetailsDto.getSurface())) : surface)
-                .investorEmails(updateProjectDetailsDto.getInvestorEmails().stream().map(EmailAddress::new).collect(toList()))
+                .investorEmailAddresses(updateProjectDetailsDto.getInvestorEmails().stream().map(EmailAddress::new).collect(toList()))
                 .build();
     }
 }
