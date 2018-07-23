@@ -1,6 +1,5 @@
 package application.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -12,8 +11,6 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.requireNonNull;
-
 @Value
 @Builder
 public class CurrentUser implements UserDetails {
@@ -24,14 +21,12 @@ public class CurrentUser implements UserDetails {
     String token;
     Set<String> roles;
 
-    @JsonCreator
-    CurrentUser(@JsonProperty("id") final String id,
-                @JsonProperty("email") final String email,
-                String token,
-                Set<String> roles) {
-        super();
-        this.id = requireNonNull(id);
-        this.email = requireNonNull(email);
+    public CurrentUser(String id,
+                       String email,
+                       String token,
+                       Set<String> roles) {
+        this.id = id;
+        this.email = email;
         this.roles = roles;
         this.token = token;
     }
@@ -76,7 +71,7 @@ public class CurrentUser implements UserDetails {
     }
 
     @Value
-    static class Authority implements GrantedAuthority {
+    public static class Authority implements GrantedAuthority {
         String authority;
 
         @Override

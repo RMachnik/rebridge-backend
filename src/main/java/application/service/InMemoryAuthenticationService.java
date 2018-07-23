@@ -14,8 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@AllArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
+@AllArgsConstructor
 public final class InMemoryAuthenticationService implements UserAuthenticationService {
 
     @NonNull

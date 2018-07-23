@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
-RUN ./gradlew build
+RUN ./gradlew clean build -x generateContractTests
 
 ENV HOST 0.0.0.0
 EXPOSE 8080

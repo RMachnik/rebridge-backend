@@ -21,9 +21,17 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Value("${spring.data.cassandra.contact-points}")
     String contactPoint;
 
+    @Value("${spring.data.cassandra.port}")
+    Integer port;
+
     @Override
     protected String getContactPoints() {
         return contactPoint;
+    }
+
+    @Override
+    protected int getPort() {
+        return port;
     }
 
     @Override
