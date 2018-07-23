@@ -86,7 +86,7 @@ dependencies {
     testCompile('org.cassandraunit:cassandra-unit:3.5.0.1')
     testCompile('org.cassandraunit:cassandra-unit-spring:3.5.0.1')
     testCompile('org.springframework:spring-test:5.0.7.RELEASE')
-
+    testCompile('org.fusesource:sigar:1.6.4')
 }
 
 dependencyManagement {
