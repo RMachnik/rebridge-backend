@@ -18,7 +18,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @UserDefinedType
 @Data
 @Builder
-public class Inspiration implements Id<UUID>, Serializable {
+public class Inspiration implements WithId<UUID>, Serializable {
 
     @NonNull
     UUID id;

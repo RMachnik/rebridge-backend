@@ -1,5 +1,5 @@
 package domain.project;
 
-public interface Id<T> {
+public interface WithId<T> {
     T getId();
 }

@@ -1,7 +1,8 @@
-package infrastructure.cassandra;
+package infrastructure.extended;
 
 import domain.project.Project;
 import domain.project.ProjectRepository;
+import infrastructure.springData.ProjectCrudRepository;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class CassandraProjectRepository implements ProjectRepository {
+public class ExtendedProjectRepository implements ProjectRepository {
 
     ProjectCrudRepository projectCrudRepository;
 

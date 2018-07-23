@@ -2,7 +2,7 @@ package domain.survey;
 
 import application.dto.SurveyTemplateDto;
 import com.datastax.driver.core.DataType;
-import domain.project.Id;
+import domain.project.WithId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Data
 @Builder
 @AllArgsConstructor
-public class SurveyTemplate implements Id<UUID>, Serializable {
+public class SurveyTemplate implements WithId<UUID>, Serializable {
 
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)

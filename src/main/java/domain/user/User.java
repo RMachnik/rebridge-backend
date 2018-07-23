@@ -3,9 +3,9 @@ package domain.user;
 import com.datastax.driver.core.DataType;
 import com.google.common.collect.Sets;
 import domain.project.DomainExceptions.UserActionNotAllowed;
-import domain.project.Id;
 import domain.project.Project;
 import domain.project.ProjectRepository;
+import domain.project.WithId;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -25,7 +25,7 @@ import static java.lang.String.format;
 @Table("users")
 @Value
 @Builder
-public class User implements Id<UUID>, Serializable {
+public class User implements WithId<UUID>, Serializable {
 
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)

@@ -18,7 +18,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @UserDefinedType
 @Data
 @Builder
-public class Comment implements Id<UUID>, Serializable {
+public class Comment implements WithId<UUID>, Serializable {
 
     @NotNull
     UUID id;

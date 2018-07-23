@@ -1,7 +1,8 @@
-package infrastructure.cassandra;
+package infrastructure.extended;
 
 import domain.project.Picture;
 import domain.project.PictureRepository;
+import infrastructure.springData.PictureCrudRepository;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class CassandraPictureRepository implements PictureRepository {
+public class ExtendedPictureRepository implements PictureRepository {
 
     PictureCrudRepository pictureCrudRepository;
 

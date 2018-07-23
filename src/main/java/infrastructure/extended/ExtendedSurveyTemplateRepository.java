@@ -1,8 +1,9 @@
-package infrastructure.cassandra;
+package infrastructure.extended;
 
 import com.google.common.collect.Lists;
 import domain.survey.SurveyTemplate;
 import domain.survey.SurveyTemplateRepository;
+import infrastructure.springData.SurveyTemplateCrudRepository;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class CassandraSurveyTemplateRepository implements SurveyTemplateRepository {
+public class ExtendedSurveyTemplateRepository implements SurveyTemplateRepository {
 
     SurveyTemplateCrudRepository surveyTemplateCrudRepository;
 

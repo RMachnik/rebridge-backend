@@ -2,7 +2,6 @@ package infrastructure.cassandra;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
@@ -13,8 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@Import(CassandraRepositoriesConfig.class)
-@EnableCassandraRepositories(basePackages = "infrastructure.cassandra")
+@EnableCassandraRepositories(basePackages = "infrastructure.springData")
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     public static final String KEYSPACE = "rebridge";

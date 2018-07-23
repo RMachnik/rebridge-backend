@@ -8,6 +8,7 @@ import domain.project.DomainExceptions.MissingInspirationException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -25,8 +26,9 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Table("projects")
 @Data
 @Builder
-public class Project implements Serializable {
+public class Project implements Serializable, WithId<UUID> {
 
+    @Id
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)
     @NonNull

@@ -1,4 +1,4 @@
-package infrastructure.cassandra;
+package infrastructure.springData;
 
 import domain.project.Project;
 import org.springframework.data.repository.CrudRepository;

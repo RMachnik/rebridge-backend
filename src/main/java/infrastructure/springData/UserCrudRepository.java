@@ -1,4 +1,4 @@
-package infrastructure.cassandra;
+package infrastructure.springData;
 
 import domain.user.User;
 import org.springframework.data.cassandra.repository.Query;

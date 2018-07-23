@@ -4,6 +4,7 @@ import application.ApplicationConfig;
 import application.dto.SurveyTemplateDto;
 import application.service.SurveyTemplateService;
 import infrastructure.cassandra.CassandraConfig;
+import infrastructure.extended.ExtendedRepositoriesConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @SpringBootApplication
-@Import({CassandraConfig.class, ApplicationConfig.class, SecurityConfig.class})
+@Import({CassandraConfig.class, ExtendedRepositoriesConfig.class, ApplicationConfig.class, SecurityConfig.class})
 public class Application {
 
     @Autowired

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Table("pictures")
 @Data
-public class Picture implements Id<UUID>, Serializable {
+public class Picture implements WithId<UUID>, Serializable {
 
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)
