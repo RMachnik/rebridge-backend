@@ -33,6 +33,7 @@ public abstract class Base {
     UserRepository userRepository;
     @Autowired
     private WebApplicationContext context;
+
     private MockMvc mvc;
 
     @Before
