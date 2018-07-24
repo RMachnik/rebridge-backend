@@ -8,8 +8,9 @@ import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecif
 import org.springframework.data.cassandra.core.cql.keyspace.DropKeyspaceSpecification;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 @Configuration
 @EnableCassandraRepositories(basePackages = "infrastructure.springData")
@@ -43,12 +44,12 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
                 .createKeyspace(KEYSPACE)
                 .ifNotExists();
 
-        return Arrays.asList(specification);
+        return asList(specification);
     }
 
     @Override
     protected List<DropKeyspaceSpecification> getKeyspaceDrops() {
-        return Arrays.asList(DropKeyspaceSpecification.dropKeyspace(KEYSPACE));
+        return asList(DropKeyspaceSpecification.dropKeyspace(KEYSPACE));
     }
 
     @Override

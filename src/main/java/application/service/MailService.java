@@ -14,11 +14,11 @@ public class MailService {
         mailer.sendMail(welcomeEmail(receipient), true);
     }
 
-    private org.simplejavamail.email.Email welcomeEmail(EmailAddress receipient) {
+    private org.simplejavamail.email.Email welcomeEmail(EmailAddress recipient) {
         return EmailBuilder
                 .startingBlank()
                 .from("Rebridge", "doNotReply@mail.com")
-                .to(receipient.getValue())
+                .to(recipient.getValue())
                 .withSubject("Welcome")
                 .withPlainText("Hi, you've successfully registered to rebridge.")
                 .buildEmail();

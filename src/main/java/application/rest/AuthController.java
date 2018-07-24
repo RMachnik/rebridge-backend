@@ -1,8 +1,8 @@
 package application.rest;
 
-import application.UserAuthenticationService;
 import application.dto.AuthDto;
 import application.dto.TokenDto;
+import application.service.UserAuthenticationService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;

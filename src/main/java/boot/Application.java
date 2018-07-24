@@ -1,6 +1,6 @@
 package boot;
 
-import application.ApplicationConfig;
+import application.ApplicationServicesConfig;
 import application.dto.SurveyTemplateDto;
 import application.service.SurveyTemplateService;
 import infrastructure.cassandra.CassandraConfig;
@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @SpringBootApplication
-@Import({CassandraConfig.class, ExtendedRepositoriesConfig.class, ApplicationConfig.class, SecurityConfig.class})
+@Import({CassandraConfig.class, ExtendedRepositoriesConfig.class, ApplicationServicesConfig.class, SecurityConfig.class})
 public class Application {
 
     @Autowired

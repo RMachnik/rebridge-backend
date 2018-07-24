@@ -1,4 +1,4 @@
-package application;
+package application.service;
 
 import application.dto.CurrentUser;
 import domain.user.User;

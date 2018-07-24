@@ -1,6 +1,5 @@
 package application.service;
 
-import application.UserAuthenticationService;
 import application.dto.CurrentUser;
 import domain.user.User;
 import lombok.AllArgsConstructor;

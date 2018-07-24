@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({RestConfig.class, MailConfig.class})
-public class ApplicationConfig {
+public class ApplicationServicesConfig {
 
 
     @Bean

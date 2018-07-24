@@ -1,6 +1,6 @@
 package security;
 
-import application.UserAuthenticationService;
+import application.service.UserAuthenticationService;
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

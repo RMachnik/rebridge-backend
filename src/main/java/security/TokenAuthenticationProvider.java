@@ -1,7 +1,7 @@
 package security;
 
-import application.UserAuthenticationService;
 import application.dto.CurrentUser;
+import application.service.UserAuthenticationService;
 import domain.user.Roles;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
