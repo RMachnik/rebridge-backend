@@ -6,6 +6,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -39,10 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final RequestMatcher SCHEMA = new AndRequestMatcher(
             new AntPathRequestMatcher("/schemas/**")
     );
-    private static final RequestMatcher LOGOUT = new AndRequestMatcher(
-            new AntPathRequestMatcher("/auth/logout")
-    );
-    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new AndRequestMatcher(AUTH_URLS, SCHEMA, LOGOUT));
+    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new AndRequestMatcher(AUTH_URLS, SCHEMA));
 
     private final AuthenticationProvider provider;
 
@@ -59,7 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(final WebSecurity web) {
-        web.ignoring().requestMatchers(AUTH_URLS, SCHEMA);
+        web.ignoring().requestMatchers(AUTH_URLS, SCHEMA)
+                .and()
+                .ignoring()
+                .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
     @Override
@@ -74,6 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(provider)
                 .addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

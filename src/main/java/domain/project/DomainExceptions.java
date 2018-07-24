@@ -6,7 +6,6 @@ public class DomainExceptions {
         public DomainException(String message) {
             super(message);
         }
-
     }
 
     public static class UserActionNotAllowed extends DomainException {
