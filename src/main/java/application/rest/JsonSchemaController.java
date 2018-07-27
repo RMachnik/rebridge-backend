@@ -33,6 +33,11 @@ final class JsonSchemaController {
         schemaGenerator = new JsonSchemaGenerator(objectMapper);
     }
 
+    @GetMapping("error")
+    ResponseEntity<String> apiError() {
+        return generateSchema(RestExceptionHandler.ApiError.class);
+    }
+
     @GetMapping("auth")
     ResponseEntity<String> auth() {
         return generateSchema(AuthDto.class);

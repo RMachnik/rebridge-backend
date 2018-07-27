@@ -1,17 +1,16 @@
 package application.service;
 
 import application.dto.CurrentUser;
-import domain.user.User;
 
 import java.util.Optional;
 
 public interface UserAuthenticationService {
 
-    Optional<String> login(String email, String password);
+    Optional<CurrentUser> login(String email, String password);
 
-    Optional<String> register(String email, String password);
+    Optional<CurrentUser> register(String email, String password);
 
-    Optional<User> findByToken(String token);
+    Optional<CurrentUser> findByToken(String token);
 
     void logout(CurrentUser user);
 }

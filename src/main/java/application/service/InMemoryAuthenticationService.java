@@ -1,6 +1,7 @@
 package application.service;
 
 import application.dto.CurrentUser;
+import application.dto.DtoAssemblers;
 import domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -23,23 +24,25 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
     final Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
 
     @Override
-    public Optional<String> login(final String email, final String password) {
+    public Optional<CurrentUser> login(final String email, final String password) {
         User foundUser = userService.login(email, password);
 
-        String uuid = UUID.randomUUID().toString();
-        loggedInUsers.put(uuid, foundUser);
-        return Optional.of(uuid);
+        String token = UUID.randomUUID().toString();
+        loggedInUsers.put(token, foundUser);
+
+        return Optional.of(DtoAssemblers.fromUserToCurrentUser(foundUser, token));
     }
 
     @Override
-    public Optional<String> register(String email, String password) {
+    public Optional<CurrentUser> register(String email, String password) {
         userService.create(email, password);
         return login(email, password);
     }
 
     @Override
-    public Optional<User> findByToken(final String token) {
-        return Optional.ofNullable(loggedInUsers.get(token));
+    public Optional<CurrentUser> findByToken(final String token) {
+        User user = loggedInUsers.get(token);
+        return Optional.ofNullable(DtoAssemblers.fromUserToCurrentUser(user, token));
     }
 
     @Override

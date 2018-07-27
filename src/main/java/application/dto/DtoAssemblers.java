@@ -2,10 +2,12 @@ package application.dto;
 
 import domain.common.Address;
 import domain.project.*;
+import domain.user.Roles;
 import domain.user.User;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -89,5 +91,14 @@ public class DtoAssemblers {
                 .map(question -> new SurveyDto.QuestionDto(index.incrementAndGet(), question.getQuestion(), question.getAnswer()))
                 .collect(toList());
         return new SurveyDto(questionDtos);
+    }
+
+    public static CurrentUser fromUserToCurrentUser(User user, String token) {
+        return CurrentUser.builder()
+                .id(user.getId().toString())
+                .email(user.getEmail())
+                .token(token)
+                .roles(user.getRoles().stream().map(Roles::toString).collect(Collectors.toSet()))
+                .build();
     }
 }

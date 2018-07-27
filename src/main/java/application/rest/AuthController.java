@@ -1,7 +1,7 @@
 package application.rest;
 
 import application.dto.AuthDto;
-import application.dto.TokenDto;
+import application.dto.CurrentUser;
 import application.service.UserAuthenticationService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -29,20 +29,21 @@ final class AuthController {
     UserAuthenticationService authenticationService;
 
     @PostMapping("register")
-    ResponseEntity register(@RequestBody AuthDto authDto) {
+    ResponseEntity<CurrentUser> register(@RequestBody AuthDto authDto) {
         authenticationService.register(authDto.getEmail(), authDto.getPassword());
         return handleLogin(authDto.getEmail(), authDto.getPassword());
     }
 
     @PostMapping("login")
-    ResponseEntity login(@RequestBody AuthDto authDto) {
+    ResponseEntity<CurrentUser> login(@RequestBody AuthDto authDto) {
         return handleLogin(authDto.getEmail(), authDto.getPassword());
     }
 
-    private ResponseEntity handleLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
+    private ResponseEntity<CurrentUser> handleLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
         return authenticationService.login(email, password)
-                .map(URI::create)
-                .map((uri) -> ResponseEntity.created(uri).body(new TokenDto(uri.toString())))
+                .map((currentUser) ->
+                        ResponseEntity.created(URI.create(currentUser.getToken()))
+                                .body(currentUser))
                 .orElse(ResponseEntity.badRequest().build());
     }
 
