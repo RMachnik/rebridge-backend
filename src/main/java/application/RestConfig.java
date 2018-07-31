@@ -1,9 +1,9 @@
-package application.rest;
+package application;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackages = "application.rest")
 public class RestConfig {
 }

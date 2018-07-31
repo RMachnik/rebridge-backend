@@ -19,7 +19,7 @@ public class SurveyTemplateService {
 
     public SurveyTemplate create(SurveyTemplateDto surveyTemplateDto) {
         return surveyTemplateRepository.save(SurveyTemplate.create(surveyTemplateDto))
-                .getOrElseThrow(() -> new RepositoryExceptions.SurveyTemplateRepositoryException(String.format("unable to create survey template %s", surveyTemplateDto)));
+                .getOrElseThrow(() -> new RepositoryExceptions.SurveyTemplateRepositoryException(String.format("unable to createWithRoleArchitect survey template %s", surveyTemplateDto)));
     }
 
     public SurveyTemplate update(UUID templateId, SurveyTemplateDto surveyTemplateDto) {

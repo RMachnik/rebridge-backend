@@ -39,6 +39,15 @@ final class AuthController {
         return handleLogin(authDto.getEmail(), authDto.getPassword());
     }
 
+    @GetMapping("login/{token}")
+    ResponseEntity<CurrentUser> login(@PathVariable String token) {
+        return authenticationService.check(token)
+                .map((currentUser) ->
+                        ResponseEntity.created(URI.create(currentUser.getToken()))
+                                .body(currentUser))
+                .orElse(ResponseEntity.badRequest().build());
+    }
+
     private ResponseEntity<CurrentUser> handleLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
         return authenticationService.login(email, password)
                 .map((currentUser) ->

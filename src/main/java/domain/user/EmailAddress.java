@@ -1,9 +1,8 @@
 package domain.user;
 
-import domain.project.DomainExceptions;
+import domain.project.DomainExceptions.EmailValidation;
 import lombok.Value;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import static java.lang.String.format;
@@ -18,9 +17,9 @@ public class EmailAddress {
         this.value = isValid(value);
     }
 
-    public static String isValid(@Indexed String email) {
+    public static String isValid(String email) {
         if (!EmailValidator.getInstance().isValid(email)) {
-            throw new DomainExceptions.EmailValidation(format("this email %s does not meet validation conditions", email));
+            throw new EmailValidation(format("this email %s does not meet validation conditions", email));
         }
         return email;
     }

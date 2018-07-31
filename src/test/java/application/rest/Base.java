@@ -55,7 +55,7 @@ public abstract class Base {
         if (possibleUser.isPresent()) {
             user = possibleUser.get();
         } else {
-            user = userService.create(email, "password");
+            user = userService.createWithRoleArchitect(email, "password");
         }
         CurrentUser currentUser = new CurrentUser(user.getId().toString(), user.getEmail(), "pass", Sets.newHashSet(new String[]{"ARCHITECT"}));
 

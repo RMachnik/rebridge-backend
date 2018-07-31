@@ -4,6 +4,7 @@ import application.service.RepositoryExceptions.UserRepositoryException;
 import application.service.ServiceExceptions.ServiceException;
 import domain.project.DomainExceptions.InvalidPassword;
 import domain.user.EmailAddress;
+import domain.user.Roles;
 import domain.user.User;
 import domain.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.AllArgsConstructor;
 import java.util.Optional;
 import java.util.UUID;
 
+import static domain.user.Roles.ARCHITECT;
+import static domain.user.Roles.INVESTOR;
 import static java.lang.String.format;
 
 @AllArgsConstructor
@@ -19,12 +22,20 @@ public class UserService {
     UserRepository userRepository;
     MailService mailService;
 
-    public User create(String email, String password) {
+    public User createWithRoleArchitect(String email, String password) {
+        return createUserWithRole(email, password, ARCHITECT);
+    }
+
+    public User createWithRoleInvestor(String email) {
+        return createUserWithRole(email, "chanegme", INVESTOR);
+    }
+
+    private User createUserWithRole(String email, String password, Roles role) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new ServiceException(format("email %s already exists, try different name", email));
         }
 
-        User user = User.createUser(email, password);
+        User user = User.createUser(email, password, role);
         User createdUser = userRepository.save(user)
                 .getOrElseThrow(
                         ex -> new UserRepositoryException(format("problem with adding %s", email, ex))
@@ -59,5 +70,9 @@ public class UserService {
             throw new InvalidPassword(String.format("password doesn't match %s", email));
         }
         return user;
+    }
+
+    public void sendInvitation(User user) {
+        mailService.sendInvitation(user.getEmail());
     }
 }

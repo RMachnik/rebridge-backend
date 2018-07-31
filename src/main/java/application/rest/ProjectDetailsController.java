@@ -1,8 +1,6 @@
 package application.rest;
 
-import application.dto.CreateUpdateProjectDetailsDto;
-import application.dto.CurrentUser;
-import application.dto.ProjectDetailsDto;
+import application.dto.*;
 import application.service.ProjectDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,14 +14,14 @@ import static lombok.AccessLevel.PRIVATE;
 
 @RestController
 @RequestMapping(
-        path = ProjectDetailsController.PROJECT_INFORMATION,
+        path = ProjectDetailsController.PROJECT_DETAILS,
         consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 )
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 public class ProjectDetailsController {
-    public static final String PROJECT_INFORMATION = "/projects/{projectId}/details";
+    public static final String PROJECT_DETAILS = "/projects/{projectId}/details";
 
     ProjectDetailsService projectDetailsService;
 
@@ -48,7 +46,29 @@ public class ProjectDetailsController {
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @RequestBody CreateUpdateProjectDetailsDto projectDetailsDto) {
-        return ResponseEntity.ok(projectDetailsService.update(currentUser.getId(), projectId, projectDetailsDto));
+        return ResponseEntity.ok(
+                projectDetailsService.update(currentUser.getId(), projectId, projectDetailsDto)
+        );
+    }
+
+    @PutMapping("/investors")
+    ResponseEntity<AddInvestorDto> addInvesotr(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @RequestBody AddInvestorDto addInvestorDto) {
+        return ResponseEntity.ok(
+                DtoAssemblers.fromEmailsToDtos(projectDetailsService.addInvestors(currentUser, projectId, addInvestorDto))
+        );
+    }
+
+    @DeleteMapping("/investors")
+    ResponseEntity<AddInvestorDto> deleteInvestor(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @RequestBody AddInvestorDto removeInvestors) {
+        return ResponseEntity.ok(
+                DtoAssemblers.fromEmailsToDtos(projectDetailsService.removeInvestors(currentUser, projectId, removeInvestors))
+        );
     }
 
 }

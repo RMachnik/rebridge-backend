@@ -35,19 +35,26 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
 
     @Override
     public Optional<CurrentUser> register(String email, String password) {
-        userService.create(email, password);
+        userService.createWithRoleArchitect(email, password);
         return login(email, password);
     }
 
     @Override
     public Optional<CurrentUser> findByToken(final String token) {
         User user = loggedInUsers.get(token);
-        return Optional.ofNullable(DtoAssemblers.fromUserToCurrentUser(user, token));
+        return Optional.ofNullable(user)
+                .map((possibleUser) -> DtoAssemblers.fromUserToCurrentUser(possibleUser, token));
+
     }
 
     @Override
     public void logout(CurrentUser user) {
         loggedInUsers.remove(user.getToken());
+    }
+
+    @Override
+    public Optional<CurrentUser> check(String token) {
+        return Optional.ofNullable(loggedInUsers.get(token)).map(user -> DtoAssemblers.fromUserToCurrentUser(user, token));
     }
 }
 

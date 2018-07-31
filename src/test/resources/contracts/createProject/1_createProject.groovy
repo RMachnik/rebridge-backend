@@ -3,7 +3,7 @@ package createProject
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
-    description "should create project"
+    description "should createWithRoleArchitect project"
 
     request {
         url "/projects"

@@ -55,6 +55,7 @@ public class Project implements Serializable, WithId<UUID> {
                 .id(UUID.randomUUID())
                 .name(name)
                 .inspirations(new ArrayList<>())
+                .details(Details.empty())
                 .build();
     }
 

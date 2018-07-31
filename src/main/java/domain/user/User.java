@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static domain.user.Roles.ARCHITECT;
 import static java.lang.String.format;
 
 @Table("users")
@@ -61,14 +60,15 @@ public class User implements WithId<UUID>, Serializable {
         this.roles = roles != null ? roles : Sets.newHashSet();
     }
 
-    public static User createUser(String email, String password) {
+    public static User createUser(String email, String password, Roles role) {
         return User
                 .builder()
                 .id(UUID.randomUUID())
                 .email(EmailAddress.isValid(email))
                 .password(password)
                 .projectIds(new HashSet<>())
-                .roles(Sets.newHashSet(ARCHITECT))
+                .roles(Sets.newHashSet(role))
+                .contactDetails(ContactDetails.empty())
                 .build();
     }
 
@@ -89,7 +89,7 @@ public class User implements WithId<UUID>, Serializable {
 
     public Project createProject(String projectName, ProjectRepository projectRepository) {
         if (!isArchitect()) {
-            throw new UserActionNotAllowed(format("Only Architects can create projects! %s is not an architect!", email));
+            throw new UserActionNotAllowed(format("Only Architects can createWithRoleArchitect projects! %s is not an architect!", email));
         }
         Project project = Project.create(projectName);
         projectRepository.save(project);

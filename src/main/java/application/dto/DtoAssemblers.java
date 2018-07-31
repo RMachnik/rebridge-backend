@@ -2,10 +2,12 @@ package application.dto;
 
 import domain.common.Address;
 import domain.project.*;
+import domain.user.EmailAddress;
 import domain.user.Roles;
 import domain.user.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -72,6 +74,7 @@ public class DtoAssemblers {
         return InvestorDto
                 .builder()
                 .email(user.getEmail())
+                .surname(user.getContactDetails().getSurname())
                 .phone(user.getContactDetails().getPhone())
                 .build();
     }
@@ -99,6 +102,14 @@ public class DtoAssemblers {
                 .email(user.getEmail())
                 .token(token)
                 .roles(user.getRoles().stream().map(Roles::toString).collect(Collectors.toSet()))
+                .build();
+    }
+
+    public static AddInvestorDto fromEmailsToDtos(Set<EmailAddress> investorEmailAddresses) {
+        return AddInvestorDto.builder()
+                .investorEmails(investorEmailAddresses.stream()
+                        .map(EmailAddress::getValue)
+                        .collect(toList()))
                 .build();
     }
 }

@@ -3,8 +3,6 @@ package application.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 public class CreateUpdateProjectDetailsDto {
@@ -12,5 +10,4 @@ public class CreateUpdateProjectDetailsDto {
     Double surface;
     AddressDto location;
     String surveyTemplateId;
-    List<String> investorEmails;
 }

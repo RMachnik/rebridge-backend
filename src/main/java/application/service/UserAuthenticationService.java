@@ -13,4 +13,6 @@ public interface UserAuthenticationService {
     Optional<CurrentUser> findByToken(String token);
 
     void logout(CurrentUser user);
+
+    Optional<CurrentUser> check(String token);
 }

@@ -1,6 +1,5 @@
 package application;
 
-import application.rest.RestConfig;
 import application.service.*;
 import domain.project.PictureRepository;
 import domain.project.ProjectRepository;

@@ -53,7 +53,7 @@ final class JsonSchemaController {
         return generateSchema(ProjectDto.class);
     }
 
-    @GetMapping("projects/create")
+    @GetMapping("projects/createWithRoleArchitect")
     ResponseEntity<String> createProject() {
         return generateSchema(CreateProjectDto.class);
     }

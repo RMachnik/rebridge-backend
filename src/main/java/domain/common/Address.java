@@ -14,4 +14,8 @@ public class Address implements Serializable {
     String streetName;
     String postalCode;
     String city;
+
+    public static Address empty() {
+        return new Address("", "", "", "");
+    }
 }
