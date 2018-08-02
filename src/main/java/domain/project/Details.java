@@ -4,6 +4,7 @@ package domain.project;
 import application.dto.AddressDto;
 import application.dto.CreateUpdateProjectDetailsDto;
 import domain.common.Address;
+import domain.survey.QuestionnaireTemplate;
 import domain.user.EmailAddress;
 import domain.user.User;
 import lombok.Builder;
@@ -37,12 +38,13 @@ public class Details implements Serializable {
         this.questionnaire = questionnaire;
     }
 
-    public static Details empty() {
+    public static Details empty(QuestionnaireTemplate questionnaireTemplate) {
         return Details.builder()
                 .investorEmailAddresses(new HashSet<>())
                 .budget(0d)
                 .location(Address.empty())
                 .surface(new Surface(BigDecimal.ZERO))
+                .questionnaire(Questionnaire.create(questionnaireTemplate.getQuestions()))
                 .build();
     }
 

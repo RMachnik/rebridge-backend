@@ -45,7 +45,7 @@ public class ProjectController {
     }
 
     @PostMapping
-    ResponseEntity create(
+    ResponseEntity<ProjectDto> create(
             UriComponentsBuilder builder,
             @AuthenticationPrincipal CurrentUser user,
             @RequestBody CreateProjectDto createProjectDto) {

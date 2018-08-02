@@ -3,9 +3,11 @@ package application.service;
 import application.dto.CreateProjectDto;
 import application.dto.ProjectDto;
 import application.service.RepositoryExceptions.ProjectRepositoryException;
-import domain.project.DomainExceptions;
+import domain.project.DomainExceptions.MissingQuestionnaireTemplate;
+import domain.project.DomainExceptions.UserActionNotAllowed;
 import domain.project.Project;
 import domain.project.ProjectRepository;
+import domain.survey.QuestionnaireTemplate;
 import domain.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,6 +26,7 @@ public class ProjectService {
     UserService userService;
     @Getter(value = AccessLevel.PRIVATE)
     ProjectRepository projectRepository;
+    QuestionnaireTemplateService questionnaireTemplateService;
 
     public List<Project> findAllByUserId(String userId) {
         return userService.findById(userId).getProjectIds()
@@ -43,13 +46,18 @@ public class ProjectService {
 
     private void canUpdateProject(User user, String projectId) {
         if (!user.canUpdateProject(UUID.fromString(projectId))) {
-            new DomainExceptions.UserActionNotAllowed(format("user %s is not allowed see this project %s", user.getId(), projectId));
+            new UserActionNotAllowed(format("user %s is not allowed see this project %s", user.getId(), projectId));
         }
     }
 
     public Project create(String userId, CreateProjectDto createProjectDto) {
         User user = userService.findById(userId);
-        Project project = user.createProject(createProjectDto, projectRepository);
+
+        String questionnaireTemplateId = createProjectDto.getQuestionnaireTemplateId();
+        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(questionnaireTemplateId)
+                .orElseThrow(() -> new MissingQuestionnaireTemplate(format("unable to locate questionnaire %s", questionnaireTemplateId)));
+
+        Project project = user.createProject(createProjectDto, questionnaireTemplate, projectRepository);
         userService.update(user);
         return project;
 

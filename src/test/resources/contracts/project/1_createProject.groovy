@@ -14,7 +14,7 @@ Contract.make {
         }
         body(
                 "name": "newProject",
-                "questionnaireTemplateId": UUID.randomUUID()
+                "questionnaireTemplateId": "128cb75a-3b8b-4c3f-b0e7-64e9ec10f467"
         )
     }
 
@@ -26,7 +26,7 @@ Contract.make {
         body(
                 id: anyUuid(),
                 name: "newProject",
-                questionnaireTemplateId: anyUuid()
+                questionnaireTemplateId: "128cb75a-3b8b-4c3f-b0e7-64e9ec10f467"
         )
     }
 }

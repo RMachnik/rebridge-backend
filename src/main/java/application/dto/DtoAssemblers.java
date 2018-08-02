@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.EMPTY_LIST;
 import static java.util.stream.Collectors.toList;
 
 public class DtoAssemblers {
@@ -118,5 +119,9 @@ public class DtoAssemblers {
 
     public static QuestionnaireTemplateDto fromSurveyTemplateToDto(QuestionnaireTemplate questionnaireTemplate) {
         return new QuestionnaireTemplateDto(questionnaireTemplate.getId().toString(), questionnaireTemplate.getName(), questionnaireTemplate.getQuestions());
+    }
+
+    public static ProjectDetailsDto fromDetailsToDto(Details details) {
+        return fromInformationToDto(details, EMPTY_LIST);
     }
 }

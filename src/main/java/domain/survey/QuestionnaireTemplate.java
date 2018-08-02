@@ -12,6 +12,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,14 @@ public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
 
     String name;
     List<String> questions;
+
+    public static QuestionnaireTemplate empty(String name) {
+        return QuestionnaireTemplate.builder()
+                .id(UUID.randomUUID())
+                .name(name)
+                .questions(new ArrayList<>())
+                .build();
+    }
 
     public static QuestionnaireTemplate create(QuestionnaireTemplateDto dto) {
         return QuestionnaireTemplate.builder()

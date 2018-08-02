@@ -2,7 +2,7 @@ package application.rest;
 
 import application.dto.DtoAssemblers;
 import application.dto.QuestionnaireTemplateDto;
-import application.service.QuestionnaireTemplateServices;
+import application.service.QuestionnaireTemplateService;
 import domain.survey.QuestionnaireTemplate;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,11 +30,11 @@ import static lombok.AccessLevel.PRIVATE;
 public class QuestionnaireTemplateController {
 
     public static final String QUESTIONNAIRE_TEMPLATES = "/questionnaire/templates";
-    QuestionnaireTemplateServices questionnaireTemplateServices;
+    QuestionnaireTemplateService questionnaireTemplateService;
 
     @GetMapping
     ResponseEntity<List<QuestionnaireTemplateDto>> getAll() {
-        List<QuestionnaireTemplateDto> questionnaireTemplateDtos = questionnaireTemplateServices.findAll()
+        List<QuestionnaireTemplateDto> questionnaireTemplateDtos = questionnaireTemplateService.findAll()
                 .stream()
                 .map(DtoAssemblers::fromSurveyTemplateToDto)
                 .collect(Collectors.toList());
@@ -47,7 +47,7 @@ public class QuestionnaireTemplateController {
         UriComponentsBuilder path = builder
                 .path(QUESTIONNAIRE_TEMPLATES)
                 .path("{id}");
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateServices.create(questionnaireTemplateDto);
+        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.create(questionnaireTemplateDto);
         return ResponseEntity
                 .created(path.build(questionnaireTemplate.getId()))
                 .body(fromSurveyTemplateToDto(questionnaireTemplate));
@@ -55,14 +55,14 @@ public class QuestionnaireTemplateController {
 
     @PutMapping("/{templateId}")
     ResponseEntity<QuestionnaireTemplateDto> update(@PathVariable String templateId, @RequestBody QuestionnaireTemplateDto questionnaireTemplateDto) {
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateServices.update(UUID.fromString(templateId), questionnaireTemplateDto);
+        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.update(UUID.fromString(templateId), questionnaireTemplateDto);
         return ResponseEntity
                 .ok(fromSurveyTemplateToDto(questionnaireTemplate));
     }
 
     @DeleteMapping("/{templateId}")
     ResponseEntity delete(@PathVariable String templateId) {
-        questionnaireTemplateServices.delete(UUID.fromString(templateId));
+        questionnaireTemplateService.delete(UUID.fromString(templateId));
         return ResponseEntity.noContent().build();
     }
 }

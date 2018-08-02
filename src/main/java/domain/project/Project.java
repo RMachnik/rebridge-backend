@@ -5,6 +5,7 @@ import application.dto.CreateUpdateProjectDetailsDto;
 import application.dto.ProjectDto;
 import com.datastax.driver.core.DataType;
 import domain.project.DomainExceptions.MissingInspirationException;
+import domain.survey.QuestionnaireTemplate;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -54,13 +55,13 @@ public class Project implements Serializable, WithId<UUID> {
         this.questionnaireTemplateId = questionnaireTemplateId;
     }
 
-    public static Project create(String name, UUID questionnaireTemplateId) {
+    public static Project create(String name, QuestionnaireTemplate questionnaireTemplate) {
         return Project.builder()
                 .id(UUID.randomUUID())
                 .name(name)
                 .inspirations(new ArrayList<>())
-                .details(Details.empty())
-                .questionnaireTemplateId(questionnaireTemplateId)
+                .details(Details.empty(questionnaireTemplate))
+                .questionnaireTemplateId(questionnaireTemplate.getId())
                 .build();
     }
 
@@ -106,7 +107,12 @@ public class Project implements Serializable, WithId<UUID> {
                 .findAny();
     }
 
-    public void createDetails(CreateUpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
+    public Details createDetails(CreateUpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
         details = Details.create(projectDetailsDto, questionnaire);
+        return details;
+    }
+
+    public void updateDetails(CreateUpdateProjectDetailsDto updateProjectDetailsDto) {
+        this.details = details.update(updateProjectDetailsDto);
     }
 }

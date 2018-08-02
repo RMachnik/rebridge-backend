@@ -3,14 +3,15 @@ package application.rest
 import application.dto.DtoAssemblers
 import application.dto.ProjectDto
 import domain.project.Project
+import domain.survey.QuestionnaireTemplate
 import spock.lang.Specification
 
 class DtoAssemblersSpec extends Specification {
 
     def "should convert to dto"() {
-        def questionnaireTemplateId = UUID.randomUUID()
+        QuestionnaireTemplate questionnaireTemplate = QuestionnaireTemplate.empty("some")
         given:
-        Project newProject = Project.create("new", questionnaireTemplateId)
+        Project newProject = Project.create("new", questionnaireTemplate)
 
         when:
         ProjectDto projectToDto = DtoAssemblers.fromProjectToDto(newProject)
@@ -19,6 +20,6 @@ class DtoAssemblersSpec extends Specification {
         !projectToDto.id.empty
         projectToDto.name == "new"
         projectToDto.inspirationIds.empty
-        projectToDto.questionnaireTemplateId == questionnaireTemplateId.toString()
+        projectToDto.questionnaireTemplateId == questionnaireTemplate.getId().toString()
     }
 }

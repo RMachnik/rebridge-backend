@@ -25,8 +25,8 @@ public class ApplicationServicesConfig {
     }
 
     @Bean
-    ProjectService projectService(UserService userService, ProjectRepository projectRepository) {
-        return new ProjectService(userService, projectRepository);
+    ProjectService projectService(UserService userService, ProjectRepository projectRepository, QuestionnaireTemplateService questionnaireTemplateService) {
+        return new ProjectService(userService, projectRepository, questionnaireTemplateService);
     }
 
     @Bean
@@ -45,13 +45,13 @@ public class ApplicationServicesConfig {
     }
 
     @Bean
-    QuestionnaireTemplateServices surveyTemplateService(QuestionnaireTemplateRepository questionnaireTemplateRepository) {
-        return new QuestionnaireTemplateServices(questionnaireTemplateRepository);
+    QuestionnaireTemplateService surveyTemplateService(QuestionnaireTemplateRepository questionnaireTemplateRepository) {
+        return new QuestionnaireTemplateService(questionnaireTemplateRepository);
     }
 
     @Bean
-    ProjectDetailsService projectDetailsService(UserService userService, ProjectService projectService, QuestionnaireTemplateServices questionnaireTemplateServices) {
-        return new ProjectDetailsService(userService, projectService, questionnaireTemplateServices);
+    ProjectDetailsService projectDetailsService(UserService userService, ProjectService projectService, QuestionnaireTemplateService questionnaireTemplateService) {
+        return new ProjectDetailsService(userService, projectService, questionnaireTemplateService);
     }
 
     @Bean

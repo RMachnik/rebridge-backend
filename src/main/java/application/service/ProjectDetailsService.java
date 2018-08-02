@@ -2,7 +2,7 @@ package application.service;
 
 import application.dto.*;
 import domain.project.Details;
-import domain.project.DomainExceptions;
+import domain.project.DomainExceptions.MissingQuestionnaireTemplate;
 import domain.project.Project;
 import domain.project.Questionnaire;
 import domain.survey.QuestionnaireTemplate;
@@ -23,7 +23,7 @@ public class ProjectDetailsService {
 
     UserService userService;
     ProjectService projectService;
-    QuestionnaireTemplateServices questionnaireTemplateServices;
+    QuestionnaireTemplateService questionnaireTemplateService;
 
     public ProjectDetailsDto get(String userId, String projectId) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
@@ -55,17 +55,17 @@ public class ProjectDetailsService {
     }
 
 
-    public CreateUpdateProjectDetailsDto create(String userId, String projectId, CreateUpdateProjectDetailsDto projectDetailsDto) {
+    public Details create(String userId, String projectId, CreateUpdateProjectDetailsDto createUpdateProjectDetailsDto) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-        String questionnaireId = projectDetailsDto.getQuestionnaireId();
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateServices.findById(questionnaireId)
-                .orElseThrow(() -> new DomainExceptions.MissingQuestionnaireTemplate(String.format("missing questionnaire template %s", questionnaireId)));
+        String questionnaireId = project.getQuestionnaireTemplateId().toString();
+        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(questionnaireId)
+                .orElseThrow(() -> new MissingQuestionnaireTemplate(String.format("missing questionnaire template %s", questionnaireId)));
 
 
-        project.createDetails(projectDetailsDto, Questionnaire.create(questionnaireTemplate.getQuestions()));
+        Details details = project.createDetails(createUpdateProjectDetailsDto, Questionnaire.create(questionnaireTemplate.getQuestions()));
         projectService.save(project);
 
-        return projectDetailsDto;
+        return details;
     }
 
     private List<User> findInvestors(List<String> investors) {
@@ -79,16 +79,14 @@ public class ProjectDetailsService {
                 .orElseGet(() -> userService.createWithRoleInvestor(email));
     }
 
-    public CreateUpdateProjectDetailsDto update(String userId, String projectId, CreateUpdateProjectDetailsDto updateProjectDetailsDto) {
+    public Details update(String userId, String projectId, CreateUpdateProjectDetailsDto updateProjectDetailsDto) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
 
-        Details details = project.getDetails();
-        Details updated = details.update(updateProjectDetailsDto);
 
-        project.setDetails(updated);
+        project.updateDetails(updateProjectDetailsDto);
 
         projectService.save(project);
-        return updateProjectDetailsDto;
+        return project.getDetails();
     }
 
     public Set<EmailAddress> addInvestors(CurrentUser currentUser, String projectId, AddInvestorDto addInvestorDto) {

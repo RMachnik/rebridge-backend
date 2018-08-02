@@ -1,6 +1,9 @@
 package application.rest;
 
-import application.dto.*;
+import application.dto.AddInvestorDto;
+import application.dto.CreateUpdateProjectDetailsDto;
+import application.dto.CurrentUser;
+import application.dto.ProjectDetailsDto;
 import application.service.ProjectDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import static application.dto.DtoAssemblers.fromDetailsToDto;
+import static application.dto.DtoAssemblers.fromEmailsToDtos;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -32,22 +37,22 @@ public class ProjectDetailsController {
     }
 
     @PostMapping
-    ResponseEntity<CreateUpdateProjectDetailsDto> create(
+    ResponseEntity<ProjectDetailsDto> create(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @RequestBody CreateUpdateProjectDetailsDto projectDetailsDto) {
         return ResponseEntity
-                .ok(projectDetailsService.create(currentUser.getId(), projectId, projectDetailsDto));
+                .ok(fromDetailsToDto(projectDetailsService.create(currentUser.getId(), projectId, projectDetailsDto)));
 
     }
 
     @PutMapping
-    ResponseEntity<CreateUpdateProjectDetailsDto> update(
+    ResponseEntity<ProjectDetailsDto> update(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @RequestBody CreateUpdateProjectDetailsDto projectDetailsDto) {
         return ResponseEntity.ok(
-                projectDetailsService.update(currentUser.getId(), projectId, projectDetailsDto)
+                fromDetailsToDto(projectDetailsService.update(currentUser.getId(), projectId, projectDetailsDto))
         );
     }
 
@@ -57,7 +62,7 @@ public class ProjectDetailsController {
             @PathVariable String projectId,
             @RequestBody AddInvestorDto addInvestorDto) {
         return ResponseEntity.ok(
-                DtoAssemblers.fromEmailsToDtos(projectDetailsService.addInvestors(currentUser, projectId, addInvestorDto))
+                fromEmailsToDtos(projectDetailsService.addInvestors(currentUser, projectId, addInvestorDto))
         );
     }
 
@@ -67,7 +72,7 @@ public class ProjectDetailsController {
             @PathVariable String projectId,
             @RequestBody AddInvestorDto removeInvestors) {
         return ResponseEntity.ok(
-                DtoAssemblers.fromEmailsToDtos(projectDetailsService.removeInvestors(currentUser, projectId, removeInvestors))
+                fromEmailsToDtos(projectDetailsService.removeInvestors(currentUser, projectId, removeInvestors))
         );
     }
 

@@ -2,7 +2,7 @@ package boot;
 
 import application.ApplicationServicesConfig;
 import application.dto.QuestionnaireTemplateDto;
-import application.service.QuestionnaireTemplateServices;
+import application.service.QuestionnaireTemplateService;
 import infrastructure.cassandra.CassandraConfig;
 import infrastructure.extended.ExtendedRepositoriesConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,11 @@ import java.util.Arrays;
 public class Application {
 
     @Autowired
-    QuestionnaireTemplateServices questionnaireTemplateServices;
+    QuestionnaireTemplateService questionnaireTemplateService;
 
     @PostConstruct
     void loadTemplates() {
-        questionnaireTemplateServices.create(
+        questionnaireTemplateService.create(
                 new QuestionnaireTemplateDto(null, "initial template", Arrays.asList("question1", "question2"))
         );
     }
