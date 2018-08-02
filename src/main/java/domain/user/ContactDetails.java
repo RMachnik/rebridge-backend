@@ -20,7 +20,7 @@ public class ContactDetails implements Serializable {
     String phone;
     Address address;
 
-    static ContactDetails empty() {
+    public static ContactDetails empty() {
         return ContactDetails.builder()
                 .name(StringUtils.EMPTY)
                 .surname(StringUtils.EMPTY)
