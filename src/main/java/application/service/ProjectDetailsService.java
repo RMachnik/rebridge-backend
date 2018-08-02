@@ -57,9 +57,9 @@ public class ProjectDetailsService {
 
     public CreateUpdateProjectDetailsDto create(String userId, String projectId, CreateUpdateProjectDetailsDto projectDetailsDto) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-        String surveyTemplateId = projectDetailsDto.getSurveyTemplateId();
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateServices.findById(surveyTemplateId)
-                .orElseThrow(() -> new DomainExceptions.MissingQuestionnaireTemplate(String.format("missing questionnaire template %s", surveyTemplateId)));
+        String questionnaireId = projectDetailsDto.getQuestionnaireId();
+        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateServices.findById(questionnaireId)
+                .orElseThrow(() -> new DomainExceptions.MissingQuestionnaireTemplate(String.format("missing questionnaire template %s", questionnaireId)));
 
 
         project.createDetails(projectDetailsDto, Questionnaire.create(questionnaireTemplate.getQuestions()));

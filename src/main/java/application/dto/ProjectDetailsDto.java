@@ -11,6 +11,6 @@ public class ProjectDetailsDto {
     Double budget;
     Double surface;
     AddressDto location;
-    String surveyTemplateId;
+    String questionnaireId;
     List<InvestorDto> investors;
 }

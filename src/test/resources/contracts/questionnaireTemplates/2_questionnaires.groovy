@@ -1,4 +1,4 @@
-package createProject
+package questionnaireTemplates
 
 import org.springframework.cloud.contract.spec.Contract
 
@@ -6,7 +6,7 @@ Contract.make {
     description "should findById projects"
 
     request {
-        url "/projects"
+        url "/questionnaire/templates"
         method GET()
         headers {
             header 'Authorization': 'Bearer TOKEN'
@@ -20,11 +20,13 @@ Contract.make {
             contentType applicationJson()
         }
         body(
-                [
 
-                        id  : anyNonBlankString(),
-                        name: "newProject",
+
+                [
+                        id  : anyUuid(),
+                        name: "testQuestionnaire",
                 ]
+
         )
     }
 }

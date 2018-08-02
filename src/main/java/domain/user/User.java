@@ -1,5 +1,6 @@
 package domain.user;
 
+import application.dto.CreateProjectDto;
 import com.datastax.driver.core.DataType;
 import com.google.common.collect.Sets;
 import domain.project.DomainExceptions.UserActionNotAllowed;
@@ -87,11 +88,11 @@ public class User implements WithId<UUID>, Serializable {
                 .isPresent();
     }
 
-    public Project createProject(String projectName, ProjectRepository projectRepository) {
+    public Project createProject(CreateProjectDto createProjectDto, ProjectRepository projectRepository) {
         if (!isArchitect()) {
             throw new UserActionNotAllowed(format("Only Architects can createWithRoleArchitect projects! %s is not an architect!", email));
         }
-        Project project = Project.create(projectName);
+        Project project = Project.create(createProjectDto.getName(), UUID.fromString(createProjectDto.getQuestionnaireTemplateId()));
         projectRepository.save(project);
         projectIds.add(project.getId());
         return project;

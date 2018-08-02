@@ -9,5 +9,5 @@ public class CreateUpdateProjectDetailsDto {
     Double budget;
     Double surface;
     AddressDto location;
-    String surveyTemplateId;
+    String questionnaireId;
 }

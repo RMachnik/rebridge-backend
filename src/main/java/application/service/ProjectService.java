@@ -1,5 +1,6 @@
 package application.service;
 
+import application.dto.CreateProjectDto;
 import application.dto.ProjectDto;
 import application.service.RepositoryExceptions.ProjectRepositoryException;
 import domain.project.DomainExceptions;
@@ -46,9 +47,9 @@ public class ProjectService {
         }
     }
 
-    public Project create(String userId, String projectName) {
+    public Project create(String userId, CreateProjectDto createProjectDto) {
         User user = userService.findById(userId);
-        Project project = user.createProject(projectName, projectRepository);
+        Project project = user.createProject(createProjectDto, projectRepository);
         userService.update(user);
         return project;
 

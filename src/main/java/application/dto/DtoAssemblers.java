@@ -26,6 +26,7 @@ public class DtoAssemblers {
                                 .map((inspiration) -> inspiration.getId().toString())
                                 .collect(toList())
                 )
+                .questionnaireTemplateId(project.getQuestionnaireTemplateId().toString())
                 .build();
     }
 
@@ -86,6 +87,7 @@ public class DtoAssemblers {
                 .surface(details.getSurface().getValue().doubleValue())
                 .location(DtoAssemblers.fromAddressToDto(details.getLocation()))
                 .investors(investors)
+                .questionnaireId(details.getQuestionnaire().getId().toString())
                 .build();
     }
 

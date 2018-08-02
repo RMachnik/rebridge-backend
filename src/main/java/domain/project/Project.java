@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static java.lang.String.format;
+import static java.util.UUID.fromString;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
@@ -43,19 +44,23 @@ public class Project implements Serializable, WithId<UUID> {
     @NonNull
     List<Inspiration> inspirations;
 
-    public Project(UUID id, String name, Details details, List<Inspiration> inspirations) {
+    UUID questionnaireTemplateId;
+
+    public Project(UUID id, String name, Details details, List<Inspiration> inspirations, UUID questionnaireTemplateId) {
         this.id = id;
         this.name = name;
         this.details = details;
         this.inspirations = inspirations != null ? inspirations : new ArrayList<>();
+        this.questionnaireTemplateId = questionnaireTemplateId;
     }
 
-    public static Project create(String name) {
+    public static Project create(String name, UUID questionnaireTemplateId) {
         return Project.builder()
                 .id(UUID.randomUUID())
                 .name(name)
                 .inspirations(new ArrayList<>())
                 .details(Details.empty())
+                .questionnaireTemplateId(questionnaireTemplateId)
                 .build();
     }
 
@@ -64,6 +69,7 @@ public class Project implements Serializable, WithId<UUID> {
                 .id(id)
                 .name(isNotBlank(projectDto.getName()) ? projectDto.getName() : name)
                 .inspirations(inspirations)
+                .questionnaireTemplateId(isNotBlank(projectDto.getQuestionnaireTemplateId()) ? fromString(projectDto.getQuestionnaireTemplateId()) : questionnaireTemplateId)
                 .build();
     }
 
@@ -75,7 +81,7 @@ public class Project implements Serializable, WithId<UUID> {
     }
 
     public Inspiration updateInspiration(String inspirationId, CreateOrUpdateInspirationDto inspirationDto) {
-        Inspiration existingInspiration = findInspiration(UUID.fromString(inspirationId));
+        Inspiration existingInspiration = findInspiration(fromString(inspirationId));
         Inspiration updatedInspiration = existingInspiration.update(inspirationDto);
 
         inspirations.remove(existingInspiration);

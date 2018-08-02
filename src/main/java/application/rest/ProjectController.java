@@ -48,9 +48,9 @@ public class ProjectController {
     ResponseEntity create(
             UriComponentsBuilder builder,
             @AuthenticationPrincipal CurrentUser user,
-            @RequestBody CreateProjectDto dto) {
+            @RequestBody CreateProjectDto createProjectDto) {
 
-        Project createdProject = projectService.create(user.getId(), dto.getName());
+        Project createdProject = projectService.create(user.getId(), createProjectDto);
 
         UriComponents uriComponents =
                 builder.

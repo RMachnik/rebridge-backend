@@ -18,10 +18,9 @@ public class CassandraSdbxTest {
     @Test
     public void shouldStartCassandra() throws InterruptedException, IOException, TTransportException {
         EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-        Cluster cluster = Cluster.builder()
+        Cluster.builder()
                 .addContactPoints("127.0.0.1")
                 .withPort(9142)
                 .build();
-
     }
 }

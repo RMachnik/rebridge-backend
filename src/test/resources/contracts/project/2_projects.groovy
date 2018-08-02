@@ -1,30 +1,29 @@
-package createProject
+package project
 
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
-    description "should createWithRoleArchitect project"
+    description "should findById projects"
 
     request {
         url "/projects"
-        method POST()
+        method GET()
         headers {
             header 'Authorization': 'Bearer TOKEN'
             contentType applicationJsonUtf8()
         }
-        body(
-                "name": "newProject"
-        )
     }
 
     response {
-        status CREATED()
+        status OK()
         headers {
             contentType applicationJson()
         }
         body(
-                id: anyUuid(),
-                name: "newProject",
+                [
+                        id  : anyNonBlankString(),
+                        name: "newProject",
+                ]
         )
     }
 }

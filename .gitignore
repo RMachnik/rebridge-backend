@@ -84,3 +84,14 @@ build/docker/Dockerfile
 build/tmp/
 build/classes/
 build/generated/
+/rebridge-backend.iml
+build/generated-test-sources/
+build/reports/
+build/resources/
+build/stubs/
+build/test-results/
+target/embeddedCassandra/cu-cassandra.yaml
+target/embeddedCassandra/data/
+target/embeddedCassandra/hints/
+target/embeddedCassandra/log4j-embedded-cassandra.properties
+target/embeddedCassandra/saved_caches/
