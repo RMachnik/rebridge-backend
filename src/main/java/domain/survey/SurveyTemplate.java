@@ -26,11 +26,13 @@ public class SurveyTemplate implements WithId<UUID>, Serializable {
     @NonNull
     UUID id;
 
+    String name;
     List<String> questions;
 
     public static SurveyTemplate create(SurveyTemplateDto dto) {
         return SurveyTemplate.builder()
                 .id(UUID.randomUUID())
+                .name(dto.getName())
                 .questions(dto.getQuestions())
                 .build();
     }

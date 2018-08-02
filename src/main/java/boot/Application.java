@@ -24,7 +24,7 @@ public class Application {
     @PostConstruct
     void loadTemplates() {
         surveyTemplateService.create(
-                new SurveyTemplateDto("1", Arrays.asList("question1", "question2"))
+                new SurveyTemplateDto("1", "initial template", Arrays.asList("question1", "question2"))
         );
     }
 

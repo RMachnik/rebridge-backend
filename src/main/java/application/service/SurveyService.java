@@ -5,14 +5,18 @@ import domain.project.Project;
 import domain.project.Survey;
 import lombok.Value;
 
+import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
+
 @Value
 public class SurveyService {
 
     ProjectService projectService;
 
-    public Survey get(String userId, String projectId) {
+    public Optional<Survey> get(String userId, String projectId) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-        return project.getDetails().getSurvey();
+        return ofNullable(project.getDetails().getSurvey());
     }
 
     public Survey answer(String userId, String projectId, SurveyAnswersDto answerDto) {

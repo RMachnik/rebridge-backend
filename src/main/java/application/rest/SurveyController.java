@@ -1,6 +1,7 @@
 package application.rest;
 
 import application.dto.CurrentUser;
+import application.dto.DtoAssemblers;
 import application.dto.SurveyAnswersDto;
 import application.dto.SurveyDto;
 import application.service.SurveyService;
@@ -31,7 +32,10 @@ public class SurveyController {
 
     @GetMapping
     ResponseEntity<SurveyDto> get(@AuthenticationPrincipal CurrentUser user, @PathVariable String projectId) {
-        return ResponseEntity.ok(fromSurveyToDto(surveyService.get(user.getId(), projectId)));
+        return ResponseEntity.ok(
+                surveyService.get(user.getId(), projectId)
+                        .map(DtoAssemblers::fromSurveyToDto)
+                        .orElse(null));
     }
 
     @PostMapping

@@ -2,6 +2,7 @@ package application.dto;
 
 import domain.common.Address;
 import domain.project.*;
+import domain.survey.SurveyTemplate;
 import domain.user.EmailAddress;
 import domain.user.Roles;
 import domain.user.User;
@@ -111,5 +112,9 @@ public class DtoAssemblers {
                         .map(EmailAddress::getValue)
                         .collect(toList()))
                 .build();
+    }
+
+    public static SurveyTemplateDto fromSurveyTemplateToDto(SurveyTemplate surveyTemplate) {
+        return new SurveyTemplateDto(surveyTemplate.getId().toString(), surveyTemplate.getName(), surveyTemplate.getQuestions());
     }
 }

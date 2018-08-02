@@ -9,5 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 public class SurveyTemplateDto {
     String id;
+    String name;
     List<String> questions;
 }
