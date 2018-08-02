@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class SurveyAnswersDto {
+public class QuestionnaireAnswersDto {
     List<AnswerDto> answers;
 
     @Data

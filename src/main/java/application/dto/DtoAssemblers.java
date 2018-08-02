@@ -2,7 +2,7 @@ package application.dto;
 
 import domain.common.Address;
 import domain.project.*;
-import domain.survey.SurveyTemplate;
+import domain.survey.QuestionnaireTemplate;
 import domain.user.EmailAddress;
 import domain.user.Roles;
 import domain.user.User;
@@ -89,12 +89,12 @@ public class DtoAssemblers {
                 .build();
     }
 
-    public static SurveyDto fromSurveyToDto(Survey survey) {
+    public static QuestionnaireDto fromSurveyToDto(Questionnaire questionnaire) {
         AtomicInteger index = new AtomicInteger(0);
-        List<SurveyDto.QuestionDto> questionDtos = survey.getQuestions().stream()
-                .map(question -> new SurveyDto.QuestionDto(index.incrementAndGet(), question.getQuestion(), question.getAnswer()))
+        List<QuestionnaireDto.QuestionDto> questionDtos = questionnaire.getQuestions().stream()
+                .map(question -> new QuestionnaireDto.QuestionDto(index.incrementAndGet(), question.getQuestion(), question.getAnswer()))
                 .collect(toList());
-        return new SurveyDto(questionDtos);
+        return new QuestionnaireDto(questionDtos);
     }
 
     public static CurrentUser fromUserToCurrentUser(User user, String token) {
@@ -114,7 +114,7 @@ public class DtoAssemblers {
                 .build();
     }
 
-    public static SurveyTemplateDto fromSurveyTemplateToDto(SurveyTemplate surveyTemplate) {
-        return new SurveyTemplateDto(surveyTemplate.getId().toString(), surveyTemplate.getName(), surveyTemplate.getQuestions());
+    public static QuestionnaireTemplateDto fromSurveyTemplateToDto(QuestionnaireTemplate questionnaireTemplate) {
+        return new QuestionnaireTemplateDto(questionnaireTemplate.getId().toString(), questionnaireTemplate.getName(), questionnaireTemplate.getQuestions());
     }
 }

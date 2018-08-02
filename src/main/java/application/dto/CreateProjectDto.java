@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class CreateProjectDto {
     String name;
+    String questionnaireId;
 }

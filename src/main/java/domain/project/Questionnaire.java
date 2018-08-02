@@ -1,6 +1,6 @@
 package domain.project;
 
-import application.dto.SurveyAnswersDto;
+import application.dto.QuestionnaireAnswersDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
@@ -13,17 +13,17 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 @UserDefinedType
 @Data
 @AllArgsConstructor
-public class Survey {
+public class Questionnaire {
     List<Question> questions;
 
-    public static Survey init(List<String> questions) {
-        return new Survey(questions
+    public static Questionnaire create(List<String> questions) {
+        return new Questionnaire(questions
                 .stream()
                 .map(q -> new Question(q, EMPTY))
                 .collect(toList()));
     }
 
-    public void fillInAnswers(SurveyAnswersDto answersDto) {
+    public void fillInAnswers(QuestionnaireAnswersDto answersDto) {
         answersDto.getAnswers().stream()
                 .forEach(answerDto -> {
                     questions.get(answerDto.getQuestionId())

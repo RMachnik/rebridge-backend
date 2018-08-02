@@ -2,11 +2,11 @@ package infrastructure.extended;
 
 import domain.project.PictureRepository;
 import domain.project.ProjectRepository;
-import domain.survey.SurveyTemplateRepository;
+import domain.survey.QuestionnaireTemplateRepository;
 import domain.user.UserRepository;
 import infrastructure.springData.PictureCrudRepository;
 import infrastructure.springData.ProjectCrudRepository;
-import infrastructure.springData.SurveyTemplateCrudRepository;
+import infrastructure.springData.QuestionnaireCrudRepository;
 import infrastructure.springData.UserCrudRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ public class ExtendedRepositoriesConfig {
     }
 
     @Bean
-    SurveyTemplateRepository surveyTemplateRepository(SurveyTemplateCrudRepository surveyTemplateCrudRepository) {
-        return new ExtendedSurveyTemplateRepository(surveyTemplateCrudRepository);
+    QuestionnaireTemplateRepository surveyTemplateRepository(QuestionnaireCrudRepository questionnaireCrudRepository) {
+        return new ExtendedQuestionnaireTemplateRepository(questionnaireCrudRepository);
     }
 }

@@ -100,7 +100,7 @@ public class Project implements Serializable, WithId<UUID> {
                 .findAny();
     }
 
-    public void createDetails(CreateUpdateProjectDetailsDto projectDetailsDto) {
-        details = Details.create(projectDetailsDto);
+    public void createDetails(CreateUpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
+        details = Details.create(projectDetailsDto, questionnaire);
     }
 }

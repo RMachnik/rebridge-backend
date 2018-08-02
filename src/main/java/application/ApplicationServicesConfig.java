@@ -3,7 +3,7 @@ package application;
 import application.service.*;
 import domain.project.PictureRepository;
 import domain.project.ProjectRepository;
-import domain.survey.SurveyTemplateRepository;
+import domain.survey.QuestionnaireTemplateRepository;
 import domain.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,17 +45,17 @@ public class ApplicationServicesConfig {
     }
 
     @Bean
-    SurveyTemplateService surveyTemplateService(SurveyTemplateRepository surveyTemplateRepository) {
-        return new SurveyTemplateService(surveyTemplateRepository);
+    QuestionnaireTemplateServices surveyTemplateService(QuestionnaireTemplateRepository questionnaireTemplateRepository) {
+        return new QuestionnaireTemplateServices(questionnaireTemplateRepository);
     }
 
     @Bean
-    ProjectDetailsService projectDetailsService(UserService userService, ProjectService projectService) {
-        return new ProjectDetailsService(userService, projectService);
+    ProjectDetailsService projectDetailsService(UserService userService, ProjectService projectService, QuestionnaireTemplateServices questionnaireTemplateServices) {
+        return new ProjectDetailsService(userService, projectService, questionnaireTemplateServices);
     }
 
     @Bean
-    SurveyService surveyService(ProjectService projectService) {
-        return new SurveyService(projectService);
+    QuestionnaireService surveyService(ProjectService projectService) {
+        return new QuestionnaireService(projectService);
     }
 }

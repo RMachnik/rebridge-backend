@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class SurveyTemplateDto {
+public class QuestionnaireTemplateDto {
     String id;
     String name;
     List<String> questions;

@@ -27,14 +27,14 @@ public class Details implements Serializable {
     Surface surface;
     Address location;
     Set<EmailAddress> investorEmailAddresses;
-    Survey survey;
+    Questionnaire questionnaire;
 
-    public Details(Double budget, Surface surface, Address location, Set<EmailAddress> investorEmailAddresses, Survey survey) {
+    public Details(Double budget, Surface surface, Address location, Set<EmailAddress> investorEmailAddresses, Questionnaire questionnaire) {
         this.budget = budget;
         this.surface = surface;
         this.location = location;
         this.investorEmailAddresses = investorEmailAddresses != null ? investorEmailAddresses : new HashSet<>();
-        this.survey = survey;
+        this.questionnaire = questionnaire;
     }
 
     public static Details empty() {
@@ -46,13 +46,14 @@ public class Details implements Serializable {
                 .build();
     }
 
-    public static Details create(CreateUpdateProjectDetailsDto projectDetailsDto) {
+    public static Details create(CreateUpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
         AddressDto location = projectDetailsDto.getLocation();
         return Details.builder()
                 .investorEmailAddresses(new HashSet<>())
                 .budget(projectDetailsDto.getBudget())
                 .location(new Address(location.getNumber(), location.getStreetName(), location.getPostalCode(), location.getCity()))
                 .surface(new Surface(BigDecimal.valueOf(projectDetailsDto.getSurface())))
+                .questionnaire(questionnaire)
                 .build();
     }
 

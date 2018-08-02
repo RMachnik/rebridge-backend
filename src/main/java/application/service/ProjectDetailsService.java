@@ -2,7 +2,10 @@ package application.service;
 
 import application.dto.*;
 import domain.project.Details;
+import domain.project.DomainExceptions;
 import domain.project.Project;
+import domain.project.Questionnaire;
+import domain.survey.QuestionnaireTemplate;
 import domain.user.EmailAddress;
 import domain.user.User;
 import lombok.Value;
@@ -20,6 +23,7 @@ public class ProjectDetailsService {
 
     UserService userService;
     ProjectService projectService;
+    QuestionnaireTemplateServices questionnaireTemplateServices;
 
     public ProjectDetailsDto get(String userId, String projectId) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
@@ -53,8 +57,12 @@ public class ProjectDetailsService {
 
     public CreateUpdateProjectDetailsDto create(String userId, String projectId, CreateUpdateProjectDetailsDto projectDetailsDto) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
+        String surveyTemplateId = projectDetailsDto.getSurveyTemplateId();
+        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateServices.findById(surveyTemplateId)
+                .orElseThrow(() -> new DomainExceptions.MissingQuestionnaireTemplate(String.format("missing questionnaire template %s", surveyTemplateId)));
 
-        project.createDetails(projectDetailsDto);
+
+        project.createDetails(projectDetailsDto, Questionnaire.create(questionnaireTemplate.getQuestions()));
         projectService.save(project);
 
         return projectDetailsDto;

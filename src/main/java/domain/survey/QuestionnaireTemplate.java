@@ -1,6 +1,6 @@
 package domain.survey;
 
-import application.dto.SurveyTemplateDto;
+import application.dto.QuestionnaireTemplateDto;
 import com.datastax.driver.core.DataType;
 import domain.project.WithId;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Data
 @Builder
 @AllArgsConstructor
-public class SurveyTemplate implements WithId<UUID>, Serializable {
+public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
 
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)
@@ -29,8 +29,8 @@ public class SurveyTemplate implements WithId<UUID>, Serializable {
     String name;
     List<String> questions;
 
-    public static SurveyTemplate create(SurveyTemplateDto dto) {
-        return SurveyTemplate.builder()
+    public static QuestionnaireTemplate create(QuestionnaireTemplateDto dto) {
+        return QuestionnaireTemplate.builder()
                 .id(UUID.randomUUID())
                 .name(dto.getName())
                 .questions(dto.getQuestions())

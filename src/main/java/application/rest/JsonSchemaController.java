@@ -68,9 +68,9 @@ final class JsonSchemaController {
         return generateSchema(CreateUpdateProjectDetailsDto.class);
     }
 
-    @GetMapping("projects/details/survey")
-    ResponseEntity<String> survey() {
-        return generateSchema(SurveyDto.class);
+    @GetMapping("projects/details/questionnaire")
+    ResponseEntity<String> questionnaire() {
+        return generateSchema(QuestionnaireDto.class);
     }
 
     @GetMapping("projects/inspirations")

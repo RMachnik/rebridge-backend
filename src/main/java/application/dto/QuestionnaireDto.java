@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class SurveyDto {
+public class QuestionnaireDto {
     List<QuestionDto> questions;
 
     @Value

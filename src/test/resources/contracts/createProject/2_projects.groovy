@@ -3,7 +3,7 @@ package createProject
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
-    description "should get projects"
+    description "should findById projects"
 
     request {
         url "/projects"

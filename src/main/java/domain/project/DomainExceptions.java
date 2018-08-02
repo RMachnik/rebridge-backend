@@ -37,4 +37,10 @@ public class DomainExceptions {
             super(message);
         }
     }
+
+    public static class MissingQuestionnaireTemplate extends DomainException {
+        public MissingQuestionnaireTemplate(String message) {
+            super(message);
+        }
+    }
 }
