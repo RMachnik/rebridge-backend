@@ -1,6 +1,7 @@
 package domain.user;
 
 import application.dto.CreateProjectDto;
+import application.dto.UpdateProfileDto;
 import com.datastax.driver.core.DataType;
 import com.google.common.collect.Sets;
 import domain.project.DomainExceptions.UserActionNotAllowed;
@@ -105,5 +106,16 @@ public class User implements WithId<UUID>, Serializable {
 
     public void addProject(UUID projectId) {
         projectIds.add(projectId);
+    }
+
+    public User update(UpdateProfileDto updateProfileDto) {
+        return User.builder()
+                .id(id)
+                .roles(roles)
+                .password(password)
+                .projectIds(projectIds)
+                .email(updateProfileDto.getEmail())
+                .contactDetails(contactDetails.update(updateProfileDto))
+                .build();
     }
 }

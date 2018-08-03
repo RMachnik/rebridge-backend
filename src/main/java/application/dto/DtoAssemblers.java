@@ -9,9 +9,9 @@ import domain.user.User;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class DtoAssemblers {
 
@@ -75,6 +75,7 @@ public class DtoAssemblers {
         return InvestorDto
                 .builder()
                 .email(user.getEmail())
+                .name(user.getContactDetails().getName())
                 .surname(user.getContactDetails().getSurname())
                 .phone(user.getContactDetails().getPhone())
                 .build();
@@ -102,7 +103,7 @@ public class DtoAssemblers {
                 .id(user.getId().toString())
                 .email(user.getEmail())
                 .token(token)
-                .roles(user.getRoles().stream().map(Roles::toString).collect(Collectors.toSet()))
+                .roles(user.getRoles().stream().map(Roles::toString).collect(toSet()))
                 .build();
     }
 
@@ -115,5 +116,16 @@ public class DtoAssemblers {
 
     public static QuestionnaireTemplateDto fromSurveyTemplateToDto(QuestionnaireTemplate questionnaireTemplate) {
         return new QuestionnaireTemplateDto(questionnaireTemplate.getId().toString(), questionnaireTemplate.getName(), questionnaireTemplate.getQuestions());
+    }
+
+    public static ProfileDto fromUserToProfileDto(User user) {
+        return ProfileDto.builder()
+                .email(user.getEmail())
+                .name(user.getContactDetails().getName())
+                .surname(user.getContactDetails().getSurname())
+                .phone(user.getContactDetails().getPhone())
+                .roles(user.getRoles().stream().map(Enum::name).collect(toSet()))
+                .address(fromAddressToDto(user.getContactDetails().getAddress()))
+                .build();
     }
 }

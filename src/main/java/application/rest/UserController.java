@@ -2,19 +2,22 @@ package application.rest;
 
 import application.dto.CurrentUser;
 import application.dto.LogoutSuccessDto;
+import application.dto.ProfileDto;
+import application.dto.UpdateProfileDto;
 import application.service.UserAuthenticationService;
+import application.service.UserService;
+import domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import static application.dto.DtoAssemblers.fromUserToProfileDto;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
@@ -27,16 +30,23 @@ import static lombok.AccessLevel.PRIVATE;
 final class UserController {
 
     UserAuthenticationService authenticationService;
+    UserService userService;
 
     @GetMapping("current")
-    ResponseEntity current(@AuthenticationPrincipal final CurrentUser user) {
-        return ResponseEntity.ok(user);
+    ResponseEntity<ProfileDto> current(@AuthenticationPrincipal final CurrentUser user) {
+        return ok(fromUserToProfileDto(userService.findByEmail(user.getEmail())));
+    }
+
+    @PutMapping("current")
+    ResponseEntity<ProfileDto> update(@AuthenticationPrincipal CurrentUser currentUser, @RequestBody UpdateProfileDto updateProfileDto) {
+        User user = userService.update(currentUser, updateProfileDto);
+        return ok(fromUserToProfileDto(user));
     }
 
     @DeleteMapping("logout")
     ResponseEntity logout(@AuthenticationPrincipal final CurrentUser user) {
         authenticationService.logout(user);
-        return ResponseEntity.ok(new LogoutSuccessDto(true));
+        return ok(new LogoutSuccessDto(true));
     }
 
 }

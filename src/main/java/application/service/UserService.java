@@ -1,5 +1,7 @@
 package application.service;
 
+import application.dto.CurrentUser;
+import application.dto.UpdateProfileDto;
 import application.service.RepositoryExceptions.UserRepositoryException;
 import application.service.ServiceExceptions.ServiceException;
 import domain.project.DomainExceptions.InvalidPassword;
@@ -74,5 +76,12 @@ public class UserService {
 
     public void sendInvitation(User user) {
         mailService.sendInvitation(user.getEmail());
+    }
+
+    public User update(CurrentUser currentUser, UpdateProfileDto updateProfileDto) {
+        User user = findByEmail(currentUser.getEmail());
+        User updated = user.update(updateProfileDto);
+        userRepository.save(updated);
+        return updated;
     }
 }
