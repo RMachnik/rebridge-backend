@@ -11,11 +11,12 @@ import static io.netty.util.internal.StringUtil.EMPTY_STRING;
 @AllArgsConstructor
 public class Question {
 
+    int id;
     String question;
     String answer;
 
-    static Question notAnswered(String question) {
-        return new Question(question, EMPTY_STRING);
+    static Question notAnswered(int id, String question) {
+        return new Question(id, question, EMPTY_STRING);
     }
 
     public void update(String userAnswer) {

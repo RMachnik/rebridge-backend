@@ -1,9 +1,9 @@
 package application.rest;
 
 import application.dto.CurrentUser;
+import application.dto.LogoutSuccessDto;
 import application.service.UserAuthenticationService;
 import lombok.AllArgsConstructor;
-import lombok.Value;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +36,7 @@ final class UserController {
     @DeleteMapping("logout")
     ResponseEntity logout(@AuthenticationPrincipal final CurrentUser user) {
         authenticationService.logout(user);
-        return ResponseEntity.ok(new LogoutSuccess(true));
-    }
-
-    @Value
-    static class LogoutSuccess {
-        boolean result;
+        return ResponseEntity.ok(new LogoutSuccessDto(true));
     }
 
 }

@@ -13,7 +13,7 @@ public class QuestionnaireDto {
 
     @Value
     static class QuestionDto {
-        int questionId;
+        int id;
         String question;
         String answer;
     }

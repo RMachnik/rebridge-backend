@@ -65,7 +65,7 @@ final class JsonSchemaController {
 
     @GetMapping("projects/details/updateOrCreateDetails")
     ResponseEntity<String> createOrUpdateProjectDetails() {
-        return generateSchema(CreateUpdateProjectDetailsDto.class);
+        return generateSchema(UpdateProjectDetailsDto.class);
     }
 
     @GetMapping("projects/details/questionnaire")

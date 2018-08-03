@@ -1,8 +1,8 @@
 package domain.project;
 
 import application.dto.CreateOrUpdateInspirationDto;
-import application.dto.CreateUpdateProjectDetailsDto;
 import application.dto.ProjectDto;
+import application.dto.UpdateProjectDetailsDto;
 import com.datastax.driver.core.DataType;
 import domain.project.DomainExceptions.MissingInspirationException;
 import domain.survey.QuestionnaireTemplate;
@@ -107,12 +107,12 @@ public class Project implements Serializable, WithId<UUID> {
                 .findAny();
     }
 
-    public Details createDetails(CreateUpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
+    public Details createDetails(UpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
         details = Details.create(projectDetailsDto, questionnaire);
         return details;
     }
 
-    public void updateDetails(CreateUpdateProjectDetailsDto updateProjectDetailsDto) {
+    public void updateDetails(UpdateProjectDetailsDto updateProjectDetailsDto) {
         this.details = details.update(updateProjectDetailsDto);
     }
 }

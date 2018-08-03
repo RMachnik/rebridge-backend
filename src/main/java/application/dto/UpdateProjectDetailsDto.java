@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CreateUpdateProjectDetailsDto {
+public class UpdateProjectDetailsDto {
     Double budget;
     Double surface;
     AddressDto location;

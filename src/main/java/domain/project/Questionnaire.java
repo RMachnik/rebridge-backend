@@ -7,7 +7,9 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @UserDefinedType
@@ -23,15 +25,26 @@ public class Questionnaire implements WithId<UUID> {
     }
 
     private static List<Question> createNotAnsweredQuestions(List<String> questions) {
+        AtomicInteger atomicInteger = new AtomicInteger(0);
         return questions
                 .stream()
-                .map(Question::notAnswered)
+                .map(question -> Question.notAnswered(atomicInteger.incrementAndGet(), question))
                 .collect(toList());
     }
 
     public void fillInAnswers(QuestionnaireAnswersDto answersDto) {
-        answersDto.getAnswers().stream()
-                .forEach(answerDto ->
-                        questions.get(answerDto.getQuestionId()).update(answerDto.getAnswer()));
+        answersDto.getAnswers().forEach(
+                answer -> {
+                    Question question = findById(answer.getId());
+                    question.setAnswer(answer.getAnswer());
+                }
+        );
+    }
+
+    private Question findById(int id) {
+        return questions.stream()
+                .filter(question -> question.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new DomainExceptions.MissingQuestion(format("question %s is missing", id)));
     }
 }

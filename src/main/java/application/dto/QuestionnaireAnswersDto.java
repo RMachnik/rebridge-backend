@@ -13,7 +13,7 @@ public class QuestionnaireAnswersDto {
     @Data
     @AllArgsConstructor
     public static class AnswerDto {
-        int questionId;
+        int id;
         String answer;
     }
 }

@@ -9,10 +9,8 @@ import domain.user.User;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.EMPTY_LIST;
 import static java.util.stream.Collectors.toList;
 
 public class DtoAssemblers {
@@ -92,10 +90,9 @@ public class DtoAssemblers {
                 .build();
     }
 
-    public static QuestionnaireDto fromSurveyToDto(Questionnaire questionnaire) {
-        AtomicInteger index = new AtomicInteger(0);
+    public static QuestionnaireDto fromQuestionToDto(Questionnaire questionnaire) {
         List<QuestionnaireDto.QuestionDto> questionDtos = questionnaire.getQuestions().stream()
-                .map(question -> new QuestionnaireDto.QuestionDto(index.incrementAndGet(), question.getQuestion(), question.getAnswer()))
+                .map(question -> new QuestionnaireDto.QuestionDto(question.getId(), question.getQuestion(), question.getAnswer()))
                 .collect(toList());
         return new QuestionnaireDto(questionDtos);
     }
@@ -109,19 +106,14 @@ public class DtoAssemblers {
                 .build();
     }
 
-    public static AddInvestorDto fromEmailsToDtos(Set<EmailAddress> investorEmailAddresses) {
-        return AddInvestorDto.builder()
-                .investorEmails(investorEmailAddresses.stream()
-                        .map(EmailAddress::getValue)
-                        .collect(toList()))
-                .build();
+    public static List<AddInvestorDto> fromEmailsToDtos(Set<EmailAddress> investorEmailAddresses) {
+        return investorEmailAddresses.stream()
+                .map(EmailAddress::getValue)
+                .map(AddInvestorDto::new)
+                .collect(toList());
     }
 
     public static QuestionnaireTemplateDto fromSurveyTemplateToDto(QuestionnaireTemplate questionnaireTemplate) {
         return new QuestionnaireTemplateDto(questionnaireTemplate.getId().toString(), questionnaireTemplate.getName(), questionnaireTemplate.getQuestions());
-    }
-
-    public static ProjectDetailsDto fromDetailsToDto(Details details) {
-        return fromInformationToDto(details, EMPTY_LIST);
     }
 }

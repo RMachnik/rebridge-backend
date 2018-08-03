@@ -12,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import static application.dto.DtoAssemblers.fromSurveyToDto;
+import static application.dto.DtoAssemblers.fromQuestionToDto;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
@@ -32,9 +33,9 @@ public class QuestionnaireController {
 
     @GetMapping
     ResponseEntity<QuestionnaireDto> get(@AuthenticationPrincipal CurrentUser user, @PathVariable String projectId) {
-        return ResponseEntity.ok(
+        return ok(
                 questionnaireService.get(user.getId(), projectId)
-                        .map(DtoAssemblers::fromSurveyToDto)
+                        .map(DtoAssemblers::fromQuestionToDto)
                         .orElse(null));
     }
 
@@ -43,6 +44,6 @@ public class QuestionnaireController {
             @AuthenticationPrincipal CurrentUser user,
             @PathVariable String projectId,
             @RequestBody QuestionnaireAnswersDto answerDto) {
-        return ResponseEntity.ok(fromSurveyToDto(questionnaireService.answer(user.getId(), projectId, answerDto)));
+        return ok(fromQuestionToDto(questionnaireService.answer(user.getId(), projectId, answerDto)));
     }
 }

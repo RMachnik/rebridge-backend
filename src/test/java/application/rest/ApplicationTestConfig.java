@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.UUID;
+
+import static java.util.Arrays.asList;
 
 @Configuration
 @Import(Application.class)
@@ -37,7 +38,8 @@ public class ApplicationTestConfig {
     @PostConstruct
     void createTestUser() {
         authController.register(new AuthDto("test@email.com", "password"));
-        QuestionnaireTemplate questionnaireTemplate = new QuestionnaireTemplate(UUID.fromString("128cb75a-3b8b-4c3f-b0e7-64e9ec10f467"), "test", Arrays.asList("question"));
+        UUID id = UUID.fromString("128cb75a-3b8b-4c3f-b0e7-64e9ec10f467");
+        QuestionnaireTemplate questionnaireTemplate = new QuestionnaireTemplate(id, "test", asList("question"));
         questionnaireTemplateRepository.save(questionnaireTemplate);
     }
 
