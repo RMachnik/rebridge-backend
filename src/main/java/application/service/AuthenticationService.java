@@ -1,27 +1,27 @@
 package application.service;
 
 import application.dto.CurrentUser;
-import application.dto.DtoAssemblers;
+import domain.user.LoggedInRepository;
 import domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
+import static application.dto.DtoAssemblers.fromUserToCurrentUser;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
 
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor
-public final class InMemoryAuthenticationService implements UserAuthenticationService {
+public final class AuthenticationService implements UserAuthenticationService {
 
     @NonNull
     UserService userService;
-
-    final Map<String, User> loggedInUsers = new ConcurrentHashMap<>();
+    LoggedInRepository loggedInUsers;
 
     @Override
     public Optional<CurrentUser> login(final String email, final String password) {
@@ -30,7 +30,7 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
         String token = UUID.randomUUID().toString();
         loggedInUsers.put(token, foundUser);
 
-        return Optional.of(DtoAssemblers.fromUserToCurrentUser(foundUser, token));
+        return of(fromUserToCurrentUser(foundUser, token));
     }
 
     @Override
@@ -42,8 +42,8 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
     @Override
     public Optional<CurrentUser> findByToken(final String token) {
         User user = loggedInUsers.get(token);
-        return Optional.ofNullable(user)
-                .map((possibleUser) -> DtoAssemblers.fromUserToCurrentUser(possibleUser, token));
+        return ofNullable(user)
+                .map((possibleUser) -> fromUserToCurrentUser(possibleUser, token));
 
     }
 
@@ -54,7 +54,8 @@ public final class InMemoryAuthenticationService implements UserAuthenticationSe
 
     @Override
     public Optional<CurrentUser> check(String token) {
-        return Optional.ofNullable(loggedInUsers.get(token)).map(user -> DtoAssemblers.fromUserToCurrentUser(user, token));
+        return ofNullable(loggedInUsers.get(token))
+                .map(user -> fromUserToCurrentUser(user, token));
     }
 }
 

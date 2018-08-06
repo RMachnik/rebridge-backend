@@ -4,7 +4,6 @@ package application.rest;
 import application.dto.CommentDto;
 import application.dto.CreateOrUpdateDto;
 import application.dto.CurrentUser;
-import application.dto.DtoAssemblers;
 import application.service.CommentService;
 import domain.project.Comment;
 import lombok.AllArgsConstructor;
@@ -19,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 import static application.dto.DtoAssemblers.fromCommentToDto;
+import static application.dto.DtoAssemblers.fromCommentsToDtos;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -41,7 +41,7 @@ public class CommentController {
             @PathVariable String projectId,
             @PathVariable String inspirationId) {
         return ResponseEntity.ok(
-                DtoAssemblers.fromCommentsToDtos(commentService.findAll(currentUser.getId(), projectId, inspirationId))
+                fromCommentsToDtos(commentService.findAll(currentUser.getId(), projectId, inspirationId))
         );
     }
 

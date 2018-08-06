@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.lang.String.format;
+
 @AllArgsConstructor
 public class QuestionnaireTemplateService {
 
@@ -25,12 +27,14 @@ public class QuestionnaireTemplateService {
 
     public QuestionnaireTemplate create(QuestionnaireTemplateDto questionnaireTemplateDto) {
         return questionnaireTemplateRepository.save(QuestionnaireTemplate.create(questionnaireTemplateDto))
-                .getOrElseThrow(() -> new QuestionnaireTemplateRepositoryException(String.format("unable to createWithRoleArchitect questionnaire template %s", questionnaireTemplateDto)));
+                .getOrElseThrow(
+                        () -> new QuestionnaireTemplateRepositoryException(format("unable to createWithRoleArchitect questionnaire template %s", questionnaireTemplateDto))
+                );
     }
 
     public QuestionnaireTemplate update(UUID templateId, QuestionnaireTemplateDto questionnaireTemplateDto) {
         QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateRepository.findById(templateId)
-                .orElseThrow(() -> new QuestionnaireTemplateRepositoryException(String.format("unable to find questionnaire template %s", templateId)));
+                .orElseThrow(() -> new QuestionnaireTemplateRepositoryException(format("unable to find questionnaire template %s", templateId)));
         questionnaireTemplate.setQuestions(questionnaireTemplateDto.getQuestions());
         questionnaireTemplateRepository.save(questionnaireTemplate);
         return questionnaireTemplate;

@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static application.dto.DtoAssemblers.fromInformationToDto;
+import static application.dto.DtoAssemblers.fromUserToInvestor;
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @Value
@@ -46,7 +48,7 @@ public class ProjectDetailsService {
     private InvestorDto getInvestor(String email) {
         Optional<User> possibleUser = userService.tryFindUserByEmail(email);
         if (possibleUser.isPresent()) {
-            return DtoAssemblers.fromUserToInvestor(possibleUser.get());
+            return fromUserToInvestor(possibleUser.get());
         } else {
             return InvestorDto.builder()
                     .email(email)
@@ -59,7 +61,7 @@ public class ProjectDetailsService {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
         String questionnaireId = project.getQuestionnaireTemplateId().toString();
         QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(questionnaireId)
-                .orElseThrow(() -> new MissingQuestionnaireTemplate(String.format("missing questionnaire template %s", questionnaireId)));
+                .orElseThrow(() -> new MissingQuestionnaireTemplate(format("missing questionnaire template %s", questionnaireId)));
 
 
         Details details = project.createDetails(updateProjectDetailsDto, Questionnaire.create(questionnaireTemplate.getQuestions()));

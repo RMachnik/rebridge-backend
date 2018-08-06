@@ -74,6 +74,8 @@ dependencies {
     compile("com.fasterxml.jackson.module:jackson-module-jsonSchema:2.9.6")
     compile("commons-validator:commons-validator:1.6")
     compile("org.simplejavamail:simple-java-mail:5.0.3")
+    compile("net.jodah:expiringmap:0.5.8")
+
     compile("com.datastax.cassandra:cassandra-driver-core:3.5.1")
     compile("com.datastax.cassandra:cassandra-driver-dse:2.1.9")
 

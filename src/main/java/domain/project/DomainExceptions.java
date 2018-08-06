@@ -56,4 +56,10 @@ public class DomainExceptions {
             super(message);
         }
     }
+
+    public static class InvalidPostalCode extends DomainException {
+        public InvalidPostalCode(String message) {
+            super(message);
+        }
+    }
 }

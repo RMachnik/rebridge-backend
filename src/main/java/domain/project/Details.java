@@ -51,7 +51,7 @@ public class Details implements Serializable {
                 .investorEmailAddresses(new HashSet<>())
                 .budget(projectDetailsDto.getBudget())
                 .location(new Address(location.getNumber(), location.getStreetName(), location.getPostalCode(), location.getCity()))
-                .surface(new Surface(BigDecimal.valueOf(projectDetailsDto.getSurface())))
+                .surface(Surface.create(projectDetailsDto.getSurface()))
                 .questionnaire(questionnaire)
                 .build();
     }

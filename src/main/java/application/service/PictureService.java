@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
+import static java.lang.String.format;
+
 @AllArgsConstructor
 public class PictureService {
 
@@ -21,7 +23,7 @@ public class PictureService {
         Inspiration inspiration = project.findInspiration(inspirationId);
 
         Picture picture = pictureRepository.save(new Picture(UUID.randomUUID(), content))
-                .getOrElseThrow(() -> new ServiceException(String.format("unable to store picture for inspiration %s", inspiration)));
+                .getOrElseThrow(() -> new ServiceException(format("unable to store picture for inspiration %s", inspiration)));
 
         inspiration.getInspirationDetail().updatePictureId(picture.getId());
 
@@ -32,6 +34,6 @@ public class PictureService {
     public ByteBuffer load(UUID pictureId) {
         return pictureRepository.findById(pictureId)
                 .map(Picture::getByteBuffer)
-                .orElseThrow(() -> new ServiceException(String.format("unable to find picture %s", pictureId)));
+                .orElseThrow(() -> new ServiceException(format("unable to find picture %s", pictureId)));
     }
 }

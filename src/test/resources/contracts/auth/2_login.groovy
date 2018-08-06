@@ -1,17 +1,19 @@
+package auth
+
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
-    description "should register user"
+    description "should login user"
 
     request {
-        url "/auth/register"
+        url "/auth/login"
         method POST()
         headers {
             contentType applicationJsonUtf8()
         }
         body(
-                "email": "zdenek@mail.com",
-                "password": "pass"
+                "email": "test@email.com",
+                "password": "password"
         )
     }
 

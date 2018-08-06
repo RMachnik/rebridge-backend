@@ -13,4 +13,8 @@ import java.math.BigDecimal;
 public class Surface implements Serializable {
 
     BigDecimal value;
+
+    public static Surface create(double surface) {
+        return new Surface(BigDecimal.valueOf(surface));
+    }
 }

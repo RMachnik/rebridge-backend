@@ -2,6 +2,7 @@ package domain.project;
 
 import application.dto.CommentDto;
 import application.dto.CreateOrUpdateInspirationDto;
+import application.dto.CurrentUser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -70,7 +71,10 @@ public class Inspiration implements WithId<UUID>, Serializable {
                 .orElseThrow(() -> new DomainExceptions.MissingCommentException(format("there is no comment %s", commentId)));
     }
 
-    public void addComment(Comment comment) {
+    public Comment addComment(CurrentUser currentUser, String content) {
+        Comment comment = Comment.create(currentUser, content);
+
         inspirationDetail.add(comment);
+        return comment;
     }
 }

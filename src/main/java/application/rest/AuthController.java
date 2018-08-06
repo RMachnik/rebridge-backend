@@ -14,6 +14,7 @@ import java.net.URI;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
@@ -40,11 +41,9 @@ final class AuthController {
     }
 
     @GetMapping("login/{token}")
-    ResponseEntity<CurrentUser> login(@PathVariable String token) {
+    ResponseEntity<CurrentUser> loginCheck(@PathVariable String token) {
         return authenticationService.check(token)
-                .map((currentUser) ->
-                        ResponseEntity.created(URI.create(currentUser.getToken()))
-                                .body(currentUser))
+                .map((currentUser) -> ok(currentUser))
                 .orElse(ResponseEntity.badRequest().build());
     }
 

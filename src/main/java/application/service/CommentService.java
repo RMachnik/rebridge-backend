@@ -25,8 +25,7 @@ public class CommentService {
         Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
         Inspiration inspiration = project.findInspiration(UUID.fromString(inspirationId));
 
-        Comment comment = Comment.create(currentUser, content);
-        inspiration.addComment(comment);
+        Comment comment = inspiration.addComment(currentUser, content);
 
         projectService.save(project);
         return comment;

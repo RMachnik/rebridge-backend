@@ -26,7 +26,6 @@ public class RepositoryExceptions {
         public UserRepositoryException(String message) {
             super(message);
         }
-
     }
 
     public static class QuestionnaireTemplateRepositoryException extends RepositoryException {

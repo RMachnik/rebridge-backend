@@ -5,13 +5,14 @@ import domain.project.PictureRepository;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplateRepository;
 import domain.user.UserRepository;
+import infrastructure.memory.InMemoryLoggedInRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({RestConfig.class, MailConfig.class})
-public class ApplicationServicesConfig {
+public class ServicesConfig {
 
 
     @Bean
@@ -21,7 +22,7 @@ public class ApplicationServicesConfig {
 
     @Bean
     UserAuthenticationService userAuthenticationService(UserService userService) {
-        return new InMemoryAuthenticationService(userService);
+        return new AuthenticationService(userService, new InMemoryLoggedInRepository());
     }
 
     @Bean

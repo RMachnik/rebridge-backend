@@ -69,7 +69,7 @@ public class UserService {
     public User login(String email, String password) {
         User user = findByEmail(email);
         if (!user.isPasswordValid(password)) {
-            throw new InvalidPassword(String.format("password doesn't match %s", email));
+            throw new InvalidPassword(format("password doesn't match %s", email));
         }
         return user;
     }

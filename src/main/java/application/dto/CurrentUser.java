@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Builder
 public class CurrentUser implements UserDetails {
 
+    @JsonIgnore
     String id;
     @JsonProperty(required = true)
     String email;
@@ -31,11 +32,13 @@ public class CurrentUser implements UserDetails {
         this.token = token;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(Authority::new).collect(Collectors.toList());
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
