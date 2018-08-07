@@ -1,10 +1,13 @@
 package application.service;
 
+import domain.invitation.Invitation;
 import domain.user.EmailAddress;
 import lombok.AllArgsConstructor;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.Mailer;
+
+import static java.lang.String.format;
 
 @AllArgsConstructor
 public class MailService {
@@ -30,7 +33,12 @@ public class MailService {
                 .buildEmail();
     }
 
-    public void sendInvitation(String email) {
-        mailer.sendMail(buildEmail(new EmailAddress(email), "Invitation", "Hi, please join this project. Here is the url."));
+    public void sendInvitation(Invitation invitation) {
+        mailer.sendMail(buildEmail(
+                invitation.getEmailAddress(),
+                "Invitation",
+                format("Hi, please join this project. Here is the url %s.", invitation.getRedirection())
+                )
+        );
     }
 }

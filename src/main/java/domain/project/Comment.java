@@ -3,11 +3,10 @@ package domain.project;
 import application.dto.CommentDto;
 import application.dto.CurrentUser;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NonNull;
+import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,18 +15,22 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
-@Data
+@Value
 @Builder
 public class Comment implements WithId<UUID>, Serializable {
 
-    @NotNull
+    @NonNull
     UUID id;
+
     @NonNull
     String userId;
+
     @NonNull
     String author;
+
     @NonNull
     String content;
+
     @NonNull
     String date;
 

@@ -1,5 +1,7 @@
 package domain.project;
 
-public interface WithId<T> {
+import java.io.Serializable;
+
+public interface WithId<T> extends Serializable {
     T getId();
 }

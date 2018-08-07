@@ -33,4 +33,10 @@ public class RepositoryExceptions {
             super(message);
         }
     }
+
+    public static class InvitationRepositoryException extends RepositoryException {
+        public InvitationRepositoryException(String message) {
+            super(message);
+        }
+    }
 }

@@ -26,6 +26,15 @@ public class DtoAssemblers {
                                 .collect(toList())
                 )
                 .questionnaireTemplateId(project.getQuestionnaireTemplateId().toString())
+                .details(fromDetailsToSimpleDto(project.getDetails()))
+                .build();
+    }
+
+    private static SimpleDetailsDto fromDetailsToSimpleDto(Details details) {
+        return SimpleDetailsDto.builder()
+                .budget(details.getBudget())
+                .surface(details.getSurface().getValue().doubleValue())
+                .location(fromAddressToDto(details.getLocation()))
                 .build();
     }
 

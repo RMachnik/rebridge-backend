@@ -118,4 +118,8 @@ public class User implements WithId<UUID>, Serializable {
                 .contactDetails(contactDetails.update(updateProfileDto))
                 .build();
     }
+
+    public EmailAddress getEmailAddress() {
+        return new EmailAddress(email);
+    }
 }

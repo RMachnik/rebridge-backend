@@ -35,9 +35,10 @@ public class QuestionnaireTemplateService {
     public QuestionnaireTemplate update(UUID templateId, QuestionnaireTemplateDto questionnaireTemplateDto) {
         QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new QuestionnaireTemplateRepositoryException(format("unable to find questionnaire template %s", templateId)));
-        questionnaireTemplate.setQuestions(questionnaireTemplateDto.getQuestions());
-        questionnaireTemplateRepository.save(questionnaireTemplate);
-        return questionnaireTemplate;
+        QuestionnaireTemplate updated = questionnaireTemplate.updateQuestions(questionnaireTemplateDto.getQuestions());
+
+        return questionnaireTemplateRepository.save(updated)
+                .getOrElseThrow(() -> new QuestionnaireTemplateRepositoryException(format("Unable to update questionnaire %s", templateId)));
     }
 
     public void delete(UUID templateId) {

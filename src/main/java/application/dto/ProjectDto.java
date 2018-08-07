@@ -12,4 +12,5 @@ public class ProjectDto {
     String name;
     List<String> inspirationIds;
     String questionnaireTemplateId;
+    SimpleDetailsDto details;
 }

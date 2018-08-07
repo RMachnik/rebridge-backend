@@ -8,7 +8,7 @@ import domain.survey.QuestionnaireTemplate;
 import domain.user.EmailAddress;
 import domain.user.User;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @UserDefinedType
-@Data
+@Value
 @Builder
 public class Details implements Serializable {
 

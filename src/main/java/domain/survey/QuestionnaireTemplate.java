@@ -5,8 +5,8 @@ import com.datastax.driver.core.DataType;
 import domain.project.WithId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NonNull;
+import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Table("surveyTemplates")
-@Data
+@Value
 @Builder
 @AllArgsConstructor
 public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
@@ -44,5 +44,9 @@ public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
                 .name(dto.getName())
                 .questions(dto.getQuestions())
                 .build();
+    }
+
+    public QuestionnaireTemplate updateQuestions(List<String> updatedQuestions) {
+        return new QuestionnaireTemplate(id, name, updatedQuestions);
     }
 }

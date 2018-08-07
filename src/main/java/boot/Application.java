@@ -4,7 +4,7 @@ import application.ServicesConfig;
 import application.dto.QuestionnaireTemplateDto;
 import application.service.QuestionnaireTemplateService;
 import infrastructure.cassandra.CassandraConfig;
-import infrastructure.extended.ExtendedRepositoriesConfig;
+import infrastructure.extended.DomainRepositoriesConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @SpringBootApplication
-@Import({CassandraConfig.class, ExtendedRepositoriesConfig.class, ServicesConfig.class, SecurityConfig.class})
+@Import({CassandraConfig.class, DomainRepositoriesConfig.class, ServicesConfig.class, SecurityConfig.class})
 public class Application {
 
     @Autowired

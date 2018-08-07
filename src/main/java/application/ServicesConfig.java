@@ -1,11 +1,13 @@
 package application;
 
 import application.service.*;
+import domain.invitation.InvitationRepository;
 import domain.project.PictureRepository;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplateRepository;
 import domain.user.UserRepository;
 import infrastructure.memory.InMemoryLoggedInRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -16,8 +18,8 @@ public class ServicesConfig {
 
 
     @Bean
-    UserService userService(UserRepository userRepository, MailService mailService) {
-        return new UserService(userRepository, mailService);
+    UserService userService(UserRepository userRepository, MailService mailService, InvitationService invitationService) {
+        return new UserService(userRepository, mailService, invitationService);
     }
 
     @Bean
@@ -58,5 +60,10 @@ public class ServicesConfig {
     @Bean
     QuestionnaireService surveyService(ProjectService projectService) {
         return new QuestionnaireService(projectService);
+    }
+
+    @Bean
+    InvitationService invitationService(@Value("${rebridge.frontend.url}") String url, InvitationRepository invitationRepository) {
+        return new InvitationService(url, invitationRepository);
     }
 }

@@ -62,4 +62,10 @@ public class DomainExceptions {
             super(message);
         }
     }
+
+    public static class InvalidInvitation extends DomainException {
+        public InvalidInvitation(String message) {
+            super(message);
+        }
+    }
 }

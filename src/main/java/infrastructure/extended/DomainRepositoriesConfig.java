@@ -1,18 +1,16 @@
 package infrastructure.extended;
 
+import domain.invitation.InvitationRepository;
 import domain.project.PictureRepository;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplateRepository;
 import domain.user.UserRepository;
-import infrastructure.springData.PictureCrudRepository;
-import infrastructure.springData.ProjectCrudRepository;
-import infrastructure.springData.QuestionnaireCrudRepository;
-import infrastructure.springData.UserCrudRepository;
+import infrastructure.springData.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ExtendedRepositoriesConfig {
+public class DomainRepositoriesConfig {
 
     @Bean
     UserRepository cassandraUserRepository(UserCrudRepository userCrudRepository) {
@@ -33,4 +31,10 @@ public class ExtendedRepositoriesConfig {
     QuestionnaireTemplateRepository surveyTemplateRepository(QuestionnaireCrudRepository questionnaireCrudRepository) {
         return new ExtendedQuestionnaireTemplateRepository(questionnaireCrudRepository);
     }
+
+    @Bean
+    InvitationRepository invitationRepository(InvitationCrudRepository invitationCrudRepository) {
+        return new ExtendedInvitationRepository(invitationCrudRepository);
+    }
+
 }

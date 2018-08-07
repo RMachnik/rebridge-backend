@@ -3,7 +3,7 @@ package domain.common;
 import application.dto.AddressDto;
 import domain.project.DomainExceptions.InvalidPostalCode;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
-@Data
+@Value
 @Builder
 public class Address implements Serializable {
     static Pattern POSTAL_CODE_PATTERN = Pattern.compile("[0-9]{2}-[0-9]{3}");

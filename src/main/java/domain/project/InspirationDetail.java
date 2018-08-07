@@ -2,8 +2,8 @@ package domain.project;
 
 import application.dto.CreateOrUpdateInspirationDto;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NonNull;
+import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.io.Serializable;
@@ -14,17 +14,21 @@ import java.util.UUID;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
-@Data
+@Value
 @Builder
 public class InspirationDetail implements Serializable {
 
     @NonNull
     String description;
+
     @NonNull
     String url;
+
     UUID pictureId;
+
     @NonNull
     Integer rating;
+
     @NonNull
     List<Comment> comments;
 
@@ -58,8 +62,7 @@ public class InspirationDetail implements Serializable {
     }
 
     public InspirationDetail updatePictureId(UUID pictureId) {
-        this.pictureId = pictureId;
-        return this;
+        return new InspirationDetail(description, url, pictureId, rating, comments);
     }
 
     public void add(Comment comment) {

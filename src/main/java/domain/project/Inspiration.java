@@ -3,13 +3,11 @@ package domain.project;
 import application.dto.CommentDto;
 import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.CurrentUser;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NonNull;
+import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -17,15 +15,17 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
-@Data
+@Value
 @Builder
 public class Inspiration implements WithId<UUID>, Serializable {
 
     @NonNull
     UUID id;
-    @JsonProperty(required = true)
+
+    @NonNull
     String name;
-    @NotNull
+
+    @NonNull
     InspirationDetail inspirationDetail;
 
     public static Inspiration create(CreateOrUpdateInspirationDto dto) {

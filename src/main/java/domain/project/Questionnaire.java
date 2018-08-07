@@ -36,7 +36,9 @@ public class Questionnaire implements WithId<UUID> {
         answersDto.getAnswers().forEach(
                 answer -> {
                     Question question = findById(answer.getId());
-                    question.setAnswer(answer.getAnswer());
+                    Question answered = question.answer(answer.getAnswer());
+                    questions.remove(question);
+                    questions.add(answered);
                 }
         );
     }

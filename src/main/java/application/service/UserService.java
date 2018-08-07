@@ -4,6 +4,7 @@ import application.dto.CurrentUser;
 import application.dto.UpdateProfileDto;
 import application.service.RepositoryExceptions.UserRepositoryException;
 import application.service.ServiceExceptions.ServiceException;
+import domain.invitation.Invitation;
 import domain.project.DomainExceptions.InvalidPassword;
 import domain.user.EmailAddress;
 import domain.user.Roles;
@@ -23,6 +24,7 @@ public class UserService {
 
     UserRepository userRepository;
     MailService mailService;
+    InvitationService invitationService;
 
     public User createWithRoleArchitect(String email, String password) {
         return createUserWithRole(email, password, ARCHITECT);
@@ -75,7 +77,8 @@ public class UserService {
     }
 
     public void sendInvitation(User user) {
-        mailService.sendInvitation(user.getEmail());
+        Invitation invitation = invitationService.create(user.getEmailAddress());
+        mailService.sendInvitation(invitation);
     }
 
     public User update(CurrentUser currentUser, UpdateProfileDto updateProfileDto) {
