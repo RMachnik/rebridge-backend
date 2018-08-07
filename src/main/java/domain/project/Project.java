@@ -4,11 +4,13 @@ import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.ProjectDto;
 import application.dto.UpdateProjectDetailsDto;
 import com.datastax.driver.core.DataType;
+import com.google.common.base.Preconditions;
 import domain.project.DomainExceptions.MissingInspirationException;
 import domain.survey.QuestionnaireTemplate;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
@@ -56,6 +58,8 @@ public class Project implements Serializable, WithId<UUID> {
     }
 
     public static Project create(String name, QuestionnaireTemplate questionnaireTemplate) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(name), "project name can't be empty");
+
         return Project.builder()
                 .id(UUID.randomUUID())
                 .name(name)

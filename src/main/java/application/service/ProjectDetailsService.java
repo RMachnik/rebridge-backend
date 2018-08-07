@@ -102,9 +102,9 @@ public class ProjectDetailsService {
         return project.getDetails().getInvestorEmailAddresses();
     }
 
-    public Set<EmailAddress> removeInvestors(CurrentUser currentUser, String projectId, AddInvestorDto removeInvestor) {
+    public Set<EmailAddress> removeInvestor(CurrentUser currentUser, String projectId, String email) {
         Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
-        User investor = findInvestors(new EmailAddress(removeInvestor.getEmail()));
+        User investor = findInvestors(new EmailAddress(email));
 
         investor.removeProject(project.getId());
         userService.update(investor);

@@ -38,5 +38,9 @@ public class RepositoryExceptions {
         public InvitationRepositoryException(String message) {
             super(message);
         }
+
+        public InvitationRepositoryException(String message, Throwable ex) {
+            super(message, ex);
+        }
     }
 }

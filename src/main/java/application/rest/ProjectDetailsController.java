@@ -57,13 +57,13 @@ public class ProjectDetailsController {
         );
     }
 
-    @DeleteMapping("/investors")
+    @DeleteMapping("/investors/{email}")
     ResponseEntity<List<AddInvestorDto>> deleteInvestor(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
-            @RequestBody AddInvestorDto removeInvestors) {
+            @PathVariable String email) {
         return ok(
-                fromEmailsToDtos(projectDetailsService.removeInvestors(currentUser, projectId, removeInvestors))
+                fromEmailsToDtos(projectDetailsService.removeInvestor(currentUser, projectId, email))
         );
     }
 

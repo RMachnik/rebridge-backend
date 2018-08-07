@@ -8,13 +8,13 @@ import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.UserDefinedType;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 
-@UserDefinedType("invitations")
+@Table("invitations")
 @Value
 public class Invitation implements WithId<UUID> {
 

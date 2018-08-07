@@ -1,11 +1,12 @@
 package application.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.NonNull;
+import lombok.Value;
 
-@Data
-@AllArgsConstructor
+@Value
 public class CreateProjectDto {
+    @NonNull
     String name;
+    @NonNull
     String questionnaireTemplateId;
 }

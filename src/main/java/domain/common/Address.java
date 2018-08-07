@@ -9,6 +9,7 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -35,10 +36,14 @@ public class Address implements Serializable {
     }
 
     public Address update(AddressDto address) {
+        checkArgument(isNotBlank(address.getCity()), "city can't be empty");
+        checkArgument(isNotBlank(address.getPostalCode()), "postal code can't be empty");
+        checkArgument(isNotBlank(address.getNumber()), "number can't be empty");
+
         return Address.builder()
                 .city(address.getCity())
                 .number(address.getNumber())
-                .postalCode(validatePostalCode(postalCode))
+                .postalCode(validatePostalCode(address.getPostalCode()))
                 .streetName(address.getStreetName())
                 .build();
     }
