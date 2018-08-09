@@ -26,13 +26,13 @@ public class Inspiration implements WithId<UUID>, Serializable {
     String name;
 
     @NonNull
-    InspirationDetail inspirationDetail;
+    InspirationDetails details;
 
     public static Inspiration create(CreateOrUpdateInspirationDto dto) {
         return Inspiration.builder()
                 .id(UUID.randomUUID())
                 .name(dto.getName())
-                .inspirationDetail(InspirationDetail.create(dto))
+                .details(InspirationDetails.create(dto))
                 .build();
     }
 
@@ -41,14 +41,14 @@ public class Inspiration implements WithId<UUID>, Serializable {
                 .builder()
                 .id(id)
                 .name(isNotBlank(inspirationDto.getName()) ? inspirationDto.getName() : name)
-                .inspirationDetail(inspirationDetail.update(inspirationDto))
+                .details(details.update(inspirationDto))
                 .build();
     }
 
     public void removeComment(String userId, String commentId) {
         Comment comment = findComment(commentId);
         comment.checkUser(userId);
-        inspirationDetail.getComments().remove(comment);
+        details.getComments().remove(comment);
     }
 
     public Comment update(String updatingUserId, CommentDto commentDto) {
@@ -57,14 +57,14 @@ public class Inspiration implements WithId<UUID>, Serializable {
 
         Comment updated = existingComment.update(commentDto);
 
-        inspirationDetail.getComments().remove(existingComment);
-        inspirationDetail.getComments().add(updated);
+        details.getComments().remove(existingComment);
+        details.getComments().add(updated);
         return updated;
     }
 
 
     private Comment findComment(String commentId) {
-        return inspirationDetail.getComments()
+        return details.getComments()
                 .stream()
                 .filter(comment -> comment.getId().equals(commentId))
                 .findFirst()
@@ -74,7 +74,7 @@ public class Inspiration implements WithId<UUID>, Serializable {
     public Comment addComment(CurrentUser currentUser, String content) {
         Comment comment = Comment.create(currentUser, content);
 
-        inspirationDetail.add(comment);
+        details.add(comment);
         return comment;
     }
 }

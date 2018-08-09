@@ -25,7 +25,7 @@ public class PictureService {
         Picture picture = pictureRepository.save(new Picture(UUID.randomUUID(), content))
                 .getOrElseThrow(() -> new ServiceException(format("unable to store picture for inspiration %s", inspiration)));
 
-        inspiration.getInspirationDetail().updatePictureId(picture.getId());
+        inspiration.getDetails().updatePictureId(picture.getId());
 
         projectService.save(project);
         return picture;

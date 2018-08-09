@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @Builder
 public class ProjectDetailsDto {
+    String projectId;
     Double budget;
     Double surface;
     AddressDto location;

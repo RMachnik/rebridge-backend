@@ -1,13 +1,13 @@
 package application.dto;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
 public class InspirationDto {
 
     String id;
     String name;
-    InspirationDetailDto inspirationDetail;
+    InspirationDetailDto details;
 }

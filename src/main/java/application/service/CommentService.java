@@ -18,7 +18,7 @@ public class CommentService {
     public List<Comment> findAll(String userId, String projectId, String inspirationId) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
         Inspiration inspiration = project.findInspiration(UUID.fromString(inspirationId));
-        return inspiration.getInspirationDetail().getComments();
+        return inspiration.getDetails().getComments();
     }
 
     public Comment create(CurrentUser currentUser, String projectId, String inspirationId, String content) {

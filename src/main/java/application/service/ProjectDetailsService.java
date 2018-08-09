@@ -33,7 +33,7 @@ public class ProjectDetailsService {
         List<InvestorDto> investors =
                 findInvestors(details);
 
-        ProjectDetailsDto projectDetailsDto = fromInformationToDto(details, investors);
+        ProjectDetailsDto projectDetailsDto = fromInformationToDto(details, investors, projectId);
         return projectDetailsDto;
     }
 
@@ -86,7 +86,7 @@ public class ProjectDetailsService {
         project.updateDetails(updateProjectDetailsDto);
 
         projectService.save(project);
-        return fromInformationToDto(project.getDetails(), findInvestors(project.getDetails()));
+        return fromInformationToDto(project.getDetails(), findInvestors(project.getDetails()), projectId);
     }
 
     public Set<EmailAddress> addInvestor(CurrentUser currentUser, String projectId, AddInvestorDto addInvestorDto) {

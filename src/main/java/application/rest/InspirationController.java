@@ -21,6 +21,7 @@ import static application.dto.DtoAssemblers.fromInspirationToDto;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
@@ -40,7 +41,7 @@ public class InspirationController {
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId
     ) {
-        return ResponseEntity.ok(
+        return ok(
                 inspirationService.findAll(currentUser.getId(), projectId).stream()
                         .map(DtoAssemblers::fromInspirationToDto)
                         .collect(toList())
@@ -48,10 +49,10 @@ public class InspirationController {
     }
 
     @PostMapping
-    ResponseEntity create(UriComponentsBuilder builder,
-                          @AuthenticationPrincipal CurrentUser currentUser,
-                          @PathVariable String projectId,
-                          @RequestBody CreateOrUpdateInspirationDto inspirationDto
+    ResponseEntity<InspirationDto> create(UriComponentsBuilder builder,
+                                          @AuthenticationPrincipal CurrentUser currentUser,
+                                          @PathVariable String projectId,
+                                          @RequestBody CreateOrUpdateInspirationDto inspirationDto
     ) {
 
         Inspiration createdInspiration = inspirationService.create(currentUser.getId(), projectId, inspirationDto);
@@ -65,22 +66,22 @@ public class InspirationController {
     }
 
     @GetMapping("/{inspirationId}")
-    public ResponseEntity inspiration(
+    public ResponseEntity<InspirationDto> inspiration(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @PathVariable String inspirationId
     ) {
-        return ResponseEntity.ok(fromInspirationToDto(inspirationService.findById(currentUser.getId(), projectId, inspirationId)));
+        return ok(fromInspirationToDto(inspirationService.findById(currentUser.getId(), projectId, inspirationId)));
     }
 
     @PutMapping("/{inspirationId}")
-    ResponseEntity update(
+    ResponseEntity<InspirationDto> update(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @PathVariable String inspirationId,
             @RequestBody CreateOrUpdateInspirationDto inspirationDto
     ) {
-        return ResponseEntity.ok(
+        return ok(
                 fromInspirationToDto(inspirationService
                         .update(currentUser.getId(), projectId, inspirationId, inspirationDto)));
     }

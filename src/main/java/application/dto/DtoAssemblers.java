@@ -20,11 +20,6 @@ public class DtoAssemblers {
                 .builder()
                 .id(project.getId().toString())
                 .name(project.getName())
-                .inspirationIds(
-                        project.getInspirations().stream()
-                                .map((inspiration) -> inspiration.getId().toString())
-                                .collect(toList())
-                )
                 .questionnaireTemplateId(project.getQuestionnaireTemplateId().toString())
                 .details(fromDetailsToSimpleDto(project.getDetails()))
                 .build();
@@ -42,17 +37,17 @@ public class DtoAssemblers {
         return InspirationDto.builder()
                 .id(inspiration.getId().toString())
                 .name(inspiration.getName())
-                .inspirationDetail(fromInspirationDetailToDto(inspiration.getInspirationDetail()))
+                .details(fromInspirationDetailToDto(inspiration.getDetails()))
                 .build();
     }
 
-    private static InspirationDetailDto fromInspirationDetailToDto(InspirationDetail inspirationDetail) {
+    private static InspirationDetailDto fromInspirationDetailToDto(InspirationDetails inspirationDetails) {
         return InspirationDetailDto.builder()
-                .description(inspirationDetail.getDescription())
-                .pictureId(inspirationDetail.getPictureId() == null ? "" : inspirationDetail.getPictureId().toString())
-                .rating(inspirationDetail.getRating())
-                .url(inspirationDetail.getUrl())
-                .comments(fromCommentsToDtos(inspirationDetail.getComments()))
+                .description(inspirationDetails.getDescription())
+                .pictureId(inspirationDetails.getPictureId() == null ? "" : inspirationDetails.getPictureId().toString())
+                .rating(inspirationDetails.getRating())
+                .url(inspirationDetails.getUrl())
+                .comments(fromCommentsToDtos(inspirationDetails.getComments()))
                 .build();
     }
 
@@ -90,8 +85,9 @@ public class DtoAssemblers {
                 .build();
     }
 
-    public static ProjectDetailsDto fromInformationToDto(Details details, List<InvestorDto> investors) {
+    public static ProjectDetailsDto fromInformationToDto(Details details, List<InvestorDto> investors, String projectId) {
         return ProjectDetailsDto.builder()
+                .projectId(projectId)
                 .budget(details.getBudget())
                 .surface(details.getSurface().getValue().doubleValue())
                 .location(DtoAssemblers.fromAddressToDto(details.getLocation()))

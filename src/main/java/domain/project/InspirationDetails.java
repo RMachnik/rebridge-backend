@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @UserDefinedType
 @Value
 @Builder
-public class InspirationDetail implements Serializable {
+public class InspirationDetails implements Serializable {
 
     @NonNull
     String description;
@@ -33,7 +33,7 @@ public class InspirationDetail implements Serializable {
     List<Comment> comments;
 
 
-    public InspirationDetail(String description, String url, UUID pictureId, Integer rating, List<Comment> comments) {
+    public InspirationDetails(String description, String url, UUID pictureId, Integer rating, List<Comment> comments) {
         this.description = description;
         this.url = url;
         this.pictureId = pictureId;
@@ -41,8 +41,8 @@ public class InspirationDetail implements Serializable {
         this.comments = comments != null ? comments : new ArrayList<>();
     }
 
-    static InspirationDetail create(CreateOrUpdateInspirationDto createOrUpdateInspirationDto) {
-        return InspirationDetail.builder()
+    static InspirationDetails create(CreateOrUpdateInspirationDto createOrUpdateInspirationDto) {
+        return InspirationDetails.builder()
                 .url(createOrUpdateInspirationDto.getUrl())
                 .pictureId(null)
                 .rating(createOrUpdateInspirationDto.getRating())
@@ -51,8 +51,8 @@ public class InspirationDetail implements Serializable {
                 .build();
     }
 
-    public InspirationDetail update(CreateOrUpdateInspirationDto inspirationDetailDto) {
-        return InspirationDetail.builder()
+    public InspirationDetails update(CreateOrUpdateInspirationDto inspirationDetailDto) {
+        return InspirationDetails.builder()
                 .description(isNotBlank(inspirationDetailDto.getDescription()) ? inspirationDetailDto.getDescription() : description)
                 .pictureId(pictureId)
                 .rating(inspirationDetailDto.getRating() != null ? inspirationDetailDto.getRating() : rating)
@@ -61,8 +61,8 @@ public class InspirationDetail implements Serializable {
                 .build();
     }
 
-    public InspirationDetail updatePictureId(UUID pictureId) {
-        return new InspirationDetail(description, url, pictureId, rating, comments);
+    public InspirationDetails updatePictureId(UUID pictureId) {
+        return new InspirationDetails(description, url, pictureId, rating, comments);
     }
 
     public void add(Comment comment) {

@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public User createWithRoleInvestor(String email) {
-        return createUserWithRole(email, "chanegme", INVESTOR);
+        return createUserWithRole(email, "changeme", INVESTOR);
     }
 
     private User createUserWithRole(String email, String password, Roles role) {
