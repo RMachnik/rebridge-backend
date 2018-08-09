@@ -19,7 +19,6 @@ class DtoAssemblersSpec extends Specification {
         then:
         !projectToDto.id.empty
         projectToDto.name == "new"
-        projectToDto.inspirationIds.empty
         projectToDto.questionnaireTemplateId == questionnaireTemplate.getId().toString()
     }
 }
