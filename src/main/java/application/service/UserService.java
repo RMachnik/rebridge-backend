@@ -2,8 +2,8 @@ package application.service;
 
 import application.dto.CurrentUser;
 import application.dto.UpdateProfileDto;
-import application.service.RepositoryExceptions.UserRepositoryException;
 import application.service.ServiceExceptions.ServiceException;
+import domain.RepositoryExceptions.UserRepositoryException;
 import domain.invitation.Invitation;
 import domain.project.DomainExceptions.InvalidPassword;
 import domain.user.EmailAddress;

@@ -4,25 +4,24 @@ import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.ProjectDto;
 import application.dto.UpdateProjectDetailsDto;
 import com.datastax.driver.core.DataType;
-import com.google.common.base.Preconditions;
 import domain.project.DomainExceptions.MissingInspirationException;
 import domain.survey.QuestionnaireTemplate;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -30,7 +29,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Table("projects")
 @Data
 @Builder
-public class Project implements Serializable, WithId<UUID> {
+public class Project implements WithId<UUID> {
 
     @Id
     @PrimaryKey
@@ -44,21 +43,29 @@ public class Project implements Serializable, WithId<UUID> {
     @NonNull
     Details details;
 
+
     @NonNull
     List<Inspiration> inspirations;
 
     UUID questionnaireTemplateId;
 
-    public Project(UUID id, String name, Details details, List<Inspiration> inspirations, UUID questionnaireTemplateId) {
+    UUID pictureId;
+
+    public Project(UUID id, String name,
+                   Details details,
+                   List<Inspiration> inspirations,
+                   UUID questionnaireTemplateId,
+                   UUID pictureId) {
         this.id = id;
         this.name = name;
         this.details = details;
-        this.inspirations = inspirations != null ? inspirations : new ArrayList<>();
+        this.inspirations = ofNullable(inspirations).orElse(new ArrayList<>());
         this.questionnaireTemplateId = questionnaireTemplateId;
+        this.pictureId = pictureId;
     }
 
     public static Project create(String name, QuestionnaireTemplate questionnaireTemplate) {
-        Preconditions.checkArgument(StringUtils.isNotBlank(name), "project name can't be empty");
+        checkArgument(isNotBlank(name), "project name can't be empty");
 
         return Project.builder()
                 .id(UUID.randomUUID())
@@ -105,7 +112,6 @@ public class Project implements Serializable, WithId<UUID> {
     }
 
     private Optional<Inspiration> findInspirationById(UUID inspirationId) {
-
         return inspirations.stream()
                 .filter(inspiration -> inspiration.getId().equals(inspirationId))
                 .findAny();

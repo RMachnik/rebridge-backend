@@ -3,21 +3,22 @@ package domain.project;
 import application.dto.CommentDto;
 import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.CurrentUser;
+import domain.project.DomainExceptions.MissingCommentException;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
-import java.io.Serializable;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
 @Value
 @Builder
-public class Inspiration implements WithId<UUID>, Serializable {
+public class Inspiration implements WithId<UUID> {
 
     @NonNull
     UUID id;
@@ -29,6 +30,7 @@ public class Inspiration implements WithId<UUID>, Serializable {
     InspirationDetails details;
 
     public static Inspiration create(CreateOrUpdateInspirationDto dto) {
+        checkArgument(isNotBlank(dto.getName()), "Inspiration name can't be empty.");
         return Inspiration.builder()
                 .id(UUID.randomUUID())
                 .name(dto.getName())
@@ -64,16 +66,16 @@ public class Inspiration implements WithId<UUID>, Serializable {
 
 
     private Comment findComment(String commentId) {
+        UUID id = UUID.fromString(commentId);
         return details.getComments()
                 .stream()
-                .filter(comment -> comment.getId().equals(commentId))
+                .filter(comment -> comment.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new DomainExceptions.MissingCommentException(format("there is no comment %s", commentId)));
+                .orElseThrow(() -> new MissingCommentException(format("there is no comment %s", commentId)));
     }
 
     public Comment addComment(CurrentUser currentUser, String content) {
         Comment comment = Comment.create(currentUser, content);
-
         details.add(comment);
         return comment;
     }

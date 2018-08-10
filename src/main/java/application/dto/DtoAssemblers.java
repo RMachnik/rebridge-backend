@@ -62,7 +62,7 @@ public class DtoAssemblers {
                 .id(comment.getId().toString())
                 .author(comment.getAuthor())
                 .content(comment.getContent())
-                .creationDate(comment.getDate())
+                .creationDate(comment.getDate().getValue())
                 .build();
     }
 

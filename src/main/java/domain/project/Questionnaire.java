@@ -2,7 +2,7 @@ package domain.project;
 
 import application.dto.QuestionnaireAnswersDto;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @UserDefinedType
-@Data
+@Value
 @AllArgsConstructor
 public class Questionnaire implements WithId<UUID> {
 

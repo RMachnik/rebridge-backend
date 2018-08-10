@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
@@ -33,7 +34,12 @@ public class InspirationDetails implements Serializable {
     List<Comment> comments;
 
 
-    public InspirationDetails(String description, String url, UUID pictureId, Integer rating, List<Comment> comments) {
+    public InspirationDetails(
+            String description,
+            String url,
+            UUID pictureId,
+            Integer rating,
+            List<Comment> comments) {
         this.description = description;
         this.url = url;
         this.pictureId = pictureId;
@@ -55,7 +61,7 @@ public class InspirationDetails implements Serializable {
         return InspirationDetails.builder()
                 .description(isNotBlank(inspirationDetailDto.getDescription()) ? inspirationDetailDto.getDescription() : description)
                 .pictureId(pictureId)
-                .rating(inspirationDetailDto.getRating() != null ? inspirationDetailDto.getRating() : rating)
+                .rating(ofNullable(inspirationDetailDto.getRating()).orElse(rating))
                 .url(isNotBlank(inspirationDetailDto.getUrl()) ? inspirationDetailDto.getUrl() : url)
                 .comments(comments)
                 .build();

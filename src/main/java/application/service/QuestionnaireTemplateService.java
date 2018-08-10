@@ -1,7 +1,7 @@
 package application.service;
 
 import application.dto.QuestionnaireTemplateDto;
-import application.service.RepositoryExceptions.QuestionnaireTemplateRepositoryException;
+import domain.RepositoryExceptions.QuestionnaireTemplateRepositoryException;
 import domain.survey.QuestionnaireTemplate;
 import domain.survey.QuestionnaireTemplateRepository;
 import lombok.AllArgsConstructor;

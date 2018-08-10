@@ -1,6 +1,6 @@
 package application.service;
 
-import application.service.RepositoryExceptions.InvitationRepositoryException;
+import domain.RepositoryExceptions.InvitationRepositoryException;
 import domain.invitation.Invitation;
 import domain.invitation.InvitationRepository;
 import domain.user.EmailAddress;

@@ -1,8 +1,8 @@
 package application.rest;
 
-import application.service.RepositoryExceptions.RepositoryException;
 import application.service.ServiceExceptions.ServiceException;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import domain.RepositoryExceptions.RepositoryException;
 import domain.project.DomainExceptions.DomainException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
         log.error(request.getContextPath(), ex);
         return buildResponseEntity(new ApiError(status, ex.getMessage()));
     }

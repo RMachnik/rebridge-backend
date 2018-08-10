@@ -1,4 +1,4 @@
-package application.service;
+package domain;
 
 public class RepositoryExceptions {
 

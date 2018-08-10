@@ -3,7 +3,6 @@ package domain.user;
 import application.dto.CreateProjectDto;
 import application.dto.UpdateProfileDto;
 import com.datastax.driver.core.DataType;
-import com.google.common.collect.Sets;
 import domain.project.DomainExceptions.UserActionNotAllowed;
 import domain.project.Project;
 import domain.project.ProjectRepository;
@@ -17,17 +16,18 @@ import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
 
 @Table("users")
 @Value
 @Builder
-public class User implements WithId<UUID>, Serializable {
+public class User implements WithId<UUID> {
 
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)
@@ -59,8 +59,8 @@ public class User implements WithId<UUID>, Serializable {
         this.email = EmailAddress.isValid(email);
         this.password = password;
         this.contactDetails = contactDetails;
-        this.projectIds = projectIds != null ? new HashSet<>(projectIds) : new HashSet<>();
-        this.roles = roles != null ? roles : Sets.newHashSet();
+        this.projectIds = ofNullable(projectIds).orElse(new HashSet<>());
+        this.roles = roles != null ? roles : newHashSet();
     }
 
     public static User createUser(String email, String password, Roles role) {
@@ -70,7 +70,7 @@ public class User implements WithId<UUID>, Serializable {
                 .email(EmailAddress.isValid(email))
                 .password(password)
                 .projectIds(new HashSet<>())
-                .roles(Sets.newHashSet(role))
+                .roles(newHashSet(role))
                 .contactDetails(ContactDetails.empty())
                 .build();
     }

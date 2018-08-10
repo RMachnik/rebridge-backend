@@ -2,22 +2,23 @@ package domain.project;
 
 import application.dto.CommentDto;
 import application.dto.CurrentUser;
+import domain.common.DateTime;
+import domain.project.DomainExceptions.UserActionNotAllowed;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
 @Value
 @Builder
-public class Comment implements WithId<UUID>, Serializable {
+public class Comment implements WithId<UUID> {
 
     @NonNull
     UUID id;
@@ -32,21 +33,22 @@ public class Comment implements WithId<UUID>, Serializable {
     String content;
 
     @NonNull
-    String date;
+    DateTime date;
 
     public static Comment create(CurrentUser currentUser, String content) {
+        checkArgument(isNotBlank(content), "Comment can't be empty.");
         return Comment.builder()
                 .id(UUID.randomUUID())
                 .userId(currentUser.getId())
                 .author(currentUser.getEmail())
-                .date(LocalDateTime.now().toString())
+                .date(DateTime.now())
                 .content(content)
                 .build();
     }
 
     void checkUser(String updatingUserId) {
-        if (userId.equals(updatingUserId)) {
-            throw new DomainExceptions.UserActionNotAllowed(format("user %s can't edit this comment %s", userId, id));
+        if (!userId.equals(updatingUserId)) {
+            throw new UserActionNotAllowed(format("user %s can't edit this comment %s", userId, id));
         }
     }
 

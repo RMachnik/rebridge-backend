@@ -2,15 +2,13 @@ package application.service;
 
 import application.dto.CreateProjectDto;
 import application.dto.ProjectDto;
-import application.service.RepositoryExceptions.ProjectRepositoryException;
+import domain.RepositoryExceptions.ProjectRepositoryException;
 import domain.project.DomainExceptions.MissingQuestionnaireTemplate;
 import domain.project.DomainExceptions.UserActionNotAllowed;
 import domain.project.Project;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplate;
 import domain.user.User;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.Value;
 
 import java.util.List;
@@ -24,7 +22,6 @@ import static java.util.stream.Collectors.toList;
 public class ProjectService {
 
     UserService userService;
-    @Getter(value = AccessLevel.PRIVATE)
     ProjectRepository projectRepository;
     QuestionnaireTemplateService questionnaireTemplateService;
 
@@ -89,7 +86,7 @@ public class ProjectService {
                 .orElseThrow(() -> new ProjectRepositoryException(format("there is no such project %s", projectId)));
     }
 
-    Project save(Project project) {
+    public Project save(Project project) {
         return projectRepository.save(project)
                 .getOrElseThrow(ex -> new ProjectRepositoryException(format("problem with creating project %s", project.getId()), ex));
     }
