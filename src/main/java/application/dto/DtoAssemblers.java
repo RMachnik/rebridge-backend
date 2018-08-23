@@ -81,7 +81,7 @@ public class DtoAssemblers {
                 .email(user.getEmail())
                 .name(user.getContactDetails().getName())
                 .surname(user.getContactDetails().getSurname())
-                .phone(user.getContactDetails().getPhone())
+                .phone(user.getContactDetails().getPhone().getValue())
                 .build();
     }
 
@@ -128,7 +128,7 @@ public class DtoAssemblers {
                 .email(user.getEmail())
                 .name(user.getContactDetails().getName())
                 .surname(user.getContactDetails().getSurname())
-                .phone(user.getContactDetails().getPhone())
+                .phone(user.getContactDetails().getPhone().getValue())
                 .roles(user.getRoles().stream().map(Enum::name).collect(toSet()))
                 .address(fromAddressToDto(user.getContactDetails().getAddress()))
                 .build();

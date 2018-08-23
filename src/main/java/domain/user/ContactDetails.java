@@ -5,10 +5,13 @@ import domain.common.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.io.Serializable;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
 @Value
@@ -18,23 +21,27 @@ public class ContactDetails implements Serializable {
 
     String name;
     String surname;
-    String phone;
+    PhoneNumber phone;
     Address address;
 
     public static ContactDetails empty() {
         return ContactDetails.builder()
-                .name(StringUtils.EMPTY)
-                .surname(StringUtils.EMPTY)
+                .name(EMPTY)
+                .surname(EMPTY)
                 .address(Address.empty())
-                .phone("")
+                .phone(PhoneNumber.empty())
                 .build();
     }
 
     public ContactDetails update(UpdateProfileDto updateProfileDto) {
+        checkArgument(isNotBlank(updateProfileDto.getName()), "name can't be black");
+        checkArgument(isNotBlank(updateProfileDto.getSurname()), "surname can't be black");
+
+
         return ContactDetails.builder()
                 .name(updateProfileDto.getName())
                 .surname(updateProfileDto.getSurname())
-                .phone(updateProfileDto.getPhone())
+                .phone(PhoneNumber.fromNumber(updateProfileDto.getPhone()))
                 .address(address.update(updateProfileDto.getAddress()))
                 .build();
     }

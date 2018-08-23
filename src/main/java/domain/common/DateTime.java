@@ -13,11 +13,7 @@ public class DateTime {
 
     String value;
 
-    private DateTime(LocalDateTime localDateTime) {
-        value = localDateTime.format(ISO_DATE_TIME);
-    }
-
     public static DateTime now() {
-        return new DateTime(LocalDateTime.now());
+        return new DateTime(LocalDateTime.now().format(ISO_DATE_TIME));
     }
 }

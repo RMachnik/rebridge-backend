@@ -20,9 +20,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Table("users")
 @Value
@@ -56,7 +58,7 @@ public class User implements WithId<UUID> {
                 Set<UUID> projectIds,
                 Set<Roles> roles) {
         this.id = id;
-        this.email = EmailAddress.isValid(email);
+        this.email = EmailAddress.validate(email);
         this.password = password;
         this.contactDetails = contactDetails;
         this.projectIds = ofNullable(projectIds).orElse(new HashSet<>());
@@ -64,15 +66,22 @@ public class User implements WithId<UUID> {
     }
 
     public static User createUser(String email, String password, Roles role) {
+        validate(email, password);
+
         return User
                 .builder()
                 .id(UUID.randomUUID())
-                .email(EmailAddress.isValid(email))
+                .email(EmailAddress.validate(email))
                 .password(password)
                 .projectIds(new HashSet<>())
                 .roles(newHashSet(role))
                 .contactDetails(ContactDetails.empty())
                 .build();
+    }
+
+    private static void validate(String email, String password) {
+        checkArgument(isNotBlank(email), "email can't be blank");
+        checkArgument(isNotBlank(password), "password can't be blank");
     }
 
     public boolean isPasswordValid(String provided) {
@@ -109,6 +118,8 @@ public class User implements WithId<UUID> {
     }
 
     public User update(UpdateProfileDto updateProfileDto) {
+        validate(updateProfileDto.getEmail(), password);
+
         return User.builder()
                 .id(id)
                 .roles(roles)
