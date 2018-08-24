@@ -34,7 +34,7 @@ public class ImageService {
         Image saved = imageRepository.save(image)
                 .getOrElseThrow(() -> new ServiceException(format("unable save image for inspiration %s", inspirationId)));
 
-        inspiration.getDetails().updatePictureId(image.getId());
+        inspiration.updatePictureId(saved.getId());
 
         projectService.save(project);
         return saved;
@@ -45,7 +45,7 @@ public class ImageService {
         Image saved = imageRepository.save(image)
                 .getOrElseThrow(() -> new ServiceException(format("unable to save picture for project %s", projectId)));
 
-        Project project = projectService.findByUserIdAndProjectId(userId, projectId.toString());
+        Project project = projectService.findByUserIdAndProjectId(userId, projectId);
 
         project.updateImage(saved.getId());
 

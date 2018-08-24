@@ -126,7 +126,7 @@ public class InspirationController {
         UriComponents pathToPicture = builder
                 .path(IMAGES)
                 .path("{id}")
-                .buildAndExpand(projectId, inspirationId, savedImage.getId());
+                .buildAndExpand(savedImage.getId());
 
         return ResponseEntity
                 .created(pathToPicture.toUri())

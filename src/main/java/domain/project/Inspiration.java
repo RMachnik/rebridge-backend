@@ -5,8 +5,8 @@ import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.CurrentUser;
 import domain.project.DomainExceptions.MissingCommentException;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @UserDefinedType
-@Value
+@Data
 @Builder
 public class Inspiration implements WithId<UUID> {
 
@@ -78,5 +78,9 @@ public class Inspiration implements WithId<UUID> {
         Comment comment = Comment.create(currentUser, content);
         details.add(comment);
         return comment;
+    }
+
+    public void updatePictureId(UUID pictureId) {
+        this.details = details.updatePictureId(pictureId);
     }
 }

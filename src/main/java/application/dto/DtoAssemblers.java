@@ -47,7 +47,7 @@ public class DtoAssemblers {
     private static InspirationDetailDto fromInspirationDetailToDto(InspirationDetails inspirationDetails) {
         return InspirationDetailDto.builder()
                 .description(inspirationDetails.getDescription())
-                .pictureId(inspirationDetails.getImageId() == null ? "" : inspirationDetails.getImageId().toString())
+                .imageId(Optional.ofNullable(inspirationDetails.getImageId()).map(UUID::toString).orElse(null))
                 .rating(inspirationDetails.getRating())
                 .url(inspirationDetails.getUrl())
                 .comments(fromCommentsToDtos(inspirationDetails.getComments()))

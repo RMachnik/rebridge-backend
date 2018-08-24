@@ -43,8 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final RequestMatcher SCHEMA = new AndRequestMatcher(
             new AntPathRequestMatcher("/schemas/**")
     );
-    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new AndRequestMatcher(AUTH, SCHEMA, INVITATION));
-//    private static final RequestMatcher PROTECTED_URLS = new AndRequestMatcher(asList(AUTH, INVITATION, SCHEMA).stream().map(NegatedRequestMatcher::new).collect(toList()));
+    private static final RequestMatcher IMAGES = new AndRequestMatcher(
+            new AntPathRequestMatcher("/images/**")
+    );
+    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(new AndRequestMatcher(AUTH, SCHEMA, INVITATION, IMAGES));
 
     private final AuthenticationProvider provider;
 
@@ -62,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) {
         web.ignoring()
-                .requestMatchers(AUTH, SCHEMA, INVITATION)
+                .requestMatchers(AUTH, SCHEMA, INVITATION, IMAGES)
                 .and()
                 .ignoring()
                 .antMatchers(OPTIONS, "/**");

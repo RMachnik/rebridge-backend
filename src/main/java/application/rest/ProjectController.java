@@ -26,8 +26,8 @@ import static application.rest.ImageController.IMAGES;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
-import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 @RequestMapping(
@@ -97,15 +97,14 @@ public class ProjectController {
     }
 
     @PostMapping(
-            path = "/{inspirationId}/image",
-            consumes = ALL_VALUE,
+            path = "/{projectId}/image",
+            consumes = MULTIPART_FORM_DATA_VALUE,
             produces = APPLICATION_JSON_UTF8_VALUE
     )
     ResponseEntity uploadInspiration(
             UriComponentsBuilder builder,
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
-            @PathVariable String inspirationId,
             @RequestParam("uploadedFile") MultipartFile uploadedFile) throws IOException {
 
         Image savedImage = imageService.addImageToProject(
@@ -116,7 +115,7 @@ public class ProjectController {
         UriComponents pathToPicture = builder
                 .path(IMAGES)
                 .path("{id}")
-                .buildAndExpand(projectId, inspirationId, savedImage.getId());
+                .buildAndExpand(projectId, savedImage.getId());
 
         return ResponseEntity
                 .created(pathToPicture.toUri())
