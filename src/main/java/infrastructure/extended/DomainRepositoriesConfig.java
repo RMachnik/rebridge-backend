@@ -1,7 +1,7 @@
 package infrastructure.extended;
 
 import domain.invitation.InvitationRepository;
-import domain.project.PictureRepository;
+import domain.project.ImageRepository;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplateRepository;
 import domain.user.UserRepository;
@@ -23,8 +23,8 @@ public class DomainRepositoriesConfig {
     }
 
     @Bean
-    PictureRepository cassandraPictureRepository(PictureCrudRepository pictureCrudRepository) {
-        return new ExtendedPictureRepository(pictureCrudRepository);
+    ImageRepository cassandraPictureRepository(ImageCrudRepository imageCrudRepository) {
+        return new ExtendedImageRepository(imageCrudRepository);
     }
 
     @Bean

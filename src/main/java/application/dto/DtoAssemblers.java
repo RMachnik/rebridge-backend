@@ -8,7 +8,9 @@ import domain.user.Roles;
 import domain.user.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -30,6 +32,7 @@ public class DtoAssemblers {
                 .budget(details.getBudget())
                 .surface(details.getSurface().getValue().doubleValue())
                 .location(fromAddressToDto(details.getLocation()))
+                .imageId(Optional.ofNullable(details.getImageId()).map(UUID::toString).orElse(""))
                 .build();
     }
 
@@ -44,7 +47,7 @@ public class DtoAssemblers {
     private static InspirationDetailDto fromInspirationDetailToDto(InspirationDetails inspirationDetails) {
         return InspirationDetailDto.builder()
                 .description(inspirationDetails.getDescription())
-                .pictureId(inspirationDetails.getPictureId() == null ? "" : inspirationDetails.getPictureId().toString())
+                .pictureId(inspirationDetails.getImageId() == null ? "" : inspirationDetails.getImageId().toString())
                 .rating(inspirationDetails.getRating())
                 .url(inspirationDetails.getUrl())
                 .comments(fromCommentsToDtos(inspirationDetails.getComments()))

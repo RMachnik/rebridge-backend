@@ -2,7 +2,7 @@ package application;
 
 import application.service.*;
 import domain.invitation.InvitationRepository;
-import domain.project.PictureRepository;
+import domain.project.ImageRepository;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplateRepository;
 import domain.user.UserRepository;
@@ -43,8 +43,8 @@ public class ServicesConfig {
     }
 
     @Bean
-    PictureService pictureService(ProjectService projectService, PictureRepository pictureRepository) {
-        return new PictureService(projectService, pictureRepository);
+    ImageService pictureService(ProjectService projectService, ImageRepository imageRepository) {
+        return new ImageService(projectService, imageRepository);
     }
 
     @Bean

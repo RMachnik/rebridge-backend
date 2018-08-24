@@ -25,7 +25,7 @@ public class InspirationDetails implements Serializable {
     @NonNull
     String url;
 
-    UUID pictureId;
+    UUID imageId;
 
     @NonNull
     Integer rating;
@@ -37,12 +37,12 @@ public class InspirationDetails implements Serializable {
     public InspirationDetails(
             String description,
             String url,
-            UUID pictureId,
+            UUID imageId,
             Integer rating,
             List<Comment> comments) {
         this.description = description;
         this.url = url;
-        this.pictureId = pictureId;
+        this.imageId = imageId;
         this.rating = rating;
         this.comments = comments != null ? comments : new ArrayList<>();
     }
@@ -50,7 +50,7 @@ public class InspirationDetails implements Serializable {
     static InspirationDetails create(CreateOrUpdateInspirationDto createOrUpdateInspirationDto) {
         return InspirationDetails.builder()
                 .url(createOrUpdateInspirationDto.getUrl())
-                .pictureId(null)
+                .imageId(null)
                 .rating(createOrUpdateInspirationDto.getRating())
                 .description(createOrUpdateInspirationDto.getDescription())
                 .comments(new ArrayList<>())
@@ -60,7 +60,7 @@ public class InspirationDetails implements Serializable {
     public InspirationDetails update(CreateOrUpdateInspirationDto inspirationDetailDto) {
         return InspirationDetails.builder()
                 .description(isNotBlank(inspirationDetailDto.getDescription()) ? inspirationDetailDto.getDescription() : description)
-                .pictureId(pictureId)
+                .imageId(imageId)
                 .rating(ofNullable(inspirationDetailDto.getRating()).orElse(rating))
                 .url(isNotBlank(inspirationDetailDto.getUrl()) ? inspirationDetailDto.getUrl() : url)
                 .comments(comments)

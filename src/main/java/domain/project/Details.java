@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @UserDefinedType
 @Value
@@ -26,13 +27,15 @@ public class Details implements Serializable {
     Address location;
     Set<EmailAddress> investorEmailAddresses;
     Questionnaire questionnaire;
+    UUID imageId;
 
-    public Details(Double budget, Surface surface, Address location, Set<EmailAddress> investorEmailAddresses, Questionnaire questionnaire) {
+    public Details(Double budget, Surface surface, Address location, Set<EmailAddress> investorEmailAddresses, Questionnaire questionnaire, UUID imageId) {
         this.budget = budget;
         this.surface = surface;
         this.location = location;
         this.investorEmailAddresses = investorEmailAddresses != null ? investorEmailAddresses : new HashSet<>();
         this.questionnaire = questionnaire;
+        this.imageId = imageId;
     }
 
     public static Details empty(QuestionnaireTemplate questionnaireTemplate) {
@@ -42,6 +45,7 @@ public class Details implements Serializable {
                 .location(Address.empty())
                 .surface(new Surface(BigDecimal.ZERO))
                 .questionnaire(Questionnaire.create(questionnaireTemplate.getQuestions()))
+                .imageId(null)
                 .build();
     }
 
@@ -64,6 +68,7 @@ public class Details implements Serializable {
                 .surface(updateProjectDetailsDto.getSurface() != null ? new Surface(BigDecimal.valueOf(updateProjectDetailsDto.getSurface())) : surface)
                 .investorEmailAddresses(investorEmailAddresses)
                 .questionnaire(questionnaire)
+                .imageId(imageId)
                 .build();
     }
 
@@ -75,4 +80,7 @@ public class Details implements Serializable {
         investorEmailAddresses.remove(new EmailAddress(investor.getEmail()));
     }
 
+    public Details updateImage(UUID imageId) {
+        return new Details(budget, surface, location, investorEmailAddresses, questionnaire, imageId);
+    }
 }

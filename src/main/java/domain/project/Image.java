@@ -12,14 +12,21 @@ import java.util.UUID;
 
 @Table("pictures")
 @Value
-public class Picture implements WithId<UUID> {
+public class Image implements WithId<UUID> {
 
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)
     @NonNull
     UUID id;
+    String name;
+    String mimeType;
 
     @NonNull
     ByteBuffer byteBuffer;
+
+
+    public static Image create(String name, String mimeType, ByteBuffer data) {
+        return new Image(UUID.randomUUID(), name, mimeType, data);
+    }
 }
 

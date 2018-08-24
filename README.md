@@ -27,7 +27,7 @@ registration returns authentication token that can be used for subsequent intera
 + `/projects/{projectId}/inspirations/{inspirationId}/comments/`-
  GET, POST{content}, PUT(according to inspiration schema), DELETE
  + `/projects/{projectId}/inspirations/{inspirationId}/pictures/`- ONLY JEPG
-  GET `contentType:image/jpeg`, POST requestParam: uploadedFile - with binary data of picture(JPEG only max 25mb), 
+  GET `contentType:image/jpeg`, POST requestParam: uploadedFile - with binary data of image(JPEG only max 25mb), 
   PUT(according to inspiration schema), DELETE
 
 #####Json Schemas

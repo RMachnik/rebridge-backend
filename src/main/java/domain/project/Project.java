@@ -43,25 +43,20 @@ public class Project implements WithId<UUID> {
     @NonNull
     Details details;
 
-
     @NonNull
     List<Inspiration> inspirations;
 
     UUID questionnaireTemplateId;
 
-    UUID pictureId;
-
     public Project(UUID id, String name,
                    Details details,
                    List<Inspiration> inspirations,
-                   UUID questionnaireTemplateId,
-                   UUID pictureId) {
+                   UUID questionnaireTemplateId) {
         this.id = id;
         this.name = name;
         this.details = details;
         this.inspirations = ofNullable(inspirations).orElse(new ArrayList<>());
         this.questionnaireTemplateId = questionnaireTemplateId;
-        this.pictureId = pictureId;
     }
 
     public static Project create(String name, QuestionnaireTemplate questionnaireTemplate) {
@@ -124,5 +119,9 @@ public class Project implements WithId<UUID> {
 
     public void updateDetails(UpdateProjectDetailsDto updateProjectDetailsDto) {
         this.details = details.update(updateProjectDetailsDto);
+    }
+
+    public void updateImage(UUID imageId) {
+        this.details = details.updateImage(imageId);
     }
 }
