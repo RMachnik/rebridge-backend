@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.Optional;
 import java.util.UUID;
 
-import static application.dto.DtoAssemblers.fromUserToCurrentUser;
+import static application.dto.CurrentUser.create;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
@@ -30,7 +30,7 @@ public final class AuthenticationService implements UserAuthenticationService {
         String token = UUID.randomUUID().toString();
         loggedInUsers.put(token, foundUser);
 
-        return of(fromUserToCurrentUser(foundUser, token));
+        return of(create(foundUser, token));
     }
 
     @Override
@@ -43,7 +43,7 @@ public final class AuthenticationService implements UserAuthenticationService {
     public Optional<CurrentUser> findByToken(final String token) {
         User user = loggedInUsers.get(token);
         return ofNullable(user)
-                .map((possibleUser) -> fromUserToCurrentUser(possibleUser, token));
+                .map((possibleUser) -> create(possibleUser, token));
 
     }
 
@@ -55,7 +55,7 @@ public final class AuthenticationService implements UserAuthenticationService {
     @Override
     public Optional<CurrentUser> check(String token) {
         return ofNullable(loggedInUsers.get(token))
-                .map(user -> fromUserToCurrentUser(user, token));
+                .map(user -> create(user, token));
     }
 }
 

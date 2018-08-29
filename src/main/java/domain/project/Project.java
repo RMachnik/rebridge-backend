@@ -48,26 +48,32 @@ public class Project implements WithId<UUID> {
 
     UUID questionnaireTemplateId;
 
+    Chat chat;
+
     public Project(UUID id, String name,
                    Details details,
                    List<Inspiration> inspirations,
-                   UUID questionnaireTemplateId) {
+                   UUID questionnaireTemplateId,
+                   Chat chat) {
         this.id = id;
         this.name = name;
         this.details = details;
         this.inspirations = ofNullable(inspirations).orElse(new ArrayList<>());
         this.questionnaireTemplateId = questionnaireTemplateId;
+        this.chat = chat;
     }
 
     public static Project create(String name, QuestionnaireTemplate questionnaireTemplate) {
         checkArgument(isNotBlank(name), "project name can't be empty");
 
+        UUID id = UUID.randomUUID();
         return Project.builder()
-                .id(UUID.randomUUID())
+                .id(id)
                 .name(name)
                 .inspirations(new ArrayList<>())
                 .details(Details.empty(questionnaireTemplate))
                 .questionnaireTemplateId(questionnaireTemplate.getId())
+                .chat(Chat.empty(id))
                 .build();
     }
 
@@ -77,6 +83,7 @@ public class Project implements WithId<UUID> {
                 .name(isNotBlank(projectDto.getName()) ? projectDto.getName() : name)
                 .inspirations(inspirations)
                 .questionnaireTemplateId(isNotBlank(projectDto.getQuestionnaireTemplateId()) ? fromString(projectDto.getQuestionnaireTemplateId()) : questionnaireTemplateId)
+                .chat(chat)
                 .build();
     }
 

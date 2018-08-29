@@ -1,6 +1,5 @@
 package application.rest;
 
-import application.dto.DtoAssemblers;
 import application.dto.QuestionnaireTemplateDto;
 import application.service.QuestionnaireTemplateService;
 import domain.survey.QuestionnaireTemplate;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static application.dto.DtoAssemblers.fromSurveyTemplateToDto;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -36,7 +34,7 @@ public class QuestionnaireTemplateController {
     ResponseEntity<List<QuestionnaireTemplateDto>> getAll() {
         List<QuestionnaireTemplateDto> questionnaireTemplateDtos = questionnaireTemplateService.findAll()
                 .stream()
-                .map(DtoAssemblers::fromSurveyTemplateToDto)
+                .map(QuestionnaireTemplateDto::create)
                 .collect(Collectors.toList());
         return ResponseEntity
                 .ok(questionnaireTemplateDtos);
@@ -50,14 +48,14 @@ public class QuestionnaireTemplateController {
         QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.create(questionnaireTemplateDto);
         return ResponseEntity
                 .created(path.build(questionnaireTemplate.getId()))
-                .body(fromSurveyTemplateToDto(questionnaireTemplate));
+                .body(QuestionnaireTemplateDto.create(questionnaireTemplate));
     }
 
     @PutMapping("/{templateId}")
     ResponseEntity<QuestionnaireTemplateDto> update(@PathVariable String templateId, @RequestBody QuestionnaireTemplateDto questionnaireTemplateDto) {
         QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.update(UUID.fromString(templateId), questionnaireTemplateDto);
         return ResponseEntity
-                .ok(fromSurveyTemplateToDto(questionnaireTemplate));
+                .ok(QuestionnaireTemplateDto.create(questionnaireTemplate));
     }
 
     @DeleteMapping("/{templateId}")

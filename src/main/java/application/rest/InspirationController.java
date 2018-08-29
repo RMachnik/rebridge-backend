@@ -2,7 +2,6 @@ package application.rest;
 
 import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.CurrentUser;
-import application.dto.DtoAssemblers;
 import application.dto.InspirationDto;
 import application.service.ImageService;
 import application.service.InspirationService;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import static application.dto.DtoAssemblers.fromInspirationToDto;
 import static application.rest.ImageController.IMAGES;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
@@ -52,7 +50,7 @@ public class InspirationController {
     ) {
         return ok(
                 inspirationService.findAll(currentUser.getId(), projectId).stream()
-                        .map(DtoAssemblers::fromInspirationToDto)
+                        .map(InspirationDto::create)
                         .collect(toList())
         );
     }
@@ -71,7 +69,7 @@ public class InspirationController {
 
         return ResponseEntity
                 .created(pathToInspiration.toUri())
-                .body(fromInspirationToDto(createdInspiration));
+                .body(InspirationDto.create(createdInspiration));
     }
 
     @GetMapping("/{inspirationId}")
@@ -80,7 +78,7 @@ public class InspirationController {
             @PathVariable String projectId,
             @PathVariable String inspirationId
     ) {
-        return ok(fromInspirationToDto(inspirationService.findById(currentUser.getId(), projectId, inspirationId)));
+        return ok(InspirationDto.create(inspirationService.findById(currentUser.getId(), projectId, inspirationId)));
     }
 
     @PutMapping("/{inspirationId}")
@@ -91,7 +89,7 @@ public class InspirationController {
             @RequestBody CreateOrUpdateInspirationDto inspirationDto
     ) {
         return ok(
-                fromInspirationToDto(inspirationService
+                InspirationDto.create(inspirationService
                         .update(currentUser.getId(), projectId, inspirationId, inspirationDto)));
     }
 

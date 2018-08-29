@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import static application.dto.DtoAssemblers.fromUserToProfileDto;
+import static application.dto.ProfileDto.create;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.ResponseEntity.ok;
@@ -34,13 +34,13 @@ final class UserController {
 
     @GetMapping("current")
     ResponseEntity<ProfileDto> current(@AuthenticationPrincipal final CurrentUser user) {
-        return ok(fromUserToProfileDto(userService.findByEmail(user.getEmail())));
+        return ok(create(userService.findByEmail(user.getEmail())));
     }
 
     @PutMapping("current")
     ResponseEntity<ProfileDto> update(@AuthenticationPrincipal CurrentUser currentUser, @RequestBody UpdateProfileDto updateProfileDto) {
         User user = userService.update(currentUser, updateProfileDto);
-        return ok(fromUserToProfileDto(user));
+        return ok(create(user));
     }
 
     @DeleteMapping("logout")

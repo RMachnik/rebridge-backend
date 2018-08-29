@@ -2,6 +2,8 @@ package application.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import domain.user.Roles;
+import domain.user.User;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 @Value
 @Builder
@@ -30,6 +34,15 @@ public class CurrentUser implements UserDetails {
         this.email = email;
         this.roles = roles;
         this.token = token;
+    }
+
+    public static CurrentUser create(User user, String token) {
+        return builder()
+                .id(user.getId().toString())
+                .email(user.getEmail())
+                .token(token)
+                .roles(user.getRoles().stream().map(Roles::toString).collect(toSet()))
+                .build();
     }
 
     @JsonIgnore

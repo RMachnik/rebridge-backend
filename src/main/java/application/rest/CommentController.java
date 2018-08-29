@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-import static application.dto.DtoAssemblers.fromCommentToDto;
 import static application.dto.DtoAssemblers.fromCommentsToDtos;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -59,7 +58,7 @@ public class CommentController {
 
         return ResponseEntity
                 .created(pathToComment.toUri())
-                .body(fromCommentToDto(savedComment));
+                .body(CommentDto.create(savedComment));
     }
 
     @PutMapping("/{commentId}")
@@ -76,7 +75,7 @@ public class CommentController {
                 .content(createOrUpdateDto.getContent())
                 .build();
 
-        return ResponseEntity.ok(fromCommentToDto(commentService.updateComment(currentUser.getId(), projectId, inspirationId, commentDto)));
+        return ResponseEntity.ok(CommentDto.create(commentService.updateComment(currentUser.getId(), projectId, inspirationId, commentDto)));
     }
 
     @DeleteMapping("/{commentId}")

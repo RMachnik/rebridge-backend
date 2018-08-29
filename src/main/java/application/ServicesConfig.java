@@ -72,4 +72,9 @@ public class ServicesConfig {
     ChangeEventService changeEventService(ChangeEventRepository changeEventRepository, UserService userService) {
         return new ChangeEventService(changeEventRepository, userService);
     }
+
+    @Bean
+    ChatService chatService(ProjectService projectService) {
+        return new ChatService(projectService);
+    }
 }

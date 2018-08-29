@@ -1,6 +1,6 @@
 package application.rest
 
-import application.dto.DtoAssemblers
+
 import application.dto.ProjectDto
 import domain.project.Project
 import domain.survey.QuestionnaireTemplate
@@ -14,7 +14,7 @@ class DtoAssemblersSpec extends Specification {
         Project newProject = Project.create("new", questionnaireTemplate)
 
         when:
-        ProjectDto projectToDto = DtoAssemblers.fromProjectToDto(newProject)
+        ProjectDto projectToDto = ProjectDto.create(newProject)
 
         then:
         !projectToDto.id.empty

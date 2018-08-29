@@ -2,7 +2,6 @@ package application.rest;
 
 import application.dto.CreateProjectDto;
 import application.dto.CurrentUser;
-import application.dto.DtoAssemblers;
 import application.dto.ProjectDto;
 import application.service.ImageService;
 import application.service.ProjectService;
@@ -21,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.util.List;
 
-import static application.dto.DtoAssemblers.fromProjectToDto;
 import static application.rest.ImageController.IMAGES;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
@@ -48,7 +46,7 @@ public class ProjectController {
     ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal CurrentUser user) {
         return ResponseEntity.ok(
                 projectService.findAllByUserId(user.getId()).stream()
-                        .map(DtoAssemblers::fromProjectToDto)
+                        .map(ProjectDto::create)
                         .collect(toList())
         );
     }
@@ -69,12 +67,12 @@ public class ProjectController {
 
         return ResponseEntity
                 .created(uriComponents.toUri())
-                .body(fromProjectToDto(createdProject));
+                .body(ProjectDto.create(createdProject));
     }
 
     @GetMapping("/{projectId}")
     ResponseEntity project(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
-        return ResponseEntity.ok(fromProjectToDto(projectService.findByUserIdAndProjectId(currentUser.getId(), projectId)));
+        return ResponseEntity.ok(ProjectDto.create(projectService.findByUserIdAndProjectId(currentUser.getId(), projectId)));
     }
 
     @PutMapping("/{projectId}")
@@ -87,7 +85,7 @@ public class ProjectController {
                 .name(createProjectDto.getName())
                 .build();
         Project updated = projectService.update(currentUser.getId(), projectDto);
-        return ResponseEntity.ok(fromProjectToDto(updated));
+        return ResponseEntity.ok(ProjectDto.create(updated));
     }
 
     @DeleteMapping("/{projectId}")

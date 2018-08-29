@@ -1,5 +1,6 @@
 package application.dto;
 
+import domain.project.Comment;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +12,13 @@ public class CommentDto {
     String content;
     String author;
     String creationDate;
+
+    public static CommentDto create(Comment comment) {
+        return builder()
+                .id(comment.getId().toString())
+                .author(comment.getAuthor())
+                .content(comment.getContent())
+                .creationDate(comment.getDate().getValue())
+                .build();
+    }
 }

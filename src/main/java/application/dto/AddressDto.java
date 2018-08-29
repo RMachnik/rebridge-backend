@@ -1,5 +1,6 @@
 package application.dto;
 
+import domain.common.Address;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,4 +11,13 @@ public class AddressDto {
     String streetName;
     String postalCode;
     String city;
+
+    public static AddressDto create(Address address) {
+        return builder()
+                .city(address.getCity())
+                .number(address.getNumber())
+                .postalCode(address.getPostalCode())
+                .streetName(address.getStreetName())
+                .build();
+    }
 }

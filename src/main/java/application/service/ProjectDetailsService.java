@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static application.dto.DtoAssemblers.fromInformationToDto;
-import static application.dto.DtoAssemblers.fromUserToInvestor;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
@@ -48,7 +47,7 @@ public class ProjectDetailsService {
     private InvestorDto getInvestor(String email) {
         Optional<User> possibleUser = userService.tryFindUserByEmail(email);
         if (possibleUser.isPresent()) {
-            return fromUserToInvestor(possibleUser.get());
+            return InvestorDto.create(possibleUser.get());
         } else {
             return InvestorDto.builder()
                     .email(email)
