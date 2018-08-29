@@ -8,7 +8,7 @@ import domain.project.Questionnaire;
 import domain.survey.QuestionnaireTemplate;
 import domain.user.EmailAddress;
 import domain.user.User;
-import lombok.Value;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +19,7 @@ import static application.dto.DtoAssemblers.fromUserToInvestor;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
-@Value
+@AllArgsConstructor
 public class ProjectDetailsService {
 
     UserService userService;

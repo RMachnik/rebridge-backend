@@ -1,6 +1,7 @@
 package application;
 
 import application.service.*;
+import domain.event.ChangeEventRepository;
 import domain.invitation.InvitationRepository;
 import domain.project.ImageRepository;
 import domain.project.ProjectRepository;
@@ -65,5 +66,10 @@ public class ServicesConfig {
     @Bean
     InvitationService invitationService(@Value("${rebridge.frontend.url}") String url, InvitationRepository invitationRepository) {
         return new InvitationService(url, invitationRepository);
+    }
+
+    @Bean
+    ChangeEventService changeEventService(ChangeEventRepository changeEventRepository, UserService userService) {
+        return new ChangeEventService(changeEventRepository, userService);
     }
 }

@@ -1,5 +1,6 @@
 package infrastructure.extended;
 
+import domain.event.ChangeEventRepository;
 import domain.invitation.InvitationRepository;
 import domain.project.ImageRepository;
 import domain.project.ProjectRepository;
@@ -35,6 +36,11 @@ public class DomainRepositoriesConfig {
     @Bean
     InvitationRepository invitationRepository(InvitationCrudRepository invitationCrudRepository) {
         return new ExtendedInvitationRepository(invitationCrudRepository);
+    }
+
+    @Bean
+    ChangeEventRepository changeEventRepository(ChangeEventCrudRepository changeEventCrudRepository) {
+        return new ExtendedChangeEventRepository(changeEventCrudRepository);
     }
 
 }

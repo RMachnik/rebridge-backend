@@ -3,12 +3,12 @@ package application.service;
 import application.dto.CreateOrUpdateInspirationDto;
 import domain.project.Inspiration;
 import domain.project.Project;
-import lombok.Value;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
-@Value
+@AllArgsConstructor
 public class InspirationService {
 
     ProjectService projectService;

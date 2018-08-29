@@ -3,6 +3,8 @@ package domain.user;
 import application.dto.CreateProjectDto;
 import application.dto.UpdateProfileDto;
 import com.datastax.driver.core.DataType;
+import domain.event.ChangeEvent;
+import domain.event.ChangeEventRepository;
 import domain.project.DomainExceptions.UserActionNotAllowed;
 import domain.project.Project;
 import domain.project.ProjectRepository;
@@ -17,6 +19,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -132,5 +135,9 @@ public class User implements WithId<UUID> {
 
     public EmailAddress getEmailAddress() {
         return new EmailAddress(email);
+    }
+
+    public List<ChangeEvent> getEvents(ChangeEventRepository changeEventRepository) {
+        return changeEventRepository.findAllExcludingOwnForProvidedProjects(id, projectIds);
     }
 }

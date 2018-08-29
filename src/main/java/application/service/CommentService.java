@@ -5,12 +5,12 @@ import application.dto.CurrentUser;
 import domain.project.Comment;
 import domain.project.Inspiration;
 import domain.project.Project;
-import lombok.Value;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
-@Value
+@AllArgsConstructor
 public class CommentService {
 
     ProjectService projectService;
