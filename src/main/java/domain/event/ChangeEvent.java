@@ -29,6 +29,6 @@ public class ChangeEvent implements WithId<UUID> {
     String message;
 
     public static ChangeEvent create(UUID userId, UUID projectId, String message) {
-        return new ChangeEvent(UUID.randomUUID(), userId, projectId, DateTime.now(), message);
+        return new ChangeEvent(UUID.randomUUID(), projectId, userId, DateTime.now(), message);
     }
 }

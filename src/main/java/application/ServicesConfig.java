@@ -29,18 +29,24 @@ public class ServicesConfig {
     }
 
     @Bean
-    ProjectService projectService(UserService userService, ProjectRepository projectRepository, QuestionnaireTemplateService questionnaireTemplateService) {
-        return new ProjectService(userService, projectRepository, questionnaireTemplateService);
+    ProjectService projectService(UserService userService,
+                                  ProjectRepository projectRepository,
+                                  QuestionnaireTemplateService questionnaireTemplateService,
+                                  ChangeEventService changeEventService
+    ) {
+        SimpleProjectService simpleProjectService = new SimpleProjectService(userService, projectRepository, questionnaireTemplateService);
+        return new EventableProjectService(simpleProjectService, changeEventService);
     }
 
     @Bean
-    InspirationService inspirationService(ProjectService projectService) {
-        return new InspirationService(projectService);
+    InspirationService inspirationService(ProjectService projectService, ImageService imageService) {
+        return new InspirationService(projectService, imageService);
     }
 
     @Bean
-    CommentService commentService(ProjectService projectService) {
-        return new CommentService(projectService);
+    CommentService commentService(ProjectService projectService, ChangeEventService changeEventService) {
+        CommentService simpleCommentService = new SimpleCommentService(projectService);
+        return new EventableCommentService(simpleCommentService, changeEventService);
     }
 
     @Bean
@@ -54,8 +60,13 @@ public class ServicesConfig {
     }
 
     @Bean
-    ProjectDetailsService projectDetailsService(UserService userService, ProjectService projectService, QuestionnaireTemplateService questionnaireTemplateService) {
-        return new ProjectDetailsService(userService, projectService, questionnaireTemplateService);
+    ProjectDetailsService projectDetailsService(UserService userService,
+                                                ProjectService projectService,
+                                                QuestionnaireTemplateService questionnaireTemplateService,
+                                                ChangeEventService changeEventService
+    ) {
+        SimpleProjectDetailsService simpleProjectDetailsService = new SimpleProjectDetailsService(userService, projectService, questionnaireTemplateService);
+        return new EventableProjectDetailsService(simpleProjectDetailsService, changeEventService);
     }
 
     @Bean

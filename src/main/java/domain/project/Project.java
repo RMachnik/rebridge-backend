@@ -103,9 +103,10 @@ public class Project implements WithId<UUID> {
         return updatedInspiration;
     }
 
-    public void removeInspiration(UUID inspirationId) {
+    public Inspiration removeInspiration(UUID inspirationId) {
         Inspiration inspiration = findInspiration(inspirationId);
         inspirations.remove(inspiration);
+        return inspiration;
     }
 
     public Inspiration findInspiration(UUID inspirationId) {

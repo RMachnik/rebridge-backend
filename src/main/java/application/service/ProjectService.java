@@ -2,93 +2,23 @@ package application.service;
 
 import application.dto.CreateProjectDto;
 import application.dto.ProjectDto;
-import domain.RepositoryExceptions.ProjectRepositoryException;
-import domain.project.DomainExceptions.MissingQuestionnaireTemplate;
-import domain.project.DomainExceptions.UserActionNotAllowed;
 import domain.project.Project;
-import domain.project.ProjectRepository;
-import domain.survey.QuestionnaireTemplate;
-import domain.user.User;
-import lombok.Value;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
+public interface ProjectService {
 
-@Value
-public class ProjectService {
+    List<Project> findAllByUserId(String userId);
 
-    UserService userService;
-    ProjectRepository projectRepository;
-    QuestionnaireTemplateService questionnaireTemplateService;
+    Project findByUserIdAndProjectId(String userId, String projectId);
 
-    public List<Project> findAllByUserId(String userId) {
-        return userService.findById(userId).getProjectIds()
-                .stream()
-                .map(projectRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(toList());
-    }
+    Project create(String userId, CreateProjectDto createProjectDto);
 
-    public Project findByUserIdAndProjectId(String userId, String projectId) {
-        User user = userService.findById(userId);
-        canUpdateProject(user, projectId);
-        return projectRepository.findById(UUID.fromString(projectId))
-                .orElseThrow(() -> new ProjectRepositoryException(format("unable to load project %s", projectId)));
-    }
+    Project update(String userId, ProjectDto projectDto);
 
-    private void canUpdateProject(User user, String projectId) {
-        if (!user.canUpdateProject(UUID.fromString(projectId))) {
-            new UserActionNotAllowed(format("user %s is not allowed see this project %s", user.getId(), projectId));
-        }
-    }
+    void delete(String userId, String projectId);
 
-    public Project create(String userId, CreateProjectDto createProjectDto) {
-        User user = userService.findById(userId);
+    Project retrieveProjectById(String projectId);
 
-        String questionnaireTemplateId = createProjectDto.getQuestionnaireTemplateId();
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(questionnaireTemplateId)
-                .orElseThrow(() -> new MissingQuestionnaireTemplate(format("unable to locate questionnaire %s", questionnaireTemplateId)));
-
-        Project project = user.createProject(createProjectDto, questionnaireTemplate, projectRepository);
-        userService.update(user);
-        return project;
-
-    }
-
-
-    public Project update(String userId, ProjectDto projectDto) {
-        User user = userService.findById(userId);
-        canUpdateProject(user, projectDto.getId());
-
-        Project existingProject = retrieveProjectById(projectDto.getId());
-        Project updatedProject = existingProject.update(projectDto);
-
-        save(updatedProject);
-        return updatedProject;
-    }
-
-    public void remove(String userId, String projectId) {
-        User user = userService.findById(userId);
-        canUpdateProject(user, projectId);
-
-        user.removeProject(UUID.fromString(projectId));
-        userService.update(user);
-        //todo remove project if there are no users participating in this project
-    }
-
-    public Project retrieveProjectById(String projectId) {
-        return projectRepository.findById(UUID.fromString(projectId))
-                .orElseThrow(() -> new ProjectRepositoryException(format("there is no such project %s", projectId)));
-    }
-
-    public Project save(Project project) {
-        return projectRepository.save(project)
-                .getOrElseThrow(ex -> new ProjectRepositoryException(format("problem with creating project %s", project.getId()), ex));
-    }
-
+    Project save(Project project);
 }

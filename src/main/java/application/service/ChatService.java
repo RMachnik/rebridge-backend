@@ -14,6 +14,8 @@ public class ChatService {
         Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
         Message message = Message.create(currentUser, messageDto);
         project.getChat().postMessage(message);
+
+        projectService.save(project);
         return message;
     }
 }

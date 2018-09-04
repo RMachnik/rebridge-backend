@@ -12,6 +12,7 @@ import java.util.UUID;
 public class InspirationService {
 
     ProjectService projectService;
+    ImageService imageService;
 
     public List<Inspiration> findAll(String userId, String projectId) {
         Project project = projectService
@@ -45,7 +46,11 @@ public class InspirationService {
 
     public void delete(String userId, String projectId, String inspirationId) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-        project.removeInspiration(UUID.fromString(inspirationId));
+        Inspiration removed = project.removeInspiration(UUID.fromString(inspirationId));
+
+        if (removed.getDetails().getImageId() != null) {
+            imageService.delete(removed.getDetails().getImageId());
+        }
 
         projectService.save(project);
     }

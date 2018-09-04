@@ -18,4 +18,8 @@ public class ChangeEventService {
         User user = userService.findById(currentUser.getId());
         return user.getEvents(changeEventRepository);
     }
+
+    public void publish(ChangeEvent changeEvent) {
+        changeEventRepository.save(changeEvent);
+    }
 }

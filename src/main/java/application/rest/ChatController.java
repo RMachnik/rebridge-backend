@@ -20,7 +20,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @RestController
 @RequestMapping(
-        path = "/project/{projectId}/chat",
+        path = "/projects/{projectId}/chat",
         consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 )
@@ -41,7 +41,11 @@ public class ChatController {
     }
 
     @PostMapping
-    ResponseEntity<MessageDto> create(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId, CreateMessageDto messageDto) {
+    ResponseEntity<MessageDto> create(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @RequestBody CreateMessageDto messageDto
+    ) {
         Message message = chatService.postMessage(currentUser, projectId, messageDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 MessageDto.create(message)

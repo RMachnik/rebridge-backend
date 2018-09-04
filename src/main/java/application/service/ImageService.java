@@ -52,4 +52,8 @@ public class ImageService {
         projectService.save(project);
         return saved;
     }
+
+    public void delete(UUID imageId) {
+        imageRepository.deleteById(imageId);
+    }
 }

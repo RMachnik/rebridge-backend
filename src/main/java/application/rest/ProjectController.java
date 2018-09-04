@@ -90,7 +90,7 @@ public class ProjectController {
 
     @DeleteMapping("/{projectId}")
     ResponseEntity delete(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
-        projectService.remove(currentUser.getId(), projectId);
+        projectService.delete(currentUser.getId(), projectId);
         return ResponseEntity.noContent().build();
     }
 

@@ -11,6 +11,6 @@ public class MessageDto {
     String creationDate;
 
     public static MessageDto create(Message message) {
-        return new MessageDto(message.getAuthor(), message.getContent(), message.getCreationDate().getValue());
+        return new MessageDto(message.getAuthor(), message.getContent(), message.getCreationDate().simpleDate());
     }
 }

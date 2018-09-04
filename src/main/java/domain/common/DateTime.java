@@ -4,6 +4,7 @@ import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
@@ -15,5 +16,9 @@ public class DateTime {
 
     public static DateTime now() {
         return new DateTime(LocalDateTime.now().format(ISO_DATE_TIME));
+    }
+
+    public String simpleDate() {
+        return LocalDateTime.parse(value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
     }
 }

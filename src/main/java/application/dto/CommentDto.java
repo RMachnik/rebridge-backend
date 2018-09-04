@@ -18,7 +18,7 @@ public class CommentDto {
                 .id(comment.getId().toString())
                 .author(comment.getAuthor())
                 .content(comment.getContent())
-                .creationDate(comment.getDate().getValue())
+                .creationDate(comment.getDate().simpleDate())
                 .build();
     }
 }

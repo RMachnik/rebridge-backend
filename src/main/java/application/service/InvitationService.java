@@ -16,7 +16,7 @@ public class InvitationService {
 
     public Invitation create(EmailAddress emailAddress) {
         return invitationRepository.save(Invitation.create(emailAddress, url))
-                .onFailure((ex) -> new InvitationRepositoryException(String.format("unable to save invitation %s", Invitation.create(emailAddress, url)), ex))
+                .onFailure((ex) -> new InvitationRepositoryException(format("unable to save invitation %s", Invitation.create(emailAddress, url)), ex))
                 .get();
     }
 
