@@ -85,7 +85,8 @@ public class ServicesConfig {
     }
 
     @Bean
-    ChatService chatService(ProjectService projectService) {
-        return new ChatService(projectService);
+    ChatService chatService(ProjectService projectService, ChangeEventService changeEventService) {
+        SimpleChatService simpleChatService = new SimpleChatService(projectService);
+        return new EventableChatService(simpleChatService, changeEventService);
     }
 }

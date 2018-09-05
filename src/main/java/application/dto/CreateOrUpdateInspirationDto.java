@@ -9,5 +9,5 @@ public class CreateOrUpdateInspirationDto {
     String name;
     String description;
     String url;
-    Integer rating;
+    int rating;
 }

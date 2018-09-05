@@ -68,4 +68,11 @@ public class DomainExceptions {
             super(message);
         }
     }
+
+    public static class MissingEvent extends DomainException {
+
+        public MissingEvent(String message) {
+            super(message);
+        }
+    }
 }
