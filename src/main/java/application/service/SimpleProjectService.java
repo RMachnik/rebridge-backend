@@ -2,9 +2,10 @@ package application.service;
 
 import application.dto.CreateProjectDto;
 import application.dto.ProjectDto;
+import domain.DomainExceptions.MissingQuestionnaireTemplate;
+import domain.DomainExceptions.UserActionNotAllowed;
 import domain.RepositoryExceptions.ProjectRepositoryException;
-import domain.project.DomainExceptions.MissingQuestionnaireTemplate;
-import domain.project.DomainExceptions.UserActionNotAllowed;
+import domain.project.DocumentationRepository;
 import domain.project.Project;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplate;
@@ -24,6 +25,7 @@ public class SimpleProjectService implements ProjectService {
     UserService userService;
     ProjectRepository projectRepository;
     QuestionnaireTemplateService questionnaireTemplateService;
+    DocumentationRepository documentationRepository;
 
     @Override
     public List<Project> findAllByUserId(String userId) {
@@ -57,10 +59,9 @@ public class SimpleProjectService implements ProjectService {
         QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(questionnaireTemplateId)
                 .orElseThrow(() -> new MissingQuestionnaireTemplate(format("unable to locate questionnaire %s", questionnaireTemplateId)));
 
-        Project project = user.createProject(createProjectDto, questionnaireTemplate, projectRepository);
+        Project project = user.createProject(createProjectDto, questionnaireTemplate, projectRepository, documentationRepository);
         userService.update(user);
         return project;
-
     }
 
 

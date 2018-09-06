@@ -2,8 +2,8 @@ package application.rest;
 
 import application.service.ServiceExceptions.ServiceException;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import domain.DomainExceptions.DomainException;
 import domain.RepositoryExceptions.RepositoryException;
-import domain.project.DomainExceptions.DomainException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

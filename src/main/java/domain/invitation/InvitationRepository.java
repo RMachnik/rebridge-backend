@@ -1,6 +1,6 @@
 package domain.invitation;
 
-import domain.project.DomainRepository;
+import domain.DomainRepository;
 
 import java.util.Optional;
 

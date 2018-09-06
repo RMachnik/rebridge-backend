@@ -1,6 +1,6 @@
 package domain.user;
 
-import domain.project.DomainExceptions.EmailValidation;
+import domain.DomainExceptions.EmailValidation;
 import lombok.Value;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;

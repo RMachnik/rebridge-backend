@@ -1,6 +1,6 @@
 package domain.event;
 
-import domain.project.DomainRepository;
+import domain.DomainRepository;
 
 import java.util.Collection;
 import java.util.List;

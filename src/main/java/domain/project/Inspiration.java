@@ -3,7 +3,7 @@ package domain.project;
 import application.dto.CommentDto;
 import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.CurrentUser;
-import domain.project.DomainExceptions.MissingCommentException;
+import domain.DomainExceptions.MissingCommentException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;

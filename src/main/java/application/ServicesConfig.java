@@ -3,6 +3,7 @@ package application;
 import application.service.*;
 import domain.event.ChangeEventRepository;
 import domain.invitation.InvitationRepository;
+import domain.project.DocumentationRepository;
 import domain.project.ImageRepository;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplateRepository;
@@ -32,9 +33,10 @@ public class ServicesConfig {
     ProjectService projectService(UserService userService,
                                   ProjectRepository projectRepository,
                                   QuestionnaireTemplateService questionnaireTemplateService,
-                                  ChangeEventService changeEventService
+                                  ChangeEventService changeEventService,
+                                  DocumentationRepository documentationRepository
     ) {
-        SimpleProjectService simpleProjectService = new SimpleProjectService(userService, projectRepository, questionnaireTemplateService);
+        SimpleProjectService simpleProjectService = new SimpleProjectService(userService, projectRepository, questionnaireTemplateService, documentationRepository);
         return new EventableProjectService(simpleProjectService, changeEventService);
     }
 
@@ -88,5 +90,11 @@ public class ServicesConfig {
     ChatService chatService(ProjectService projectService, ChangeEventService changeEventService) {
         SimpleChatService simpleChatService = new SimpleChatService(projectService);
         return new EventableChatService(simpleChatService, changeEventService);
+    }
+
+    @Bean
+    DocumentationService documentationService(UserService userService, DocumentationRepository documentationRepository, ChangeEventService changeEventService) {
+        SimpleDocumentationService simpleDocumentationService = new SimpleDocumentationService(userService, documentationRepository);
+        return new EventableDocumentationService(simpleDocumentationService, changeEventService);
     }
 }
