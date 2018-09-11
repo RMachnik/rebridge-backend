@@ -2,6 +2,7 @@ package domain.project;
 
 import com.datastax.driver.core.DataType;
 import com.google.common.collect.Lists;
+import domain.DomainExceptions;
 import lombok.NonNull;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
@@ -35,5 +36,13 @@ public class Documentation implements WithId<UUID> {
 
     public void addDocument(Document document) {
         documents.add(document);
+    }
+
+    public void delete(UUID documentId) {
+        Optional<Document> first = documents.stream()
+                .filter(document -> document.getId().equals(documentId))
+                .findFirst();
+        Document document = first.orElseThrow(() -> new DomainExceptions.MissingDocumentation(String.format("There is no document with id %s.", documentId)));
+        documents.remove(document);
     }
 }

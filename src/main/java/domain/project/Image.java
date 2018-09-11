@@ -1,6 +1,7 @@
 package domain.project;
 
 import com.datastax.driver.core.DataType;
+import domain.common.DateTime;
 import lombok.NonNull;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
@@ -20,13 +21,14 @@ public class Image implements WithId<UUID> {
     UUID id;
     String name;
     String mimeType;
-
     @NonNull
     ByteBuffer byteBuffer;
 
+    DateTime creationDate;
+
 
     public static Image create(String name, String mimeType, ByteBuffer data) {
-        return new Image(UUID.randomUUID(), name, mimeType, data);
+        return new Image(UUID.randomUUID(), name, mimeType, data, DateTime.now());
     }
 }
 

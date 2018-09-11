@@ -27,13 +27,18 @@ public class EventableDocumentationService implements DocumentationService {
     }
 
     @Override
-    public Document uploadDocument(CurrentUser currentUser, String projectId, String documentationId, MultipartFile uploadedFile) throws IOException {
-        Document document = documentationService.uploadDocument(currentUser, projectId, documentationId, uploadedFile);
+    public Document uploadDocument(CurrentUser currentUser, String projectId, MultipartFile uploadedFile) throws IOException {
+        Document document = documentationService.uploadDocument(currentUser, projectId, uploadedFile);
         changeEventService.publish(ChangeEvent.create(
                 currentUser.getUUID(),
                 UUID.fromString(projectId),
                 String.format("New document uploaded to project %s.", projectId))
         );
         return document;
+    }
+
+    @Override
+    public void delete(CurrentUser currentUser, String projectId, String documentId) {
+        documentationService.delete(currentUser, projectId, documentId);
     }
 }

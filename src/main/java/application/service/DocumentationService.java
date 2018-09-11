@@ -13,5 +13,7 @@ public interface DocumentationService {
 
     Document findDocument(String documentationId, String documentId);
 
-    Document uploadDocument(CurrentUser currentUser, String projectId, String documentationId, MultipartFile uploadedFile) throws IOException;
+    Document uploadDocument(CurrentUser currentUser, String projectId, MultipartFile uploadedFile) throws IOException;
+
+    void delete(CurrentUser currentUser, String projectId, String documentId);
 }

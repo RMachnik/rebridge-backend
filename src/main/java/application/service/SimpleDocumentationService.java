@@ -1,7 +1,8 @@
 package application.service;
 
 import application.dto.CurrentUser;
-import domain.DomainExceptions;
+import domain.DomainExceptions.MissingDocumentation;
+import domain.DomainExceptions.UserActionNotAllowed;
 import domain.project.Document;
 import domain.project.Documentation;
 import domain.project.DocumentationRepository;
@@ -24,40 +25,49 @@ public class SimpleDocumentationService implements DocumentationService {
         UUID projectUUID = UUID.fromString(projectId);
 
         userCanManipulate(user, projectUUID);
-        return documentationRepository.findByProject(projectUUID);
+        return documentationRepository.findByProject(projectUUID)
+                .orElseThrow(
+                        () -> new MissingDocumentation(String.format("There is no documentation for project %s", projectId))
+                );
     }
 
     private void userCanManipulate(CurrentUser user, UUID projectId) {
         if (!userService.findById(user.getId()).canUpdateProject(projectId)) {
-            throw new DomainExceptions.UserActionNotAllowed(format("User %s is not allowed to see documentation for project %s.", user.getId(), projectId));
+            throw new UserActionNotAllowed(format("User %s is not allowed to see documentation for project %s.", user.getId(), projectId));
         }
     }
 
     @Override
-    public Document findDocument(String documentationId, String documentId) {
-        Documentation documentation = findDocumentation(documentationId);
+    public Document findDocument(String projectId, String documentId) {
+        Documentation documentation = findDocumentationByProjectId(projectId);
 
         return documentation.getDocuments().stream()
                 .filter(document -> document.getId().toString().equals(documentId))
                 .findFirst()
                 .orElseThrow(
-                        () -> new DomainExceptions.MissingDocumentation(format("Document %s is missing.", documentId))
+                        () -> new MissingDocumentation(format("Document %s is missing.", documentId))
                 );
     }
 
-    private Documentation findDocumentation(String documentationId) {
-        return documentationRepository.findById(UUID.fromString(documentationId))
+    private Documentation findDocumentationByProjectId(String projectId) {
+        return documentationRepository.findByProject(UUID.fromString(projectId))
                 .orElseThrow(
-                        () -> new DomainExceptions.MissingDocumentation(format("Documentation %s is missing.", documentationId))
+                        () -> new MissingDocumentation(format("Documentation is missing for projectId %s.", projectId))
                 );
     }
 
     @Override
-    public Document uploadDocument(CurrentUser currentUser, String projectId, String documentationId, MultipartFile uploadedFile) throws IOException {
-        Documentation documentation = findDocumentation(documentationId);
+    public Document uploadDocument(CurrentUser currentUser, String projectId, MultipartFile uploadedFile) throws IOException {
+        Documentation documentation = findDocumentationByProjectId(projectId);
         Document document = Document.create(uploadedFile);
         documentation.addDocument(document);
         documentationRepository.save(documentation);
         return document;
+    }
+
+    @Override
+    public void delete(CurrentUser currentUser, String projectId, String documentId) {
+        Documentation documentation = findDocumentationByProjectId(projectId);
+        documentation.delete(UUID.fromString(documentId));
     }
 }

@@ -40,19 +40,19 @@ public class DocumentationController {
         return ResponseEntity.ok(DocumentationDto.convert(documentation));
     }
 
-    @GetMapping(produces = MediaType.ALL_VALUE, path = "/{documentationId}/document/{documentId}")
+    @GetMapping(produces = MediaType.ALL_VALUE, path = "/{documentId}")
     ResponseEntity image(
-            @PathVariable String documentationId,
+            @PathVariable String projectId,
             @PathVariable String documentId
     ) {
-        Document document = documentationService.findDocument(documentationId, documentId);
+        Document document = documentationService.findDocument(projectId, documentId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.parseMediaType(document.getMimeType()))
                 .body(document.getByteBuffer().array());
     }
 
-    @PostMapping(path = "/{documentationId}/upload",
+    @PostMapping(
             consumes = MediaType.ALL_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -60,10 +60,9 @@ public class DocumentationController {
             UriComponentsBuilder builder,
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
-            @PathVariable String documentationId,
             @RequestParam("uploadedFile") MultipartFile uploadedFile
     ) throws IOException {
-        Document document = documentationService.uploadDocument(currentUser, projectId, documentationId, uploadedFile);
+        Document document = documentationService.uploadDocument(currentUser, projectId, uploadedFile);
         UriComponents pathToDocument = builder
                 .path(DOCUMENTATION)
                 .path("/document/")
@@ -74,6 +73,16 @@ public class DocumentationController {
                 .created(pathToDocument.toUri())
                 .contentType(MediaType.parseMediaType(document.getMimeType()))
                 .body(document.getId());
+    }
+
+    @DeleteMapping("/{documentId}")
+    ResponseEntity delete(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @PathVariable String documentId
+    ) {
+        documentationService.delete(currentUser, projectId, documentId);
+        return ResponseEntity.ok("");
     }
 
 }

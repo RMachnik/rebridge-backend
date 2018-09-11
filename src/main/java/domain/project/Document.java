@@ -1,5 +1,6 @@
 package domain.project;
 
+import domain.common.DateTime;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,8 +17,15 @@ public class Document implements WithId<UUID> {
     String name;
     String mimeType;
     ByteBuffer byteBuffer;
+    DateTime creationDate;
 
     public static Document create(MultipartFile uploadedFile) throws IOException {
-        return new Document(UUID.randomUUID(), uploadedFile.getName(), uploadedFile.getContentType(), ByteBuffer.wrap(uploadedFile.getBytes()));
+        return new Document(
+                UUID.randomUUID(),
+                uploadedFile.getName(),
+                uploadedFile.getContentType(),
+                ByteBuffer.wrap(uploadedFile.getBytes()),
+                DateTime.now()
+        );
     }
 }
