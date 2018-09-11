@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import static application.rest.ImageController.IMAGES;
+import static application.rest.unsecured.ImageController.IMAGES;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -64,7 +64,7 @@ public class InspirationController {
 
         Inspiration createdInspiration = inspirationService.create(currentUser.getId(), projectId, inspirationDto);
         UriComponents pathToInspiration = builder.path(INSPIRATIONS)
-                .path("{id}")
+                .path("/{id}")
                 .buildAndExpand(projectId, createdInspiration.getId());
 
         return ResponseEntity

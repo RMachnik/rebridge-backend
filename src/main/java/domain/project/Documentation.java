@@ -6,6 +6,7 @@ import domain.DomainExceptions;
 import lombok.NonNull;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -21,6 +22,9 @@ public class Documentation implements WithId<UUID> {
     @CassandraType(type = DataType.Name.UUID)
     @NonNull
     UUID id;
+
+    @Indexed
+    @CassandraType(type = DataType.Name.UUID)
     UUID projectId;
     List<Document> documents;
 

@@ -6,10 +6,12 @@ import domain.DomainExceptions.UserActionNotAllowed;
 import domain.project.Document;
 import domain.project.Documentation;
 import domain.project.DocumentationRepository;
+import domain.project.Image;
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static java.lang.String.format;
@@ -18,14 +20,13 @@ import static java.lang.String.format;
 public class SimpleDocumentationService implements DocumentationService {
 
     UserService userService;
+    ImageService imageService;
     DocumentationRepository documentationRepository;
 
     @Override
     public Documentation all(CurrentUser user, String projectId) {
-        UUID projectUUID = UUID.fromString(projectId);
-
-        userCanManipulate(user, projectUUID);
-        return documentationRepository.findByProject(projectUUID)
+        userCanManipulate(user, UUID.fromString(projectId));
+        return documentationRepository.findByProject(projectId)
                 .orElseThrow(
                         () -> new MissingDocumentation(String.format("There is no documentation for project %s", projectId))
                 );
@@ -50,7 +51,7 @@ public class SimpleDocumentationService implements DocumentationService {
     }
 
     private Documentation findDocumentationByProjectId(String projectId) {
-        return documentationRepository.findByProject(UUID.fromString(projectId))
+        return documentationRepository.findByProject(projectId)
                 .orElseThrow(
                         () -> new MissingDocumentation(format("Documentation is missing for projectId %s.", projectId))
                 );
@@ -59,7 +60,12 @@ public class SimpleDocumentationService implements DocumentationService {
     @Override
     public Document uploadDocument(CurrentUser currentUser, String projectId, MultipartFile uploadedFile) throws IOException {
         Documentation documentation = findDocumentationByProjectId(projectId);
-        Document document = Document.create(uploadedFile);
+
+        Image image = Image.create(uploadedFile.getName(), uploadedFile.getContentType(), ByteBuffer.wrap(uploadedFile.getBytes()));
+        Image saved = imageService.save(projectId, image);
+
+        Document document = Document.create(saved.getName(), saved.getId());
+
         documentation.addDocument(document);
         documentationRepository.save(documentation);
         return document;

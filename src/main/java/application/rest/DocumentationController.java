@@ -7,7 +7,6 @@ import domain.project.Document;
 import domain.project.Documentation;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
+import static application.rest.unsecured.ImageController.IMAGES;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -35,21 +35,12 @@ public class DocumentationController {
     DocumentationService documentationService;
 
     @GetMapping
-    ResponseEntity<DocumentationDto> documents(@AuthenticationPrincipal CurrentUser user, @PathVariable String projectId) {
+    ResponseEntity<DocumentationDto> all(@AuthenticationPrincipal CurrentUser user, @PathVariable String projectId, UriComponentsBuilder uriComponentsBuilder) {
         Documentation documentation = documentationService.all(user, projectId);
-        return ResponseEntity.ok(DocumentationDto.convert(documentation));
-    }
-
-    @GetMapping(produces = MediaType.ALL_VALUE, path = "/{documentId}")
-    ResponseEntity image(
-            @PathVariable String projectId,
-            @PathVariable String documentId
-    ) {
-        Document document = documentationService.findDocument(projectId, documentId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.parseMediaType(document.getMimeType()))
-                .body(document.getByteBuffer().array());
+        UriComponentsBuilder path = uriComponentsBuilder
+                .path(IMAGES)
+                .path("/{id}");
+        return ResponseEntity.ok(DocumentationDto.convert(documentation, path));
     }
 
     @PostMapping(
@@ -64,14 +55,12 @@ public class DocumentationController {
     ) throws IOException {
         Document document = documentationService.uploadDocument(currentUser, projectId, uploadedFile);
         UriComponents pathToDocument = builder
-                .path(DOCUMENTATION)
-                .path("/document/")
+                .path(IMAGES)
                 .path("{id}")
                 .buildAndExpand(document.getId());
 
         return ResponseEntity
                 .created(pathToDocument.toUri())
-                .contentType(MediaType.parseMediaType(document.getMimeType()))
                 .body(document.getId());
     }
 

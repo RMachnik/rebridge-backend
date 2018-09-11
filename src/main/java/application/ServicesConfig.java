@@ -93,8 +93,13 @@ public class ServicesConfig {
     }
 
     @Bean
-    DocumentationService documentationService(UserService userService, DocumentationRepository documentationRepository, ChangeEventService changeEventService) {
-        SimpleDocumentationService simpleDocumentationService = new SimpleDocumentationService(userService, documentationRepository);
+    DocumentationService documentationService(
+            UserService userService,
+            ImageService imageService,
+            DocumentationRepository documentationRepository,
+            ChangeEventService changeEventService
+    ) {
+        SimpleDocumentationService simpleDocumentationService = new SimpleDocumentationService(userService, imageService, documentationRepository);
         return new EventableDocumentationService(simpleDocumentationService, changeEventService);
     }
 }

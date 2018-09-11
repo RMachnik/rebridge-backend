@@ -30,7 +30,7 @@ public class ExtendedDocumentationRepository implements DocumentationRepository 
     }
 
     @Override
-    public Optional<Documentation> findByProject(UUID projectId) {
-        return Optional.ofNullable(documentationCrudRepository.findByProjectId(projectId.toString()));
+    public Optional<Documentation> findByProject(String projectId) {
+        return Optional.ofNullable(documentationCrudRepository.findByProjectId(UUID.fromString(projectId)));
     }
 }
