@@ -4,7 +4,8 @@ import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.ProjectDto;
 import application.dto.UpdateProjectDetailsDto;
 import com.datastax.driver.core.DataType;
-import domain.project.DomainExceptions.MissingInspirationException;
+import domain.DomainExceptions.MissingInspirationException;
+import domain.common.DateTime;
 import domain.survey.QuestionnaireTemplate;
 import lombok.Builder;
 import lombok.Data;
@@ -50,17 +51,25 @@ public class Project implements WithId<UUID> {
 
     Chat chat;
 
+    UUID documentationId;
+
+    DateTime creationDate;
+
     public Project(UUID id, String name,
                    Details details,
                    List<Inspiration> inspirations,
                    UUID questionnaireTemplateId,
-                   Chat chat) {
+                   Chat chat,
+                   UUID documentationId,
+                   DateTime creationDate) {
         this.id = id;
         this.name = name;
         this.details = details;
         this.inspirations = ofNullable(inspirations).orElse(new ArrayList<>());
         this.questionnaireTemplateId = questionnaireTemplateId;
         this.chat = chat;
+        this.documentationId = documentationId;
+        this.creationDate = creationDate;
     }
 
     public static Project create(String name, QuestionnaireTemplate questionnaireTemplate) {
@@ -74,6 +83,7 @@ public class Project implements WithId<UUID> {
                 .details(Details.empty(questionnaireTemplate))
                 .questionnaireTemplateId(questionnaireTemplate.getId())
                 .chat(Chat.empty(id))
+                .creationDate(DateTime.now())
                 .build();
     }
 
@@ -84,6 +94,7 @@ public class Project implements WithId<UUID> {
                 .inspirations(inspirations)
                 .questionnaireTemplateId(isNotBlank(projectDto.getQuestionnaireTemplateId()) ? fromString(projectDto.getQuestionnaireTemplateId()) : questionnaireTemplateId)
                 .chat(chat)
+                .creationDate(creationDate)
                 .build();
     }
 
@@ -123,6 +134,12 @@ public class Project implements WithId<UUID> {
     public Details createDetails(UpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
         details = Details.create(projectDetailsDto, questionnaire);
         return details;
+    }
+
+    public Documentation createDocumentation() {
+        Documentation documentation = Documentation.empty(id);
+        this.documentationId = documentation.getId();
+        return documentation;
     }
 
     public void updateDetails(UpdateProjectDetailsDto updateProjectDetailsDto) {

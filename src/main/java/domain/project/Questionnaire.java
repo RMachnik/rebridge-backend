@@ -1,6 +1,7 @@
 package domain.project;
 
 import application.dto.QuestionnaireAnswersDto;
+import domain.DomainExceptions;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;

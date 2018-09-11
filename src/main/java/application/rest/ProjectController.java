@@ -20,7 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.util.List;
 
-import static application.rest.ImageController.IMAGES;
+import static application.rest.unsecured.ImageController.IMAGES;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -60,8 +60,8 @@ public class ProjectController {
         Project createdProject = projectService.create(user.getId(), createProjectDto);
 
         UriComponents uriComponents =
-                builder.
-                        path(PROJECTS)
+                builder
+                        .path(PROJECTS)
                         .path("{id}")
                         .buildAndExpand(createdProject.getId());
 

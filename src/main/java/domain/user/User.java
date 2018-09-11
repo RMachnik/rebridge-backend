@@ -3,12 +3,10 @@ package domain.user;
 import application.dto.CreateProjectDto;
 import application.dto.UpdateProfileDto;
 import com.datastax.driver.core.DataType;
+import domain.DomainExceptions.UserActionNotAllowed;
 import domain.event.ChangeEvent;
 import domain.event.ChangeEventRepository;
-import domain.project.DomainExceptions.UserActionNotAllowed;
-import domain.project.Project;
-import domain.project.ProjectRepository;
-import domain.project.WithId;
+import domain.project.*;
 import domain.survey.QuestionnaireTemplate;
 import lombok.Builder;
 import lombok.NonNull;
@@ -96,18 +94,22 @@ public class User implements WithId<UUID> {
     }
 
     public boolean canUpdateProject(UUID projectId) {
-        return projectIds.stream()
-                .filter(project -> project.equals(projectId))
-                .findAny()
-                .isPresent();
+        return projectIds.contains(projectId);
     }
 
-    public Project createProject(CreateProjectDto createProjectDto, QuestionnaireTemplate questionnaireTemplate, ProjectRepository projectRepository) {
+    public Project createProject(CreateProjectDto createProjectDto,
+                                 QuestionnaireTemplate questionnaireTemplate,
+                                 ProjectRepository projectRepository,
+                                 DocumentationRepository documentationRepository
+    ) {
         if (!isArchitect()) {
             throw new UserActionNotAllowed(format("Only Architects can createWithRoleArchitect projects! %s is not an architect!", email));
         }
         Project project = Project.create(createProjectDto.getName(), questionnaireTemplate);
+        Documentation documentation = project.createDocumentation();
+
         projectRepository.save(project);
+        documentationRepository.save(documentation);
         projectIds.add(project.getId());
         return project;
     }

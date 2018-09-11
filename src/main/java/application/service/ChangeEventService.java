@@ -1,9 +1,9 @@
 package application.service;
 
 import application.dto.CurrentUser;
+import domain.DomainExceptions;
 import domain.event.ChangeEvent;
 import domain.event.ChangeEventRepository;
-import domain.project.DomainExceptions;
 import domain.user.User;
 import lombok.AllArgsConstructor;
 

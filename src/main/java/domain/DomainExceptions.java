@@ -1,4 +1,4 @@
-package domain.project;
+package domain;
 
 public class DomainExceptions {
 
@@ -72,6 +72,12 @@ public class DomainExceptions {
     public static class MissingEvent extends DomainException {
 
         public MissingEvent(String message) {
+            super(message);
+        }
+    }
+
+    public static class MissingDocumentation extends DomainException {
+        public MissingDocumentation(String message) {
             super(message);
         }
     }

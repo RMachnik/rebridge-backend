@@ -1,7 +1,7 @@
 package domain.common;
 
 import application.dto.AddressDto;
-import domain.project.DomainExceptions.InvalidPostalCode;
+import domain.DomainExceptions.InvalidPostalCode;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;

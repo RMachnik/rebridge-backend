@@ -42,8 +42,7 @@ public class ImageService {
 
     public Image addImageToProject(String userId, String projectId, MultipartFile uploadedImage) throws IOException {
         Image image = Image.create(uploadedImage.getName(), uploadedImage.getContentType(), ByteBuffer.wrap(uploadedImage.getBytes()));
-        Image saved = imageRepository.save(image)
-                .getOrElseThrow(() -> new ServiceException(format("unable to save picture for project %s", projectId)));
+        Image saved = save(projectId, image);
 
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
 
@@ -51,6 +50,11 @@ public class ImageService {
 
         projectService.save(project);
         return saved;
+    }
+
+    public Image save(String projectId, Image image) {
+        return imageRepository.save(image)
+                .getOrElseThrow(() -> new ServiceException(format("unable to save picture for project %s", projectId)));
     }
 
     public void delete(UUID imageId) {

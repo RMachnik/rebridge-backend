@@ -1,7 +1,7 @@
 package domain.common
 
-import domain.project.DomainExceptions
-import domain.project.DomainExceptions.InvalidPostalCode
+import domain.DomainExceptions
+import domain.DomainExceptions.InvalidPostalCode
 import spock.lang.Specification
 import spock.lang.Unroll
 

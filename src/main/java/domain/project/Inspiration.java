@@ -3,7 +3,8 @@ package domain.project;
 import application.dto.CommentDto;
 import application.dto.CreateOrUpdateInspirationDto;
 import application.dto.CurrentUser;
-import domain.project.DomainExceptions.MissingCommentException;
+import domain.DomainExceptions.MissingCommentException;
+import domain.common.DateTime;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -29,12 +30,15 @@ public class Inspiration implements WithId<UUID> {
     @NonNull
     InspirationDetails details;
 
+    DateTime creationDate;
+
     public static Inspiration create(CreateOrUpdateInspirationDto dto) {
         checkArgument(isNotBlank(dto.getName()), "Inspiration name can't be empty.");
         return Inspiration.builder()
                 .id(UUID.randomUUID())
                 .name(dto.getName())
                 .details(InspirationDetails.create(dto))
+                .creationDate(DateTime.now())
                 .build();
     }
 
@@ -44,6 +48,7 @@ public class Inspiration implements WithId<UUID> {
                 .id(id)
                 .name(isNotBlank(inspirationDto.getName()) ? inspirationDto.getName() : name)
                 .details(details.update(inspirationDto))
+                .creationDate(creationDate)
                 .build();
     }
 
