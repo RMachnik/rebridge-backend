@@ -1,9 +1,9 @@
 package application.dto
 
-import application.rest.DocumentationController
+
+import application.rest.unsecured.ImageController
 import domain.project.Document
 import domain.project.Documentation
-import org.springframework.mock.web.MockMultipartFile
 import org.springframework.web.util.UriComponentsBuilder
 import spock.lang.Specification
 
@@ -12,10 +12,10 @@ class DocumentationDtoSpec extends Specification {
     def "should create different urls"() {
         given:
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(DocumentationController.DOCUMENTATION).path("/{id}")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(ImageController.IMAGES).path("/{id}")
         Documentation documentation = Documentation.empty(UUID.randomUUID())
-        documentation.addDocument(Document.create(new MockMultipartFile("cos", "cos".getBytes())))
-        documentation.addDocument(Document.create(new MockMultipartFile("cos1", "cos1".getBytes())))
+        documentation.addDocument(Document.create("name", UUID.randomUUID()))
+        documentation.addDocument(Document.create("name1", UUID.randomUUID()))
 
         when:
         DocumentationDto documentationDto = DocumentationDto.convert(documentation, builder)
