@@ -7,7 +7,6 @@ import domain.project.Document;
 import domain.project.Documentation;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +19,15 @@ import java.io.IOException;
 import static application.rest.unsecured.ImageController.IMAGES;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.MediaType.ALL_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
         path = DocumentationController.DOCUMENTATION,
-        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-        produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+        consumes = APPLICATION_JSON_UTF8_VALUE,
+        produces = APPLICATION_JSON_UTF8_VALUE
 )
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
@@ -35,17 +37,21 @@ public class DocumentationController {
     DocumentationService documentationService;
 
     @GetMapping
-    ResponseEntity<DocumentationDto> all(@AuthenticationPrincipal CurrentUser user, @PathVariable String projectId, UriComponentsBuilder uriComponentsBuilder) {
+    ResponseEntity<DocumentationDto> all(
+            @AuthenticationPrincipal CurrentUser user,
+            @PathVariable String projectId,
+            UriComponentsBuilder uriComponentsBuilder
+    ) {
         Documentation documentation = documentationService.all(user, projectId);
         UriComponentsBuilder path = uriComponentsBuilder
                 .path(IMAGES)
                 .path("/{id}");
-        return ResponseEntity.ok(DocumentationDto.convert(documentation, path));
+        return ok(DocumentationDto.convert(documentation, path));
     }
 
     @PostMapping(
-            consumes = MediaType.ALL_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            consumes = ALL_VALUE,
+            produces = APPLICATION_JSON_UTF8_VALUE
     )
     ResponseEntity upload(
             UriComponentsBuilder builder,
@@ -71,7 +77,7 @@ public class DocumentationController {
             @PathVariable String documentId
     ) {
         documentationService.delete(currentUser, projectId, documentId);
-        return ResponseEntity.ok("");
+        return ok("");
     }
 
 }

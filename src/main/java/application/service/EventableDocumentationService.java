@@ -22,11 +22,6 @@ public class EventableDocumentationService implements DocumentationService {
     }
 
     @Override
-    public Document findDocument(String documentationId, String documentId) {
-        return documentationService.findDocument(documentationId, documentId);
-    }
-
-    @Override
     public Document uploadDocument(CurrentUser currentUser, String projectId, MultipartFile uploadedFile) throws IOException {
         Document document = documentationService.uploadDocument(currentUser, projectId, uploadedFile);
         changeEventService.publish(ChangeEvent.create(

@@ -1,7 +1,6 @@
 package domain
 
 import application.dto.CreateProjectDto
-import domain.project.DocumentationRepository
 import domain.project.Project
 import domain.project.ProjectRepository
 import domain.survey.QuestionnaireTemplate
@@ -73,7 +72,7 @@ class UserSpec extends Specification {
         given:
         User user = User.createUser("email@email.com", "password", role)
         when:
-        Project project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository.class), Mock(DocumentationRepository))
+        Project project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository.class))
         then:
         user.projectIds[0] == project.getId()
         project != null
@@ -87,7 +86,7 @@ class UserSpec extends Specification {
         user.roles.remove(Roles.ARCHITECT)
         user.roles.add(Roles.INVESTOR)
         when:
-        Project project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository), Mock(DocumentationRepository))
+        Project project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository))
         then:
         project == null
         thrown(DomainExceptions.UserActionNotAllowed)
@@ -96,7 +95,7 @@ class UserSpec extends Specification {
     def "user can remove project"() {
         given:
         User user = User.createUser("email@email.com", "password", role)
-        def project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository), Mock(DocumentationRepository))
+        def project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository))
         when:
         user.removeProject(project.getId())
         then:

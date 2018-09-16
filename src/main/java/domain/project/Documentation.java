@@ -8,13 +8,13 @@ import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Table("documentations")
+@UserDefinedType
 @Value
 public class Documentation implements WithId<UUID> {
 

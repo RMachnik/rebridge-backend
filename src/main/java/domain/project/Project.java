@@ -5,6 +5,7 @@ import application.dto.ProjectDto;
 import application.dto.UpdateProjectDetailsDto;
 import com.datastax.driver.core.DataType;
 import domain.DomainExceptions.MissingInspirationException;
+import domain.catalogue.Catalogue;
 import domain.common.DateTime;
 import domain.survey.QuestionnaireTemplate;
 import lombok.Builder;
@@ -51,24 +52,30 @@ public class Project implements WithId<UUID> {
 
     Chat chat;
 
-    UUID documentationId;
+    Documentation documentation;
+
+    Catalogue catalogue;
 
     DateTime creationDate;
 
-    public Project(UUID id, String name,
-                   Details details,
-                   List<Inspiration> inspirations,
-                   UUID questionnaireTemplateId,
-                   Chat chat,
-                   UUID documentationId,
-                   DateTime creationDate) {
+    public Project(
+            UUID id, String name,
+            Details details,
+            List<Inspiration> inspirations,
+            UUID questionnaireTemplateId,
+            Chat chat,
+            Documentation documentation,
+            Catalogue catalogue,
+            DateTime creationDate
+    ) {
         this.id = id;
         this.name = name;
         this.details = details;
         this.inspirations = ofNullable(inspirations).orElse(new ArrayList<>());
         this.questionnaireTemplateId = questionnaireTemplateId;
         this.chat = chat;
-        this.documentationId = documentationId;
+        this.documentation = documentation;
+        this.catalogue = catalogue;
         this.creationDate = creationDate;
     }
 
@@ -84,6 +91,8 @@ public class Project implements WithId<UUID> {
                 .questionnaireTemplateId(questionnaireTemplate.getId())
                 .chat(Chat.empty(id))
                 .creationDate(DateTime.now())
+                .catalogue(Catalogue.empty())
+                .documentation(Documentation.empty(id))
                 .build();
     }
 
@@ -95,6 +104,7 @@ public class Project implements WithId<UUID> {
                 .questionnaireTemplateId(isNotBlank(projectDto.getQuestionnaireTemplateId()) ? fromString(projectDto.getQuestionnaireTemplateId()) : questionnaireTemplateId)
                 .chat(chat)
                 .creationDate(creationDate)
+                .catalogue(catalogue)
                 .build();
     }
 
@@ -136,10 +146,9 @@ public class Project implements WithId<UUID> {
         return details;
     }
 
-    public Documentation createDocumentation() {
+    public void createDocumentation() {
         Documentation documentation = Documentation.empty(id);
-        this.documentationId = documentation.getId();
-        return documentation;
+        this.documentation = documentation;
     }
 
     public void updateDetails(UpdateProjectDetailsDto updateProjectDetailsDto) {

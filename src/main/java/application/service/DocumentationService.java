@@ -11,8 +11,6 @@ public interface DocumentationService {
 
     Documentation all(CurrentUser user, String projectId);
 
-    Document findDocument(String documentationId, String documentId);
-
     Document uploadDocument(CurrentUser currentUser, String projectId, MultipartFile uploadedFile) throws IOException;
 
     void delete(CurrentUser currentUser, String projectId, String documentId);

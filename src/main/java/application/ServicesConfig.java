@@ -3,7 +3,6 @@ package application;
 import application.service.*;
 import domain.event.ChangeEventRepository;
 import domain.invitation.InvitationRepository;
-import domain.project.DocumentationRepository;
 import domain.project.ImageRepository;
 import domain.project.ProjectRepository;
 import domain.survey.QuestionnaireTemplateRepository;
@@ -33,10 +32,9 @@ public class ServicesConfig {
     ProjectService projectService(UserService userService,
                                   ProjectRepository projectRepository,
                                   QuestionnaireTemplateService questionnaireTemplateService,
-                                  ChangeEventService changeEventService,
-                                  DocumentationRepository documentationRepository
+                                  ChangeEventService changeEventService
     ) {
-        SimpleProjectService simpleProjectService = new SimpleProjectService(userService, projectRepository, questionnaireTemplateService, documentationRepository);
+        SimpleProjectService simpleProjectService = new SimpleProjectService(userService, projectRepository, questionnaireTemplateService);
         return new EventableProjectService(simpleProjectService, changeEventService);
     }
 
@@ -96,10 +94,10 @@ public class ServicesConfig {
     DocumentationService documentationService(
             UserService userService,
             ImageService imageService,
-            DocumentationRepository documentationRepository,
+            ProjectService projectService,
             ChangeEventService changeEventService
     ) {
-        SimpleDocumentationService simpleDocumentationService = new SimpleDocumentationService(userService, imageService, documentationRepository);
+        SimpleDocumentationService simpleDocumentationService = new SimpleDocumentationService(userService, imageService, projectService);
         return new EventableDocumentationService(simpleDocumentationService, changeEventService);
     }
 }
