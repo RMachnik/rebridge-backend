@@ -81,4 +81,16 @@ public class DomainExceptions {
             super(message);
         }
     }
+
+    public static class MissingRoom extends DomainException {
+        public MissingRoom(String message) {
+            super(message);
+        }
+    }
+
+    public static class MissingCategory extends DomainException {
+        public MissingCategory(String message) {
+            super(message);
+        }
+    }
 }

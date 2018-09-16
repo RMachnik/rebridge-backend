@@ -1,7 +1,9 @@
 package domain.catalogue;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import lombok.Value;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class Category {
     }
 
     public static Category create(String name) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(name), "category name can't be blank");
         return new Category(UUID.randomUUID(), name, Lists.newArrayList());
     }
 

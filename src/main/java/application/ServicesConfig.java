@@ -100,4 +100,9 @@ public class ServicesConfig {
         SimpleDocumentationService simpleDocumentationService = new SimpleDocumentationService(userService, imageService, projectService);
         return new EventableDocumentationService(simpleDocumentationService, changeEventService);
     }
+
+    @Bean
+    CatalogueService catalogueService(ProjectService projectService) {
+        return new CatalogueService(projectService);
+    }
 }

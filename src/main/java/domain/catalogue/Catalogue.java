@@ -1,6 +1,7 @@
 package domain.catalogue;
 
 import com.google.common.collect.Lists;
+import domain.DomainExceptions.MissingRoom;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
@@ -15,7 +16,6 @@ public class Catalogue {
     UUID id;
     List<Room> rooms;
 
-
     public Catalogue(UUID id, List<Room> rooms) {
         this.id = id;
         this.rooms = Optional
@@ -29,5 +29,13 @@ public class Catalogue {
 
     public void addRoom(Room room) {
         rooms.add(room);
+    }
+
+    public Room findRoom(String roomId) {
+        UUID roomUUID = UUID.fromString(roomId);
+        return rooms.stream()
+                .filter(room -> room.getId().equals(roomUUID))
+                .findFirst()
+                .orElseThrow(() -> new MissingRoom(String.format("There is no room with id %s", roomId)));
     }
 }

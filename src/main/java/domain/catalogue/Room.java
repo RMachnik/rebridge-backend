@@ -1,7 +1,10 @@
 package domain.catalogue;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import domain.DomainExceptions.MissingCategory;
 import lombok.Value;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.util.List;
@@ -25,10 +28,19 @@ public class Room {
     }
 
     public static Room create(String name) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(name), "room name can't be blank");
         return new Room(UUID.randomUUID(), name, Lists.newArrayList());
     }
 
     public void addCategory(Category category) {
         categories.add(category);
+    }
+
+    public Category findCategory(String categoryId) {
+        UUID categoryUUID = UUID.fromString(categoryId);
+        return categories.stream()
+                .filter(category -> category.getId().equals(categoryUUID))
+                .findFirst()
+                .orElseThrow(() -> new MissingCategory(String.format("Category with id %s not found.", categoryId)));
     }
 }
