@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +50,9 @@ public class InspirationController {
             @PathVariable String projectId
     ) {
         return ok(
-                inspirationService.findAll(currentUser.getId(), projectId).stream()
+                inspirationService.findAll(currentUser.getId(), projectId)
+                        .stream()
+                        .sorted(Comparator.comparing(Inspiration::getCreationDate))
                         .map(InspirationDto::create)
                         .collect(toList())
         );
@@ -123,7 +126,7 @@ public class InspirationController {
 
         UriComponents pathToPicture = builder
                 .path(IMAGES)
-                .path("{id}")
+                .path("{}")
                 .buildAndExpand(savedImage.getId());
 
         return ResponseEntity

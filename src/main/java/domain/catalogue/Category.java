@@ -2,6 +2,7 @@ package domain.catalogue;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import domain.DomainExceptions;
 import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
@@ -33,5 +34,15 @@ public class Category {
 
     public void addItem(Item item) {
         items.add(item);
+    }
+
+    public void removeItem(String itemId) {
+        UUID itemUUID = UUID.fromString(itemId);
+        Item toBeRemoved = items
+                .stream()
+                .filter(item -> item.getId().equals(itemUUID))
+                .findFirst()
+                .orElseThrow(() -> new DomainExceptions.MissingItem(String.format("Item with id %s is missing.", itemId)));
+        items.remove(toBeRemoved);
     }
 }

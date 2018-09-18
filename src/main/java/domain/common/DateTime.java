@@ -10,8 +10,9 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
 @UserDefinedType
 @Value
-public class DateTime {
+public class DateTime implements Comparable<DateTime> {
 
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
     String value;
 
     public static DateTime now() {
@@ -19,6 +20,15 @@ public class DateTime {
     }
 
     public String simpleDate() {
-        return LocalDateTime.parse(value).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+        return LocalDateTime.parse(value).format(FORMATTER);
+    }
+
+    public LocalDateTime getDateTime() {
+        return LocalDateTime.parse(value, ISO_DATE_TIME);
+    }
+
+    @Override
+    public int compareTo(DateTime o) {
+        return getDateTime().compareTo(o.getDateTime());
     }
 }

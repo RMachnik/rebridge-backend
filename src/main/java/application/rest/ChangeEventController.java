@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -31,7 +32,9 @@ public class ChangeEventController {
 
     @GetMapping
     ResponseEntity<List<ChangeEventDto>> all(@AuthenticationPrincipal CurrentUser currentUser) {
-        List<ChangeEventDto> changeEvents = changeEventService.loadEvents(currentUser).stream()
+        List<ChangeEventDto> changeEvents = changeEventService.loadEvents(currentUser)
+                .stream()
+                .sorted(Comparator.comparing(ChangeEvent::getCreationTime))
                 .map(changeEvent -> ChangeEventDto.fromDomain(changeEvent, currentUser.getUUID()))
                 .collect(toList());
         return ResponseEntity.ok(changeEvents);

@@ -93,4 +93,10 @@ public class DomainExceptions {
             super(message);
         }
     }
+
+    public static class MissingItem extends DomainException {
+        public MissingItem(String message) {
+            super(message);
+        }
+    }
 }

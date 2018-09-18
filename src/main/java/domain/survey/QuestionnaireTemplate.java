@@ -2,6 +2,7 @@ package domain.survey;
 
 import application.dto.QuestionnaireTemplateDto;
 import com.datastax.driver.core.DataType;
+import domain.common.DateTime;
 import domain.project.WithId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,12 +30,14 @@ public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
 
     String name;
     List<String> questions;
+    DateTime creationDate;
 
     public static QuestionnaireTemplate empty(String name) {
         return QuestionnaireTemplate.builder()
                 .id(UUID.randomUUID())
                 .name(name)
                 .questions(new ArrayList<>())
+                .creationDate(DateTime.now())
                 .build();
     }
 
@@ -43,10 +46,11 @@ public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
                 .id(UUID.randomUUID())
                 .name(dto.getName())
                 .questions(dto.getQuestions())
+                .creationDate(DateTime.now())
                 .build();
     }
 
     public QuestionnaireTemplate updateQuestions(List<String> updatedQuestions) {
-        return new QuestionnaireTemplate(id, name, updatedQuestions);
+        return new QuestionnaireTemplate(id, name, updatedQuestions, creationDate);
     }
 }

@@ -39,6 +39,16 @@ public class CatalogueController {
         return ResponseEntity.status(HttpStatus.CREATED).body(RoomDto.convert(catalogueService.addRoom(currentUser, projectId, createRoomDto)));
     }
 
+    @DeleteMapping("/{catalogueId}/rooms/{roomId}")
+    ResponseEntity deleteRoom(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @PathVariable String roomId
+    ) {
+        catalogueService.removeRoom(currentUser, projectId, roomId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/{catalogueId}/rooms/{roomId}/categories")
     ResponseEntity<CategoryDto> addCategory(
             @AuthenticationPrincipal CurrentUser currentUser,
@@ -51,6 +61,19 @@ public class CatalogueController {
                 .body(CategoryDto.convert(
                         catalogueService.addCategory(currentUser, projectId, roomId, createCategoryDto))
                 );
+    }
+
+    @DeleteMapping("/{catalogueId}/rooms/{roomId}/categories/{categoryId}")
+    ResponseEntity<CategoryDto> addCategory(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @PathVariable String roomId,
+            @PathVariable String categoryId
+    ) {
+        catalogueService.removeCategory(currentUser, projectId, roomId, categoryId);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @PostMapping("/{catalogueId}/rooms/{roomId}/categories/{categoryId}/items")
@@ -66,6 +89,20 @@ public class CatalogueController {
                 .body(
                         ItemDto.convert(catalogueService.addItem(currentUser, projectId, roomId, categoryId, createItemDto))
                 );
+    }
+
+    @PostMapping("/{catalogueId}/rooms/{roomId}/categories/{categoryId}/items/{itemId}")
+    ResponseEntity<ItemDto> addItem(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @PathVariable String projectId,
+            @PathVariable String roomId,
+            @PathVariable String categoryId,
+            @PathVariable String itemId
+    ) {
+        catalogueService.removeItem(currentUser, projectId, roomId, categoryId, itemId);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
 }

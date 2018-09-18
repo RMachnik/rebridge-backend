@@ -38,4 +38,13 @@ public class Catalogue {
                 .findFirst()
                 .orElseThrow(() -> new MissingRoom(String.format("There is no room with id %s", roomId)));
     }
+
+    public void removeRoom(String roomId) {
+        UUID roomUUID = UUID.fromString(roomId);
+        Room roomFound = rooms.stream()
+                .filter(room -> room.getId().equals(roomUUID))
+                .findFirst()
+                .orElseThrow(() -> new MissingRoom(String.format("There is no room with id %s", roomId)));
+        rooms.remove(roomFound);
+    }
 }

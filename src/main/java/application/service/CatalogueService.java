@@ -53,4 +53,25 @@ public class CatalogueService {
         return item;
 
     }
+
+    public void removeRoom(CurrentUser currentUser, String projectId, String roomId) {
+        Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
+        project.getCatalogue().removeRoom(roomId);
+        projectService.save(project);
+    }
+
+    public void removeCategory(CurrentUser currentUser, String projectId, String roomId, String categoryId) {
+        Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
+        Room room = project.getCatalogue().findRoom(roomId);
+        room.removeCategory(categoryId);
+        projectService.save(project);
+    }
+
+    public void removeItem(CurrentUser currentUser, String projectId, String roomId, String categoryId, String itemId) {
+        Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
+        Room room = project.getCatalogue().findRoom(roomId);
+        Category category = room.findCategory(categoryId);
+        category.removeItem(itemId);
+        projectService.save(project);
+    }
 }

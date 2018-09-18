@@ -3,6 +3,7 @@ package application.rest;
 import application.dto.AuthDto;
 import application.service.MailService;
 import boot.Application;
+import domain.common.DateTime;
 import domain.survey.QuestionnaireTemplate;
 import domain.survey.QuestionnaireTemplateRepository;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
@@ -44,7 +45,7 @@ public class ApplicationTestConfig {
 
     private void addQuestionTemplate() {
         UUID id = UUID.fromString("128cb75a-3b8b-4c3f-b0e7-64e9ec10f467");
-        QuestionnaireTemplate questionnaireTemplate = new QuestionnaireTemplate(id, "test", asList("question"));
+        QuestionnaireTemplate questionnaireTemplate = new QuestionnaireTemplate(id, "test", asList("question"), DateTime.now());
         questionnaireTemplateRepository.save(questionnaireTemplate);
     }
 

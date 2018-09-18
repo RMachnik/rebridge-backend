@@ -43,4 +43,14 @@ public class Room {
                 .findFirst()
                 .orElseThrow(() -> new MissingCategory(String.format("Category with id %s not found.", categoryId)));
     }
+
+    public void removeCategory(String categoryId) {
+        UUID categoryUUID = UUID.fromString(categoryId);
+        Category toBeRemoved = categories
+                .stream()
+                .filter(category -> category.getId().equals(categoryUUID))
+                .findFirst()
+                .orElseThrow(() -> new MissingCategory(String.format("Category with id %s was not found.", categoryId)));
+        categories.remove(toBeRemoved);
+    }
 }
