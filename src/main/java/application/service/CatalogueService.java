@@ -43,7 +43,7 @@ public class CatalogueService {
         Category category = room.findCategory(categoryId);
         Item item = Item.create(
                 createItemDto.getDescription(),
-                createItemDto.getSize(),
+                createItemDto.getSizing(),
                 createItemDto.getQuantity(),
                 createItemDto.getPrize(),
                 createItemDto.getAdditionalInfo()

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 @Value
 public class RoomDto {
+
     String id;
     String name;
     List<CategoryDto> categories;

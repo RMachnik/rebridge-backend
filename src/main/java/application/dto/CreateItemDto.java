@@ -6,7 +6,7 @@ import lombok.Value;
 public class CreateItemDto {
 
     String description;
-    String size;
+    String sizing;
     double quantity;
     double prize;
     String additionalInfo;

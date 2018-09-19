@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class ProjectController {
     ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal CurrentUser user) {
         return ResponseEntity.ok(
                 projectService.findAllByUserId(user.getId()).stream()
-                        .sorted(Comparator.comparing(Project::getCreationDate))
+                        .sorted(Collections.reverseOrder(Comparator.comparing(Project::getCreationDate)))
                         .map(ProjectDto::create)
                         .collect(toList())
         );
