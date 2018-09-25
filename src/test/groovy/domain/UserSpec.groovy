@@ -3,7 +3,6 @@ package domain
 import application.dto.CreateProjectDto
 import domain.project.Project
 import domain.project.ProjectRepository
-import domain.survey.QuestionnaireTemplate
 import domain.user.ContactDetails
 import domain.user.Roles
 import domain.user.User
@@ -15,8 +14,7 @@ class UserSpec extends Specification {
     @Shared
     def existingProjectId = UUID.randomUUID()
     Roles role = Roles.ARCHITECT
-    CreateProjectDto createProjectDto = new CreateProjectDto("projectName", UUID.randomUUID().toString())
-    QuestionnaireTemplate questionnaireTemplate = QuestionnaireTemplate.empty("some")
+    CreateProjectDto createProjectDto = new CreateProjectDto("projectName")
 
     def "user is not populated with Nulls"() {
         given:
@@ -72,7 +70,7 @@ class UserSpec extends Specification {
         given:
         User user = User.createUser("email@email.com", "password", role)
         when:
-        Project project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository.class))
+        Project project = user.createProject(createProjectDto, Mock(ProjectRepository.class))
         then:
         user.projectIds[0] == project.getId()
         project != null
@@ -86,7 +84,7 @@ class UserSpec extends Specification {
         user.roles.remove(Roles.ARCHITECT)
         user.roles.add(Roles.INVESTOR)
         when:
-        Project project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository))
+        Project project = user.createProject(createProjectDto, Mock(ProjectRepository))
         then:
         project == null
         thrown(DomainExceptions.UserActionNotAllowed)
@@ -95,7 +93,7 @@ class UserSpec extends Specification {
     def "user can remove project"() {
         given:
         User user = User.createUser("email@email.com", "password", role)
-        def project = user.createProject(createProjectDto, questionnaireTemplate, Mock(ProjectRepository))
+        def project = user.createProject(createProjectDto, Mock(ProjectRepository))
         when:
         user.removeProject(project.getId())
         then:

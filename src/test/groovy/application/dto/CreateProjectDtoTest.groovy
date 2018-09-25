@@ -6,7 +6,7 @@ class CreateProjectDtoTest extends Specification {
 
     def "simple constructor check"() {
         when:
-        new CreateProjectDto(null, null)
+        new CreateProjectDto(null)
         then:
         thrown(NullPointerException)
     }

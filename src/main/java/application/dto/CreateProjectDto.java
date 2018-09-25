@@ -7,6 +7,4 @@ import lombok.Value;
 public class CreateProjectDto {
     @NonNull
     String name;
-    @NonNull
-    String questionnaireTemplateId;
 }

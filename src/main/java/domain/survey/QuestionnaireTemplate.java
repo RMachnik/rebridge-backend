@@ -4,7 +4,6 @@ import application.dto.QuestionnaireTemplateDto;
 import com.datastax.driver.core.DataType;
 import domain.common.DateTime;
 import domain.project.WithId;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -17,10 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Optional.ofNullable;
+
 @Table("surveyTemplates")
 @Value
 @Builder
-@AllArgsConstructor
 public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
 
     @PrimaryKey
@@ -31,6 +31,13 @@ public class QuestionnaireTemplate implements WithId<UUID>, Serializable {
     String name;
     List<String> questions;
     DateTime creationDate;
+
+    public QuestionnaireTemplate(UUID id, String name, List<String> questions, DateTime creationDate) {
+        this.id = id;
+        this.name = name;
+        this.questions = ofNullable(questions).orElse(new ArrayList<>());
+        this.creationDate = creationDate;
+    }
 
     public static QuestionnaireTemplate empty(String name) {
         return QuestionnaireTemplate.builder()

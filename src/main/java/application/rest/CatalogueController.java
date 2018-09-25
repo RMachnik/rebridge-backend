@@ -40,7 +40,7 @@ public class CatalogueController {
     }
 
     @DeleteMapping("/{catalogueId}/rooms/{roomId}")
-    ResponseEntity deleteRoom(
+    ResponseEntity removeRoom(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @PathVariable String roomId
@@ -64,7 +64,7 @@ public class CatalogueController {
     }
 
     @DeleteMapping("/{catalogueId}/rooms/{roomId}/categories/{categoryId}")
-    ResponseEntity<CategoryDto> addCategory(
+    ResponseEntity<CategoryDto> removeCategory(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @PathVariable String roomId,
@@ -91,8 +91,8 @@ public class CatalogueController {
                 );
     }
 
-    @PostMapping("/{catalogueId}/rooms/{roomId}/categories/{categoryId}/items/{itemId}")
-    ResponseEntity<ItemDto> addItem(
+    @DeleteMapping("/{catalogueId}/rooms/{roomId}/categories/{categoryId}/items/{itemId}")
+    ResponseEntity<ItemDto> removeItem(
             @AuthenticationPrincipal CurrentUser currentUser,
             @PathVariable String projectId,
             @PathVariable String roomId,

@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
+import static java.lang.String.format;
+
 @AllArgsConstructor
 public class EventableProjectService implements ProjectService {
 
@@ -33,7 +35,7 @@ public class EventableProjectService implements ProjectService {
     @Override
     public Project update(String userId, ProjectDto projectDto) {
         Project project = projectService.update(userId, projectDto);
-        changeEventService.publish(ChangeEvent.create(UUID.fromString(userId), project.getId(), String.format("Project %s was updated.", project.getName())));
+        changeEventService.publish(ChangeEvent.create(UUID.fromString(userId), project.getId(), format("Project %s was updated.", project.getName())));
         return project;
     }
 

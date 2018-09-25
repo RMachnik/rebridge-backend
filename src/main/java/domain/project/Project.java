@@ -48,8 +48,6 @@ public class Project implements WithId<UUID> {
     @NonNull
     List<Inspiration> inspirations;
 
-    UUID questionnaireTemplateId;
-
     Chat chat;
 
     Documentation documentation;
@@ -59,10 +57,10 @@ public class Project implements WithId<UUID> {
     DateTime creationDate;
 
     public Project(
-            UUID id, String name,
+            UUID id,
+            String name,
             Details details,
             List<Inspiration> inspirations,
-            UUID questionnaireTemplateId,
             Chat chat,
             Documentation documentation,
             Catalogue catalogue,
@@ -72,14 +70,13 @@ public class Project implements WithId<UUID> {
         this.name = name;
         this.details = details;
         this.inspirations = ofNullable(inspirations).orElse(new ArrayList<>());
-        this.questionnaireTemplateId = questionnaireTemplateId;
         this.chat = chat;
         this.documentation = documentation;
         this.catalogue = catalogue;
         this.creationDate = creationDate;
     }
 
-    public static Project create(String name, QuestionnaireTemplate questionnaireTemplate) {
+    public static Project create(String name) {
         checkArgument(isNotBlank(name), "project name can't be empty");
 
         UUID id = UUID.randomUUID();
@@ -87,8 +84,7 @@ public class Project implements WithId<UUID> {
                 .id(id)
                 .name(name)
                 .inspirations(new ArrayList<>())
-                .details(Details.empty(questionnaireTemplate))
-                .questionnaireTemplateId(questionnaireTemplate.getId())
+                .details(Details.empty())
                 .chat(Chat.empty(id))
                 .creationDate(DateTime.now())
                 .catalogue(Catalogue.empty())
@@ -101,7 +97,6 @@ public class Project implements WithId<UUID> {
                 .id(id)
                 .name(isNotBlank(projectDto.getName()) ? projectDto.getName() : name)
                 .inspirations(inspirations)
-                .questionnaireTemplateId(isNotBlank(projectDto.getQuestionnaireTemplateId()) ? fromString(projectDto.getQuestionnaireTemplateId()) : questionnaireTemplateId)
                 .chat(chat)
                 .creationDate(creationDate)
                 .catalogue(catalogue)
@@ -141,18 +136,13 @@ public class Project implements WithId<UUID> {
                 .findAny();
     }
 
-    public Details createDetails(UpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
-        details = Details.create(projectDetailsDto, questionnaire);
+    public Details createDetails(UpdateProjectDetailsDto projectDetailsDto) {
+        details = Details.create(projectDetailsDto);
         return details;
     }
 
-    public void createDocumentation() {
-        Documentation documentation = Documentation.empty(id);
-        this.documentation = documentation;
-    }
-
-    public void updateDetails(UpdateProjectDetailsDto updateProjectDetailsDto) {
-        this.details = details.update(updateProjectDetailsDto);
+    public void updateDetails(UpdateProjectDetailsDto updateProjectDetailsDto, QuestionnaireTemplate questionnaireTemplate) {
+        this.details = details.update(updateProjectDetailsDto, questionnaireTemplate);
     }
 
     public void updateImage(UUID imageId) {

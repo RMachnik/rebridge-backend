@@ -9,7 +9,6 @@ import domain.event.ChangeEventRepository;
 import domain.project.Project;
 import domain.project.ProjectRepository;
 import domain.project.WithId;
-import domain.survey.QuestionnaireTemplate;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -101,13 +100,12 @@ public class User implements WithId<UUID> {
 
     public Project createProject(
             CreateProjectDto createProjectDto,
-            QuestionnaireTemplate questionnaireTemplate,
             ProjectRepository projectRepository
     ) {
         if (!isArchitect()) {
             throw new UserActionNotAllowed(format("Only Architects can createWithRoleArchitect projects! %s is not an architect!", email));
         }
-        Project project = Project.create(createProjectDto.getName(), questionnaireTemplate);
+        Project project = Project.create(createProjectDto.getName());
 
         projectRepository.save(project);
         projectIds.add(project.getId());

@@ -2,12 +2,10 @@ package application.service;
 
 import application.dto.CreateProjectDto;
 import application.dto.ProjectDto;
-import domain.DomainExceptions.MissingQuestionnaireTemplate;
 import domain.DomainExceptions.UserActionNotAllowed;
 import domain.RepositoryExceptions.ProjectRepositoryException;
 import domain.project.Project;
 import domain.project.ProjectRepository;
-import domain.survey.QuestionnaireTemplate;
 import domain.user.User;
 import lombok.Value;
 
@@ -52,12 +50,7 @@ public class SimpleProjectService implements ProjectService {
     @Override
     public Project create(String userId, CreateProjectDto createProjectDto) {
         User user = userService.findById(userId);
-
-        String questionnaireTemplateId = createProjectDto.getQuestionnaireTemplateId();
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(questionnaireTemplateId)
-                .orElseThrow(() -> new MissingQuestionnaireTemplate(format("unable to locate questionnaire %s", questionnaireTemplateId)));
-
-        Project project = user.createProject(createProjectDto, questionnaireTemplate, projectRepository);
+        Project project = user.createProject(createProjectDto, projectRepository);
         userService.update(user);
         return project;
     }

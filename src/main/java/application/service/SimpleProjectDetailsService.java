@@ -4,7 +4,6 @@ import application.dto.*;
 import domain.DomainExceptions.MissingQuestionnaireTemplate;
 import domain.project.Details;
 import domain.project.Project;
-import domain.project.Questionnaire;
 import domain.survey.QuestionnaireTemplate;
 import domain.user.EmailAddress;
 import domain.user.User;
@@ -61,14 +60,8 @@ public class SimpleProjectDetailsService implements ProjectDetailsService {
     @Override
     public Details create(String userId, String projectId, UpdateProjectDetailsDto updateProjectDetailsDto) {
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-        String questionnaireId = project.getQuestionnaireTemplateId().toString();
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(questionnaireId)
-                .orElseThrow(() -> new MissingQuestionnaireTemplate(format("missing questionnaire template %s", questionnaireId)));
-
-
-        Details details = project.createDetails(updateProjectDetailsDto, Questionnaire.create(questionnaireTemplate.getQuestions()));
+        Details details = project.createDetails(updateProjectDetailsDto);
         projectService.save(project);
-
         return details;
     }
 
@@ -83,10 +76,11 @@ public class SimpleProjectDetailsService implements ProjectDetailsService {
 
     @Override
     public ProjectDetailsDto update(String userId, String projectId, UpdateProjectDetailsDto updateProjectDetailsDto) {
+        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(updateProjectDetailsDto.getQuestionnaireId())
+                .orElseThrow(() -> new MissingQuestionnaireTemplate(format("missing questionnaire template %s", updateProjectDetailsDto.getQuestionnaireId())));
+
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
-
-        project.updateDetails(updateProjectDetailsDto);
-
+        project.updateDetails(updateProjectDetailsDto, questionnaireTemplate);
         projectService.save(project);
 
         return fromInformationToDto(project.getDetails(), findInvestors(project.getDetails()), projectId);

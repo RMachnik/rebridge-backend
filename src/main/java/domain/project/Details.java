@@ -13,6 +13,7 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -38,36 +39,36 @@ public class Details implements Serializable {
         this.imageId = imageId;
     }
 
-    public static Details empty(QuestionnaireTemplate questionnaireTemplate) {
+    public static Details empty() {
         return Details.builder()
                 .investorEmailAddresses(new HashSet<>())
                 .budget(0d)
                 .location(Address.empty())
                 .surface(new Surface(BigDecimal.ZERO))
-                .questionnaire(Questionnaire.create(questionnaireTemplate.getQuestions()))
+                .questionnaire(Questionnaire.create(Collections.emptyList()))
                 .imageId(null)
                 .build();
     }
 
-    public static Details create(UpdateProjectDetailsDto projectDetailsDto, Questionnaire questionnaire) {
+    public static Details create(UpdateProjectDetailsDto projectDetailsDto) {
         AddressDto location = projectDetailsDto.getLocation();
         return Details.builder()
                 .investorEmailAddresses(new HashSet<>())
                 .budget(projectDetailsDto.getBudget())
                 .location(new Address(location.getNumber(), location.getStreetName(), location.getPostalCode(), location.getCity()))
                 .surface(Surface.create(projectDetailsDto.getSurface()))
-                .questionnaire(questionnaire)
+                .questionnaire(Questionnaire.create(Collections.emptyList()))
                 .build();
     }
 
-    public Details update(UpdateProjectDetailsDto updateProjectDetailsDto) {
+    public Details update(UpdateProjectDetailsDto updateProjectDetailsDto, QuestionnaireTemplate questionnaireTemplate) {
         AddressDto addressDto = updateProjectDetailsDto.getLocation();
         return Details.builder()
                 .budget(updateProjectDetailsDto.getBudget() != null ? updateProjectDetailsDto.getBudget() : budget)
                 .location(addressDto != null ? new Address(addressDto.getNumber(), addressDto.getStreetName(), addressDto.getPostalCode(), addressDto.getCity()) : location)
                 .surface(updateProjectDetailsDto.getSurface() != null ? new Surface(BigDecimal.valueOf(updateProjectDetailsDto.getSurface())) : surface)
                 .investorEmailAddresses(investorEmailAddresses)
-                .questionnaire(questionnaire)
+                .questionnaire(questionnaire.update(questionnaireTemplate))
                 .imageId(imageId)
                 .build();
     }

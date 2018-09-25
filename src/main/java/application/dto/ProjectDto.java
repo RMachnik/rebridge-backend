@@ -9,7 +9,6 @@ import lombok.Data;
 public class ProjectDto {
     String id;
     String name;
-    String questionnaireTemplateId;
     String catalogueId;
     SimpleDetailsDto details;
 
@@ -17,7 +16,6 @@ public class ProjectDto {
         return builder()
                 .id(project.getId().toString())
                 .name(project.getName())
-                .questionnaireTemplateId(project.getQuestionnaireTemplateId().toString())
                 .details(ProjectDetailsDto.create(project.getDetails()))
                 .catalogueId(project.getCatalogue().getId().toString())
                 .build();
