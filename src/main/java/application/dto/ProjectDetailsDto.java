@@ -11,6 +11,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class ProjectDetailsDto {
+
     String projectId;
     Double budget;
     Double surface;

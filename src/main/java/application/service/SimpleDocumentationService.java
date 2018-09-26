@@ -29,7 +29,7 @@ public class SimpleDocumentationService implements DocumentationService {
         Project project = projectService.findByUserIdAndProjectId(currentUser.getId(), projectId);
         Documentation documentation = project.getDocumentation();
 
-        Image image = Image.create(uploadedFile.getName(), uploadedFile.getContentType(), ByteBuffer.wrap(uploadedFile.getBytes()));
+        Image image = Image.create(uploadedFile.getOriginalFilename(), uploadedFile.getContentType(), ByteBuffer.wrap(uploadedFile.getBytes()));
         Image saved = imageService.save(projectId, image);
 
         Document document = Document.create(saved.getName(), saved.getId());

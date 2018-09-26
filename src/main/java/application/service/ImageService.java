@@ -26,7 +26,7 @@ public class ImageService {
     }
 
     public Image addImageToInspiration(String userId, UUID projectId, UUID inspirationId, MultipartFile uploadedImage) throws IOException {
-        Image image = Image.create(uploadedImage.getName(), uploadedImage.getContentType(), ByteBuffer.wrap(uploadedImage.getBytes()));
+        Image image = Image.create(uploadedImage.getOriginalFilename(), uploadedImage.getContentType(), ByteBuffer.wrap(uploadedImage.getBytes()));
 
         Project project = projectService.findByUserIdAndProjectId(userId, projectId.toString());
         Inspiration inspiration = project.findInspiration(inspirationId);

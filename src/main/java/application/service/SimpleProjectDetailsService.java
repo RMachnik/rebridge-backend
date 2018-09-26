@@ -1,7 +1,6 @@
 package application.service;
 
 import application.dto.*;
-import domain.DomainExceptions.MissingQuestionnaireTemplate;
 import domain.project.Details;
 import domain.project.Project;
 import domain.survey.QuestionnaireTemplate;
@@ -14,7 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static application.dto.DtoAssemblers.fromInformationToDto;
-import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
 @AllArgsConstructor
@@ -76,8 +75,11 @@ public class SimpleProjectDetailsService implements ProjectDetailsService {
 
     @Override
     public ProjectDetailsDto update(String userId, String projectId, UpdateProjectDetailsDto updateProjectDetailsDto) {
-        QuestionnaireTemplate questionnaireTemplate = questionnaireTemplateService.findById(updateProjectDetailsDto.getQuestionnaireId())
-                .orElseThrow(() -> new MissingQuestionnaireTemplate(format("missing questionnaire template %s", updateProjectDetailsDto.getQuestionnaireId())));
+        QuestionnaireTemplate questionnaireTemplate =
+                ofNullable(updateProjectDetailsDto.getQuestionnaireId())
+                        .map(questionnaireTemplateService::findById)
+                        .map(Optional::get)
+                        .orElse(questionnaireTemplateService.findAll().get(0));
 
         Project project = projectService.findByUserIdAndProjectId(userId, projectId);
         project.updateDetails(updateProjectDetailsDto, questionnaireTemplate);

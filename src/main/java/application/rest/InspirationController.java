@@ -59,21 +59,31 @@ public class InspirationController {
         );
     }
 
-    @PostMapping
+    @PostMapping(
+            consumes = ALL_VALUE,
+            produces = APPLICATION_JSON_UTF8_VALUE
+    )
     ResponseEntity<InspirationDto> create(UriComponentsBuilder builder,
                                           @AuthenticationPrincipal CurrentUser currentUser,
                                           @PathVariable String projectId,
-                                          @RequestBody CreateOrUpdateInspirationDto inspirationDto
-    ) {
+                                          @RequestParam("uploadedFile") MultipartFile uploadedFile
+    ) throws IOException {
 
-        Inspiration createdInspiration = inspirationService.create(currentUser.getId(), projectId, inspirationDto);
+        String extractedName = uploadedFile.getOriginalFilename();
+        Inspiration createdInspiration = inspirationService.create(currentUser.getId(), projectId, CreateOrUpdateInspirationDto.create(extractedName));
+        Image savedImage = imageService.addImageToInspiration(
+                currentUser.getId(),
+                UUID.fromString(projectId),
+                UUID.fromString(createdInspiration.getId().toString()),
+                uploadedFile);
+        Inspiration inspiration = inspirationService.findById(currentUser.getId(), projectId, createdInspiration.getId().toString());
         UriComponents pathToInspiration = builder.path(INSPIRATIONS)
                 .path("/{id}")
                 .buildAndExpand(projectId, createdInspiration.getId());
 
         return ResponseEntity
                 .created(pathToInspiration.toUri())
-                .body(InspirationDto.create(createdInspiration));
+                .body(InspirationDto.create(inspiration));
     }
 
     @GetMapping("/{inspirationId}")

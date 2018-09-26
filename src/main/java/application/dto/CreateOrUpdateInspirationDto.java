@@ -10,4 +10,8 @@ public class CreateOrUpdateInspirationDto {
     String description;
     String url;
     int rating;
+
+    public static CreateOrUpdateInspirationDto create(String name) {
+        return new CreateOrUpdateInspirationDto(name, "", "", 0);
+    }
 }
