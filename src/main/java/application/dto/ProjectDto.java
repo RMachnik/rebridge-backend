@@ -4,6 +4,8 @@ import domain.project.Project;
 import lombok.Builder;
 import lombok.Data;
 
+import static java.util.Optional.ofNullable;
+
 @Data
 @Builder
 public class ProjectDto {
@@ -16,7 +18,7 @@ public class ProjectDto {
         return builder()
                 .id(project.getId().toString())
                 .name(project.getName())
-                .details(ProjectDetailsDto.create(project.getDetails()))
+                .details(ofNullable(project.getDetails()).map(ProjectDetailsDto::create).orElse(null))
                 .catalogueId(project.getCatalogue().getId().toString())
                 .build();
     }

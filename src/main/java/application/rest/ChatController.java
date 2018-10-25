@@ -1,9 +1,6 @@
 package application.rest;
 
-import application.dto.ChatDto;
-import application.dto.CreateMessageDto;
-import application.dto.CurrentUser;
-import application.dto.MessageDto;
+import application.dto.*;
 import application.service.ChatService;
 import application.service.ProjectService;
 import domain.project.Message;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
@@ -33,8 +31,17 @@ public class ChatController {
 
     @GetMapping
     ResponseEntity<ChatDto> get(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
-        return ResponseEntity.ok(
+        return ok(
                 ChatDto.create(
+                        projectService.findByUserIdAndProjectId(currentUser.getId(), projectId).getChat()
+                )
+        );
+    }
+
+    @GetMapping("/v1/")
+    ResponseEntity<ChatV1> getV1(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
+        return ok(
+                ChatV1.create(
                         projectService.findByUserIdAndProjectId(currentUser.getId(), projectId).getChat()
                 )
         );

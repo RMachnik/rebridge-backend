@@ -5,6 +5,7 @@ import domain.DomainExceptions.MissingRoom;
 import lombok.Value;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +25,9 @@ public class Catalogue {
     }
 
     public static Catalogue empty() {
-        return new Catalogue(UUID.randomUUID(), Lists.newArrayList());
+        return new Catalogue(
+                UUID.randomUUID(),
+                Arrays.asList(Room.create("Kuchnia"), Room.create("Łazienka"), Room.create("Korytarz"), Room.create("Sypialnia")));
     }
 
     public void addRoom(Room room) {

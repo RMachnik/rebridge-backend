@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static application.dto.DtoAssemblers.fromInformationToDto;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
@@ -31,7 +30,7 @@ public class SimpleProjectDetailsService implements ProjectDetailsService {
         List<InvestorDto> investors =
                 findInvestors(details);
 
-        ProjectDetailsDto projectDetailsDto = fromInformationToDto(details, investors, projectId);
+        ProjectDetailsDto projectDetailsDto = ProjectDetailsDto.create(project, investors);
         return projectDetailsDto;
     }
 
@@ -85,7 +84,7 @@ public class SimpleProjectDetailsService implements ProjectDetailsService {
         project.updateDetails(updateProjectDetailsDto, questionnaireTemplate);
         projectService.save(project);
 
-        return fromInformationToDto(project.getDetails(), findInvestors(project.getDetails()), projectId);
+        return ProjectDetailsDto.create(project, findInvestors(project.getDetails()));
     }
 
     @Override

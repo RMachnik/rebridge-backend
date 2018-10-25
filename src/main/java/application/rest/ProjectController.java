@@ -28,6 +28,7 @@ import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
@@ -46,7 +47,7 @@ public class ProjectController {
 
     @GetMapping
     ResponseEntity<List<ProjectDto>> projects(@AuthenticationPrincipal CurrentUser user) {
-        return ResponseEntity.ok(
+        return ok(
                 projectService.findAllByUserId(user.getId()).stream()
                         .sorted(Collections.reverseOrder(Comparator.comparing(Project::getCreationDate)))
                         .map(ProjectDto::create)
@@ -75,7 +76,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}")
     ResponseEntity project(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable String projectId) {
-        return ResponseEntity.ok(ProjectDto.create(projectService.findByUserIdAndProjectId(currentUser.getId(), projectId)));
+        return ok(ProjectDto.create(projectService.findByUserIdAndProjectId(currentUser.getId(), projectId)));
     }
 
     @PutMapping("/{projectId}")
@@ -88,7 +89,7 @@ public class ProjectController {
                 .name(createProjectDto.getName())
                 .build();
         Project updated = projectService.update(currentUser.getId(), projectDto);
-        return ResponseEntity.ok(ProjectDto.create(updated));
+        return ok(ProjectDto.create(updated));
     }
 
     @DeleteMapping("/{projectId}")

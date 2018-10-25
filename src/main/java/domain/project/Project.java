@@ -100,6 +100,8 @@ public class Project implements WithId<UUID> {
                 .chat(chat)
                 .creationDate(creationDate)
                 .catalogue(catalogue)
+                .details(details)
+                .documentation(documentation)
                 .build();
     }
 
