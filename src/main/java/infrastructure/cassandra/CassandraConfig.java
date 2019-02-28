@@ -3,6 +3,7 @@ package infrastructure.cassandra;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
+import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
 import org.springframework.data.cassandra.core.cql.keyspace.DropKeyspaceSpecification;
@@ -36,6 +37,13 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Override
     public SchemaAction getSchemaAction() {
         return SchemaAction.CREATE_IF_NOT_EXISTS;
+    }
+
+    @Override
+    public CassandraClusterFactoryBean cluster() {
+        CassandraClusterFactoryBean cluster = super.cluster();
+        cluster.setJmxReportingEnabled(false);
+        return cluster;
     }
 
     @Override

@@ -5,7 +5,6 @@ import application.service.UserService;
 import com.google.common.collect.Sets;
 import domain.user.User;
 import domain.user.UserRepository;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,6 @@ public abstract class Base {
                 .alwaysDo(result -> result.getRequest().setUserPrincipal(authentication))
                 .build();
 
-        RestAssuredMockMvc.mockMvc(mvc);
     }
 
     private Authentication getAuthentication() {

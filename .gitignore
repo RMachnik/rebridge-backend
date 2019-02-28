@@ -74,9 +74,6 @@ fabric.properties
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
 .gitignore
 .idea/
 .gradle/
@@ -95,3 +92,5 @@ target/embeddedCassandra/data/
 target/embeddedCassandra/hints/
 target/embeddedCassandra/log4j-embedded-cassandra.properties
 target/embeddedCassandra/saved_caches/
+target/
+*.iml
