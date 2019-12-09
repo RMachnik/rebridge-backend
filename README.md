@@ -1,12 +1,9 @@
 # rebridge-backend
+REST API for Rebridge project, 
+simple management project for architects. 
 
-VPS: vps563480.ovh.net
-
-
-Created users: rmachnik, aprzybylski
-
+##Build and run
 Commands to run and  build
-
 1. `gradle build`
 2. `docker build -t rmachnik/rebridge-backend .`
 (2a). `docker push rmachnik/rebridge-backend:latest`
